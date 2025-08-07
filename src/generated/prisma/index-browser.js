@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.7.0
- * Query Engine version: 3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
+ * Prisma Client JS version: 6.13.0
+ * Query Engine version: 361e86d0ea4987e9f53a565309b3eed797a6bcbd
  */
 Prisma.prismaVersion = {
-  client: "6.7.0",
-  engine: "3cff47a7f5d65c3ea74883f1d736e41d68ce91ed"
+  client: "6.13.0",
+  engine: "361e86d0ea4987e9f53a565309b3eed797a6bcbd"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -128,19 +128,140 @@ exports.Prisma.SampleScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.CashierScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  password: 'password',
+  phoneNumber: 'phoneNumber',
+  gender: 'gender',
+  dateOfBirth: 'dateOfBirth',
+  isEmailVerified: 'isEmailVerified',
+  passwordResetCount: 'passwordResetCount',
+  emailChangeCount: 'emailChangeCount',
+  avatarImgUrl: 'avatarImgUrl',
+  cldPublicId: 'cldPublicId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  shiftId: 'shiftId'
+};
+
+exports.Prisma.AdminScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  password: 'password',
+  phoneNumber: 'phoneNumber',
+  isEmailVerified: 'isEmailVerified',
+  passwordResetCount: 'passwordResetCount',
+  emailChangeCount: 'emailChangeCount',
+  avatarImgUrl: 'avatarImgUrl',
+  cldPublicId: 'cldPublicId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.ShiftScalarFieldEnum = {
+  id: 'id',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.ProductScalarFieldEnum = {
+  id: 'id',
+  productCategoryId: 'productCategoryId',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  price: 'price',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.ProductCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.ProductStockScalarFieldEnum = {
+  productId: 'productId',
+  stock: 'stock',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.CartScalarFieldEnum = {
+  id: 'id',
+  cashierId: 'cashierId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.TransactionScalarFieldEnum = {
+  id: 'id',
+  paymentType: 'paymentType',
+  paymentAmount: 'paymentAmount',
+  paymentDate: 'paymentDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.TransactionHistoryScalarFieldEnum = {
+  id: 'id',
+  transactionId: 'transactionId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
 };
 
-exports.Prisma.SampleOrderByRelevanceFieldEnum = {
-  name: 'name',
-  code: 'code'
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.Gender = exports.$Enums.Gender = {
+  Male: 'Male',
+  Female: 'Female'
+};
+
+exports.PaymentType = exports.$Enums.PaymentType = {
+  CASH: 'CASH',
+  DEBIT: 'DEBIT'
+};
 
 exports.Prisma.ModelName = {
-  Sample: 'Sample'
+  Sample: 'Sample',
+  Cashier: 'Cashier',
+  Admin: 'Admin',
+  Shift: 'Shift',
+  Product: 'Product',
+  ProductCategory: 'ProductCategory',
+  ProductStock: 'ProductStock',
+  Cart: 'Cart',
+  Transaction: 'Transaction',
+  TransactionHistory: 'TransactionHistory'
 };
 
 /**
