@@ -5,11 +5,12 @@ import express, {
   Request,
   Response,
   NextFunction,
-} from 'express';
-import cors from 'cors';
-import { PORT } from './config';
-import { SampleRouter } from './routers/sample.router';
-import { AppError } from './utils/app.error';
+} from "express";
+import cors from "cors";
+import { PORT } from "./config";
+import { SampleRouter } from "./routers/sample.router";
+import { AppError } from "./utils/app.error";
+import authRouter from "./routers/auth.router";
 
 export default class App {
   private app: Express;
@@ -33,11 +34,11 @@ export default class App {
       This is a not found error handler.
     */
     this.app.use((req: Request, res: Response, next: NextFunction) => {
-      if (req.path.includes('/api/')) {
+      if (req.path.includes("/api/")) {
         res
           .status(404)
           .send(
-            'We are sorry, the endpoint you are trying to access could not be found on this server. Please ensure the URL is correct!'
+            "We are sorry, the endpoint you are trying to access could not be found on this server. Please ensure the URL is correct!"
           );
       } else {
         next();
@@ -54,17 +55,17 @@ export default class App {
         console.log(error);
         const statusCode =
           error.statusCode ||
-          (error.name === 'TokenExpiredError' ||
-          error.name === 'JsonWebTokenError'
+          (error.name === "TokenExpiredError" ||
+          error.name === "JsonWebTokenError"
             ? 401
             : 500);
         const message =
           error instanceof AppError || error.isOperational
             ? error.message ||
-              error.name === 'TokenExpiredError' ||
-              error.name === 'JsonWebTokenError'
-            : 'Internal server error. Please try again later!';
-        if (req.path.includes('/api/')) {
+              error.name === "TokenExpiredError" ||
+              error.name === "JsonWebTokenError"
+            : "Internal server error. Please try again later!";
+        if (req.path.includes("/api/")) {
           res.status(statusCode).json({
             success: false,
             message: message,
@@ -79,13 +80,14 @@ export default class App {
   private routes(): void {
     const sampleRouter = new SampleRouter();
 
-    this.app.get('/api', (req: Request, res: Response) => {
+    this.app.get("/api", (req: Request, res: Response) => {
       res.send(
         `Hello, Purwadhika student 👋. Have fun working on your mini project ☺️`
       );
     });
 
-    this.app.use('/api/samples', sampleRouter.getRouter());
+    this.app.use("/api/samples", sampleRouter.getRouter());
+    this.app.use("/api/auth", authRouter);
   }
 
   public start(): void {

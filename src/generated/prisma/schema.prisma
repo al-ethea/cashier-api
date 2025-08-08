@@ -10,8 +10,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Sample {
@@ -22,4 +23,155 @@ model Sample {
   updatedAt DateTime @updatedAt
 
   @@map("samples") // if you want to use snake_case format
+}
+
+model Cashier {
+  id                 String    @id @default(uuid())
+  firstName          String
+  lastName           String?
+  email              String    @unique
+  password           String
+  phoneNumber        String?   @unique
+  gender             Gender?
+  dateOfBirth        String?
+  isEmailVerified    Boolean   @default(false)
+  passwordResetCount Int       @default(0)
+  emailChangeCount   Int       @default(0)
+  avatarImgUrl       String?
+  cldPublicId        String? // Cloudinary public ID for the avatar image
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  deletedAt          DateTime?
+
+  shift   Shift?  @relation(fields: [shiftId], references: [id])
+  shiftId String?
+
+  cart Cart?
+
+  @@map("users")
+}
+
+model Admin {
+  id          String  @id @default(uuid())
+  firstName   String
+  lastName    String?
+  email       String  @unique
+  password    String
+  phoneNumber String  @unique
+
+  isEmailVerified    Boolean @default(false)
+  passwordResetCount Int     @default(0)
+  emailChangeCount   Int     @default(0)
+  avatarImgUrl       String?
+  cldPublicId        String? // Cloudinary public ID for the avatar image
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("admins")
+}
+
+enum Gender {
+  Male
+  Female
+}
+
+model Shift {
+  id        String    @id @default(cuid())
+  startTime DateTime
+  endTime   DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  cashier Cashier[]
+
+  @@map("shifts")
+}
+
+model Product {
+  id                String  @id @default(cuid())
+  productCategoryId Int
+  name              String
+  slug              String  @unique
+  description       String?
+  price             Float
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  productStock    ProductStock[]
+  productCategory ProductCategory @relation(fields: [productCategoryId], references: [id])
+
+  @@map("products")
+}
+
+model ProductCategory {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  product     Product[]
+
+  @@map("product_categories")
+}
+
+model ProductStock {
+  productId String
+  product   Product   @relation(fields: [productId], references: [id])
+  stock     Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  // stockHistory      ProductStockHistory[]
+
+  @@id([productId])
+  @@map("product_stocks")
+}
+
+model Cart {
+  id        String    @id @default(cuid())
+  cashierId String    @unique
+  // cartItems         CartItem[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  cashier Cashier @relation(fields: [cashierId], references: [id])
+
+  @@map("carts")
+}
+
+model Transaction {
+  id            String      @id @default(cuid())
+  paymentType   PaymentType
+  paymentAmount Float
+  paymentDate   DateTime
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  transactionHistory TransactionHistory[]
+
+  @@map("transactions")
+}
+
+enum PaymentType {
+  CASH
+  DEBIT
+}
+
+model TransactionHistory {
+  id            String @id @default(cuid())
+  transactionId String
+
+  transaction Transaction @relation(fields: [transactionId], references: [id])
+
+  @@map("transaction_histories")
 }
