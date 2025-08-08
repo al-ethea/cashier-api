@@ -15,16 +15,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Sample {
-  id        Int      @id @default(autoincrement())
-  name      String
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("samples") // if you want to use snake_case format
-}
-
 model Cashier {
   id                  String             @id @default(uuid())
   firstName           String
@@ -33,21 +23,23 @@ model Cashier {
   password            String
   phoneNumber         String?            @unique
   gender              Gender?
-  dateOfBirth         String?
   isEmailVerified     Boolean          @default(false)
-  passwordResetCount  Int              @default(0)
-  emailChangeCount    Int              @default(0)
   avatarImgUrl        String?
   cldPublicId         String? // Cloudinary public ID for the avatar image
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
   deletedAt           DateTime?
 
-  shift               Shift?     @relation(fields: [shiftId], references: [id])
-  shiftId             String?
-
-  cart Cart?
+  shift               ShiftSession
+  cashierBalanceHistory CashierBalanceHistory[]
+  cart                Cart[]
+  transaction         Transaction[]
   @@map("users")
+}
+
+enum ShiftSession {
+  SHIFT1
+  SHIFT2
 }
 
 model Admin {
@@ -59,8 +51,6 @@ model Admin {
   phoneNumber       String    @unique
 
   isEmailVerified   Boolean @default(false)
-  passwordResetCount Int     @default(0)
-  emailChangeCount   Int     @default(0)
   avatarImgUrl      String?
   cldPublicId       String? // Cloudinary public ID for the avatar image
 
@@ -76,17 +66,20 @@ enum Gender {
   Female
 }
 
-model Shift{
-  id                String   @id @default(cuid())
-  startTime         DateTime
-  endTime           DateTime?
+model CashierBalanceHistory {
+  id                  String      @id @default(cuid())
+  cashierId           String
+  cashier             Cashier   @relation(fields: [cashierId],references: [id])
+  startTime           DateTime
+  endTime             DateTime?
+  startingCash        Float
+  endingCash          Float?
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
   deletedAt           DateTime?
 
-  cashier Cashier[]
-  @@map("shifts")
-
+  transaction         Transaction[]
+  @@map("cashier_shift_histories")
 }
 
 model Product {
@@ -103,6 +96,8 @@ model Product {
 
   productStock      ProductStock[]
   productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
+  cartItems         CartItem[]
+  transactionItems  TransactionItem[]
   @@map("products")
 }
 
@@ -110,7 +105,6 @@ model ProductCategory{
   id                Int       @id @default(autoincrement())
   name              String
   slug              String   @unique
-  description       String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   deletedAt         DateTime?
@@ -123,7 +117,7 @@ model ProductStock {
   productId         String
   @@id ([productId])
   product          Product @relation(fields: [productId], references: [id])
-  stock             Int
+  stock             Int      
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   deletedAt         DateTime?
@@ -134,28 +128,61 @@ model ProductStock {
 
 model Cart {
   id                String   @id @default(cuid())
-  cashierId         String   @unique
-  // cartItems         CartItem[]
+customerName		    String
+  cashierId         String  
+  cartItems         CartItem[]
+  status            CartStatus    @default(ACTIVE)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   deletedAt         DateTime?
 
   cashier              Cashier @relation(fields: [cashierId], references: [id])
+  transaction       Transaction?
 
   @@map("carts")
 }
 
-model Transaction{
+enum CartStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+model CartItem {
+  id                String @id @default(cuid())
+  cartId            String
+  cart              Cart @relation(fields: [cartId],references: [id])
+  productId         String
+  product           Product @relation(fields:[productId],references: [id])
+  quantity          Int
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  deletedAt         DateTime?
+
+  @@map("cart_items")
+}
+
+
+
+model Transaction {
     id                String   @id @default(cuid())
+    cartId          String      @unique
+    cart            Cart @relation(fields: [cartId], references: [id])
+    cashierId       String
+    cashier         Cashier @relation(fields: [cashierId], references: [id])
+    cashierBalanceHistoryId String
+    cashierBalanceHistory CashierBalanceHistory @relation(fields: [cashierBalanceHistoryId],references: [id])
   paymentType       PaymentType
-  paymentAmount     Float
+  debitCardNumber   String?
+  totalAmount     Float
+  changeAmount      Float?
   paymentDate       DateTime
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   deletedAt         DateTime?
 
-  transactionHistory TransactionHistory[]
+  transactionItems   TransactionItem[]
   @@map("transactions")
 }
 
@@ -164,10 +191,18 @@ enum PaymentType {
   DEBIT
 }
 
-model TransactionHistory{
-  id                  String                @id @default(cuid())
-  transactionId String
+model TransactionItem {
+  id                String    @id @default(cuid())
+  transactionId     String
+  transaction       Transaction @relation(fields: [transactionId], references: [id])
+  productId         String
+  product           Product @relation(fields: [productId],references: [id])
+  quantity          Int
+  unitPrice         Float
+  subTotal          Float
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  deletedAt         DateTime?
 
-  transaction Transaction @relation(fields: [transactionId], references: [id])
-  @@map("transaction_histories")
+  @@map("transaction_items")
 }
