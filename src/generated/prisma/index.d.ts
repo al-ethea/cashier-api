@@ -14,11 +14,6 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
- * Model Sample
- * 
- */
-export type Sample = $Result.DefaultSelection<Prisma.$SamplePayload>
-/**
  * Model Cashier
  * 
  */
@@ -29,10 +24,10 @@ export type Cashier = $Result.DefaultSelection<Prisma.$CashierPayload>
  */
 export type Admin = $Result.DefaultSelection<Prisma.$AdminPayload>
 /**
- * Model Shift
+ * Model CashierBalanceHistory
  * 
  */
-export type Shift = $Result.DefaultSelection<Prisma.$ShiftPayload>
+export type CashierBalanceHistory = $Result.DefaultSelection<Prisma.$CashierBalanceHistoryPayload>
 /**
  * Model Product
  * 
@@ -54,26 +49,48 @@ export type ProductStock = $Result.DefaultSelection<Prisma.$ProductStockPayload>
  */
 export type Cart = $Result.DefaultSelection<Prisma.$CartPayload>
 /**
+ * Model CartItem
+ * 
+ */
+export type CartItem = $Result.DefaultSelection<Prisma.$CartItemPayload>
+/**
  * Model Transaction
  * 
  */
 export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
 /**
- * Model TransactionHistory
+ * Model TransactionItem
  * 
  */
-export type TransactionHistory = $Result.DefaultSelection<Prisma.$TransactionHistoryPayload>
+export type TransactionItem = $Result.DefaultSelection<Prisma.$TransactionItemPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const Gender: {
+  export const ShiftSession: {
+  SHIFT1: 'SHIFT1',
+  SHIFT2: 'SHIFT2'
+};
+
+export type ShiftSession = (typeof ShiftSession)[keyof typeof ShiftSession]
+
+
+export const Gender: {
   Male: 'Male',
   Female: 'Female'
 };
 
 export type Gender = (typeof Gender)[keyof typeof Gender]
+
+
+export const CartStatus: {
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type CartStatus = (typeof CartStatus)[keyof typeof CartStatus]
 
 
 export const PaymentType: {
@@ -85,9 +102,17 @@ export type PaymentType = (typeof PaymentType)[keyof typeof PaymentType]
 
 }
 
+export type ShiftSession = $Enums.ShiftSession
+
+export const ShiftSession: typeof $Enums.ShiftSession
+
 export type Gender = $Enums.Gender
 
 export const Gender: typeof $Enums.Gender
+
+export type CartStatus = $Enums.CartStatus
+
+export const CartStatus: typeof $Enums.CartStatus
 
 export type PaymentType = $Enums.PaymentType
 
@@ -100,8 +125,8 @@ export const PaymentType: typeof $Enums.PaymentType
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Samples
- * const samples = await prisma.sample.findMany()
+ * // Fetch zero or more Cashiers
+ * const cashiers = await prisma.cashier.findMany()
  * ```
  *
  *
@@ -121,8 +146,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Samples
-   * const samples = await prisma.sample.findMany()
+   * // Fetch zero or more Cashiers
+   * const cashiers = await prisma.cashier.findMany()
    * ```
    *
    *
@@ -219,16 +244,6 @@ export class PrismaClient<
   }>>
 
       /**
-   * `prisma.sample`: Exposes CRUD operations for the **Sample** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Samples
-    * const samples = await prisma.sample.findMany()
-    * ```
-    */
-  get sample(): Prisma.SampleDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.cashier`: Exposes CRUD operations for the **Cashier** model.
     * Example usage:
     * ```ts
@@ -249,14 +264,14 @@ export class PrismaClient<
   get admin(): Prisma.AdminDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.shift`: Exposes CRUD operations for the **Shift** model.
+   * `prisma.cashierBalanceHistory`: Exposes CRUD operations for the **CashierBalanceHistory** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Shifts
-    * const shifts = await prisma.shift.findMany()
+    * // Fetch zero or more CashierBalanceHistories
+    * const cashierBalanceHistories = await prisma.cashierBalanceHistory.findMany()
     * ```
     */
-  get shift(): Prisma.ShiftDelegate<ExtArgs, ClientOptions>;
+  get cashierBalanceHistory(): Prisma.CashierBalanceHistoryDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.product`: Exposes CRUD operations for the **Product** model.
@@ -299,6 +314,16 @@ export class PrismaClient<
   get cart(): Prisma.CartDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.cartItem`: Exposes CRUD operations for the **CartItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CartItems
+    * const cartItems = await prisma.cartItem.findMany()
+    * ```
+    */
+  get cartItem(): Prisma.CartItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.transaction`: Exposes CRUD operations for the **Transaction** model.
     * Example usage:
     * ```ts
@@ -309,14 +334,14 @@ export class PrismaClient<
   get transaction(): Prisma.TransactionDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.transactionHistory`: Exposes CRUD operations for the **TransactionHistory** model.
+   * `prisma.transactionItem`: Exposes CRUD operations for the **TransactionItem** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more TransactionHistories
-    * const transactionHistories = await prisma.transactionHistory.findMany()
+    * // Fetch zero or more TransactionItems
+    * const transactionItems = await prisma.transactionItem.findMany()
     * ```
     */
-  get transactionHistory(): Prisma.TransactionHistoryDelegate<ExtArgs, ClientOptions>;
+  get transactionItem(): Prisma.TransactionItemDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -757,16 +782,16 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    Sample: 'Sample',
     Cashier: 'Cashier',
     Admin: 'Admin',
-    Shift: 'Shift',
+    CashierBalanceHistory: 'CashierBalanceHistory',
     Product: 'Product',
     ProductCategory: 'ProductCategory',
     ProductStock: 'ProductStock',
     Cart: 'Cart',
+    CartItem: 'CartItem',
     Transaction: 'Transaction',
-    TransactionHistory: 'TransactionHistory'
+    TransactionItem: 'TransactionItem'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -785,84 +810,10 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "sample" | "cashier" | "admin" | "shift" | "product" | "productCategory" | "productStock" | "cart" | "transaction" | "transactionHistory"
+      modelProps: "cashier" | "admin" | "cashierBalanceHistory" | "product" | "productCategory" | "productStock" | "cart" | "cartItem" | "transaction" | "transactionItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
-      Sample: {
-        payload: Prisma.$SamplePayload<ExtArgs>
-        fields: Prisma.SampleFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.SampleFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SamplePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.SampleFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SamplePayload>
-          }
-          findFirst: {
-            args: Prisma.SampleFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SamplePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.SampleFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SamplePayload>
-          }
-          findMany: {
-            args: Prisma.SampleFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SamplePayload>[]
-          }
-          create: {
-            args: Prisma.SampleCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SamplePayload>
-          }
-          createMany: {
-            args: Prisma.SampleCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.SampleCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SamplePayload>[]
-          }
-          delete: {
-            args: Prisma.SampleDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SamplePayload>
-          }
-          update: {
-            args: Prisma.SampleUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SamplePayload>
-          }
-          deleteMany: {
-            args: Prisma.SampleDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.SampleUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.SampleUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SamplePayload>[]
-          }
-          upsert: {
-            args: Prisma.SampleUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SamplePayload>
-          }
-          aggregate: {
-            args: Prisma.SampleAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateSample>
-          }
-          groupBy: {
-            args: Prisma.SampleGroupByArgs<ExtArgs>
-            result: $Utils.Optional<SampleGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.SampleCountArgs<ExtArgs>
-            result: $Utils.Optional<SampleCountAggregateOutputType> | number
-          }
-        }
-      }
       Cashier: {
         payload: Prisma.$CashierPayload<ExtArgs>
         fields: Prisma.CashierFieldRefs
@@ -1011,77 +962,77 @@ export namespace Prisma {
           }
         }
       }
-      Shift: {
-        payload: Prisma.$ShiftPayload<ExtArgs>
-        fields: Prisma.ShiftFieldRefs
+      CashierBalanceHistory: {
+        payload: Prisma.$CashierBalanceHistoryPayload<ExtArgs>
+        fields: Prisma.CashierBalanceHistoryFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.ShiftFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ShiftPayload> | null
+            args: Prisma.CashierBalanceHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashierBalanceHistoryPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.ShiftFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ShiftPayload>
+            args: Prisma.CashierBalanceHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashierBalanceHistoryPayload>
           }
           findFirst: {
-            args: Prisma.ShiftFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ShiftPayload> | null
+            args: Prisma.CashierBalanceHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashierBalanceHistoryPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.ShiftFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ShiftPayload>
+            args: Prisma.CashierBalanceHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashierBalanceHistoryPayload>
           }
           findMany: {
-            args: Prisma.ShiftFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ShiftPayload>[]
+            args: Prisma.CashierBalanceHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashierBalanceHistoryPayload>[]
           }
           create: {
-            args: Prisma.ShiftCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ShiftPayload>
+            args: Prisma.CashierBalanceHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashierBalanceHistoryPayload>
           }
           createMany: {
-            args: Prisma.ShiftCreateManyArgs<ExtArgs>
+            args: Prisma.CashierBalanceHistoryCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.ShiftCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ShiftPayload>[]
+            args: Prisma.CashierBalanceHistoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashierBalanceHistoryPayload>[]
           }
           delete: {
-            args: Prisma.ShiftDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ShiftPayload>
+            args: Prisma.CashierBalanceHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashierBalanceHistoryPayload>
           }
           update: {
-            args: Prisma.ShiftUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ShiftPayload>
+            args: Prisma.CashierBalanceHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashierBalanceHistoryPayload>
           }
           deleteMany: {
-            args: Prisma.ShiftDeleteManyArgs<ExtArgs>
+            args: Prisma.CashierBalanceHistoryDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.ShiftUpdateManyArgs<ExtArgs>
+            args: Prisma.CashierBalanceHistoryUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.ShiftUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ShiftPayload>[]
+            args: Prisma.CashierBalanceHistoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashierBalanceHistoryPayload>[]
           }
           upsert: {
-            args: Prisma.ShiftUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ShiftPayload>
+            args: Prisma.CashierBalanceHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashierBalanceHistoryPayload>
           }
           aggregate: {
-            args: Prisma.ShiftAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateShift>
+            args: Prisma.CashierBalanceHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCashierBalanceHistory>
           }
           groupBy: {
-            args: Prisma.ShiftGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ShiftGroupByOutputType>[]
+            args: Prisma.CashierBalanceHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CashierBalanceHistoryGroupByOutputType>[]
           }
           count: {
-            args: Prisma.ShiftCountArgs<ExtArgs>
-            result: $Utils.Optional<ShiftCountAggregateOutputType> | number
+            args: Prisma.CashierBalanceHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<CashierBalanceHistoryCountAggregateOutputType> | number
           }
         }
       }
@@ -1381,6 +1332,80 @@ export namespace Prisma {
           }
         }
       }
+      CartItem: {
+        payload: Prisma.$CartItemPayload<ExtArgs>
+        fields: Prisma.CartItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CartItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CartItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
+          }
+          findFirst: {
+            args: Prisma.CartItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CartItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
+          }
+          findMany: {
+            args: Prisma.CartItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>[]
+          }
+          create: {
+            args: Prisma.CartItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
+          }
+          createMany: {
+            args: Prisma.CartItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CartItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>[]
+          }
+          delete: {
+            args: Prisma.CartItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
+          }
+          update: {
+            args: Prisma.CartItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.CartItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CartItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CartItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.CartItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CartItemPayload>
+          }
+          aggregate: {
+            args: Prisma.CartItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCartItem>
+          }
+          groupBy: {
+            args: Prisma.CartItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CartItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CartItemCountArgs<ExtArgs>
+            result: $Utils.Optional<CartItemCountAggregateOutputType> | number
+          }
+        }
+      }
       Transaction: {
         payload: Prisma.$TransactionPayload<ExtArgs>
         fields: Prisma.TransactionFieldRefs
@@ -1455,77 +1480,77 @@ export namespace Prisma {
           }
         }
       }
-      TransactionHistory: {
-        payload: Prisma.$TransactionHistoryPayload<ExtArgs>
-        fields: Prisma.TransactionHistoryFieldRefs
+      TransactionItem: {
+        payload: Prisma.$TransactionItemPayload<ExtArgs>
+        fields: Prisma.TransactionItemFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.TransactionHistoryFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TransactionHistoryPayload> | null
+            args: Prisma.TransactionItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionItemPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.TransactionHistoryFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>
+            args: Prisma.TransactionItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionItemPayload>
           }
           findFirst: {
-            args: Prisma.TransactionHistoryFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TransactionHistoryPayload> | null
+            args: Prisma.TransactionItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionItemPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.TransactionHistoryFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>
+            args: Prisma.TransactionItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionItemPayload>
           }
           findMany: {
-            args: Prisma.TransactionHistoryFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>[]
+            args: Prisma.TransactionItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionItemPayload>[]
           }
           create: {
-            args: Prisma.TransactionHistoryCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>
+            args: Prisma.TransactionItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionItemPayload>
           }
           createMany: {
-            args: Prisma.TransactionHistoryCreateManyArgs<ExtArgs>
+            args: Prisma.TransactionItemCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.TransactionHistoryCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>[]
+            args: Prisma.TransactionItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionItemPayload>[]
           }
           delete: {
-            args: Prisma.TransactionHistoryDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>
+            args: Prisma.TransactionItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionItemPayload>
           }
           update: {
-            args: Prisma.TransactionHistoryUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>
+            args: Prisma.TransactionItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionItemPayload>
           }
           deleteMany: {
-            args: Prisma.TransactionHistoryDeleteManyArgs<ExtArgs>
+            args: Prisma.TransactionItemDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.TransactionHistoryUpdateManyArgs<ExtArgs>
+            args: Prisma.TransactionItemUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.TransactionHistoryUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>[]
+            args: Prisma.TransactionItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionItemPayload>[]
           }
           upsert: {
-            args: Prisma.TransactionHistoryUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$TransactionHistoryPayload>
+            args: Prisma.TransactionItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionItemPayload>
           }
           aggregate: {
-            args: Prisma.TransactionHistoryAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateTransactionHistory>
+            args: Prisma.TransactionItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTransactionItem>
           }
           groupBy: {
-            args: Prisma.TransactionHistoryGroupByArgs<ExtArgs>
-            result: $Utils.Optional<TransactionHistoryGroupByOutputType>[]
+            args: Prisma.TransactionItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TransactionItemGroupByOutputType>[]
           }
           count: {
-            args: Prisma.TransactionHistoryCountArgs<ExtArgs>
-            result: $Utils.Optional<TransactionHistoryCountAggregateOutputType> | number
+            args: Prisma.TransactionItemCountArgs<ExtArgs>
+            result: $Utils.Optional<TransactionItemCountAggregateOutputType> | number
           }
         }
       }
@@ -1621,16 +1646,16 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
-    sample?: SampleOmit
     cashier?: CashierOmit
     admin?: AdminOmit
-    shift?: ShiftOmit
+    cashierBalanceHistory?: CashierBalanceHistoryOmit
     product?: ProductOmit
     productCategory?: ProductCategoryOmit
     productStock?: ProductStockOmit
     cart?: CartOmit
+    cartItem?: CartItemOmit
     transaction?: TransactionOmit
-    transactionHistory?: TransactionHistoryOmit
+    transactionItem?: TransactionItemOmit
   }
 
   /* Types for Logging */
@@ -1726,33 +1751,82 @@ export namespace Prisma {
 
 
   /**
-   * Count Type ShiftCountOutputType
+   * Count Type CashierCountOutputType
    */
 
-  export type ShiftCountOutputType = {
-    cashier: number
+  export type CashierCountOutputType = {
+    cashierBalanceHistory: number
+    cart: number
+    transaction: number
   }
 
-  export type ShiftCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cashier?: boolean | ShiftCountOutputTypeCountCashierArgs
+  export type CashierCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cashierBalanceHistory?: boolean | CashierCountOutputTypeCountCashierBalanceHistoryArgs
+    cart?: boolean | CashierCountOutputTypeCountCartArgs
+    transaction?: boolean | CashierCountOutputTypeCountTransactionArgs
   }
 
   // Custom InputTypes
   /**
-   * ShiftCountOutputType without action
+   * CashierCountOutputType without action
    */
-  export type ShiftCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ShiftCountOutputType
+     * Select specific fields to fetch from the CashierCountOutputType
      */
-    select?: ShiftCountOutputTypeSelect<ExtArgs> | null
+    select?: CashierCountOutputTypeSelect<ExtArgs> | null
   }
 
   /**
-   * ShiftCountOutputType without action
+   * CashierCountOutputType without action
    */
-  export type ShiftCountOutputTypeCountCashierArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CashierWhereInput
+  export type CashierCountOutputTypeCountCashierBalanceHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CashierBalanceHistoryWhereInput
+  }
+
+  /**
+   * CashierCountOutputType without action
+   */
+  export type CashierCountOutputTypeCountCartArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CartWhereInput
+  }
+
+  /**
+   * CashierCountOutputType without action
+   */
+  export type CashierCountOutputTypeCountTransactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionWhereInput
+  }
+
+
+  /**
+   * Count Type CashierBalanceHistoryCountOutputType
+   */
+
+  export type CashierBalanceHistoryCountOutputType = {
+    transaction: number
+  }
+
+  export type CashierBalanceHistoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    transaction?: boolean | CashierBalanceHistoryCountOutputTypeCountTransactionArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CashierBalanceHistoryCountOutputType without action
+   */
+  export type CashierBalanceHistoryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashierBalanceHistoryCountOutputType
+     */
+    select?: CashierBalanceHistoryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CashierBalanceHistoryCountOutputType without action
+   */
+  export type CashierBalanceHistoryCountOutputTypeCountTransactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionWhereInput
   }
 
 
@@ -1762,10 +1836,14 @@ export namespace Prisma {
 
   export type ProductCountOutputType = {
     productStock: number
+    cartItems: number
+    transactionItems: number
   }
 
   export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     productStock?: boolean | ProductCountOutputTypeCountProductStockArgs
+    cartItems?: boolean | ProductCountOutputTypeCountCartItemsArgs
+    transactionItems?: boolean | ProductCountOutputTypeCountTransactionItemsArgs
   }
 
   // Custom InputTypes
@@ -1784,6 +1862,20 @@ export namespace Prisma {
    */
   export type ProductCountOutputTypeCountProductStockArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProductStockWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountCartItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CartItemWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountTransactionItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionItemWhereInput
   }
 
 
@@ -1819,15 +1911,46 @@ export namespace Prisma {
 
 
   /**
+   * Count Type CartCountOutputType
+   */
+
+  export type CartCountOutputType = {
+    cartItems: number
+  }
+
+  export type CartCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cartItems?: boolean | CartCountOutputTypeCountCartItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CartCountOutputType without action
+   */
+  export type CartCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartCountOutputType
+     */
+    select?: CartCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CartCountOutputType without action
+   */
+  export type CartCountOutputTypeCountCartItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CartItemWhereInput
+  }
+
+
+  /**
    * Count Type TransactionCountOutputType
    */
 
   export type TransactionCountOutputType = {
-    transactionHistory: number
+    transactionItems: number
   }
 
   export type TransactionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    transactionHistory?: boolean | TransactionCountOutputTypeCountTransactionHistoryArgs
+    transactionItems?: boolean | TransactionCountOutputTypeCountTransactionItemsArgs
   }
 
   // Custom InputTypes
@@ -1844,8 +1967,8 @@ export namespace Prisma {
   /**
    * TransactionCountOutputType without action
    */
-  export type TransactionCountOutputTypeCountTransactionHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TransactionHistoryWhereInput
+  export type TransactionCountOutputTypeCountTransactionItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionItemWhereInput
   }
 
 
@@ -1854,1054 +1977,13 @@ export namespace Prisma {
    */
 
   /**
-   * Model Sample
-   */
-
-  export type AggregateSample = {
-    _count: SampleCountAggregateOutputType | null
-    _avg: SampleAvgAggregateOutputType | null
-    _sum: SampleSumAggregateOutputType | null
-    _min: SampleMinAggregateOutputType | null
-    _max: SampleMaxAggregateOutputType | null
-  }
-
-  export type SampleAvgAggregateOutputType = {
-    id: number | null
-  }
-
-  export type SampleSumAggregateOutputType = {
-    id: number | null
-  }
-
-  export type SampleMinAggregateOutputType = {
-    id: number | null
-    name: string | null
-    code: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type SampleMaxAggregateOutputType = {
-    id: number | null
-    name: string | null
-    code: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type SampleCountAggregateOutputType = {
-    id: number
-    name: number
-    code: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type SampleAvgAggregateInputType = {
-    id?: true
-  }
-
-  export type SampleSumAggregateInputType = {
-    id?: true
-  }
-
-  export type SampleMinAggregateInputType = {
-    id?: true
-    name?: true
-    code?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type SampleMaxAggregateInputType = {
-    id?: true
-    name?: true
-    code?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type SampleCountAggregateInputType = {
-    id?: true
-    name?: true
-    code?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type SampleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Sample to aggregate.
-     */
-    where?: SampleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Samples to fetch.
-     */
-    orderBy?: SampleOrderByWithRelationInput | SampleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: SampleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Samples from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Samples.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Samples
-    **/
-    _count?: true | SampleCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: SampleAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: SampleSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: SampleMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: SampleMaxAggregateInputType
-  }
-
-  export type GetSampleAggregateType<T extends SampleAggregateArgs> = {
-        [P in keyof T & keyof AggregateSample]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateSample[P]>
-      : GetScalarType<T[P], AggregateSample[P]>
-  }
-
-
-
-
-  export type SampleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SampleWhereInput
-    orderBy?: SampleOrderByWithAggregationInput | SampleOrderByWithAggregationInput[]
-    by: SampleScalarFieldEnum[] | SampleScalarFieldEnum
-    having?: SampleScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: SampleCountAggregateInputType | true
-    _avg?: SampleAvgAggregateInputType
-    _sum?: SampleSumAggregateInputType
-    _min?: SampleMinAggregateInputType
-    _max?: SampleMaxAggregateInputType
-  }
-
-  export type SampleGroupByOutputType = {
-    id: number
-    name: string
-    code: string
-    createdAt: Date
-    updatedAt: Date
-    _count: SampleCountAggregateOutputType | null
-    _avg: SampleAvgAggregateOutputType | null
-    _sum: SampleSumAggregateOutputType | null
-    _min: SampleMinAggregateOutputType | null
-    _max: SampleMaxAggregateOutputType | null
-  }
-
-  type GetSampleGroupByPayload<T extends SampleGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<SampleGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof SampleGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], SampleGroupByOutputType[P]>
-            : GetScalarType<T[P], SampleGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type SampleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    code?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["sample"]>
-
-  export type SampleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    code?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["sample"]>
-
-  export type SampleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    code?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["sample"]>
-
-  export type SampleSelectScalar = {
-    id?: boolean
-    name?: boolean
-    code?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type SampleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "createdAt" | "updatedAt", ExtArgs["result"]["sample"]>
-
-  export type $SamplePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Sample"
-    objects: {}
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      name: string
-      code: string
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["sample"]>
-    composites: {}
-  }
-
-  type SampleGetPayload<S extends boolean | null | undefined | SampleDefaultArgs> = $Result.GetResult<Prisma.$SamplePayload, S>
-
-  type SampleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<SampleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: SampleCountAggregateInputType | true
-    }
-
-  export interface SampleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Sample'], meta: { name: 'Sample' } }
-    /**
-     * Find zero or one Sample that matches the filter.
-     * @param {SampleFindUniqueArgs} args - Arguments to find a Sample
-     * @example
-     * // Get one Sample
-     * const sample = await prisma.sample.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends SampleFindUniqueArgs>(args: SelectSubset<T, SampleFindUniqueArgs<ExtArgs>>): Prisma__SampleClient<$Result.GetResult<Prisma.$SamplePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Sample that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {SampleFindUniqueOrThrowArgs} args - Arguments to find a Sample
-     * @example
-     * // Get one Sample
-     * const sample = await prisma.sample.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends SampleFindUniqueOrThrowArgs>(args: SelectSubset<T, SampleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SampleClient<$Result.GetResult<Prisma.$SamplePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Sample that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SampleFindFirstArgs} args - Arguments to find a Sample
-     * @example
-     * // Get one Sample
-     * const sample = await prisma.sample.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends SampleFindFirstArgs>(args?: SelectSubset<T, SampleFindFirstArgs<ExtArgs>>): Prisma__SampleClient<$Result.GetResult<Prisma.$SamplePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Sample that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SampleFindFirstOrThrowArgs} args - Arguments to find a Sample
-     * @example
-     * // Get one Sample
-     * const sample = await prisma.sample.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends SampleFindFirstOrThrowArgs>(args?: SelectSubset<T, SampleFindFirstOrThrowArgs<ExtArgs>>): Prisma__SampleClient<$Result.GetResult<Prisma.$SamplePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Samples that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SampleFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Samples
-     * const samples = await prisma.sample.findMany()
-     * 
-     * // Get first 10 Samples
-     * const samples = await prisma.sample.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const sampleWithIdOnly = await prisma.sample.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends SampleFindManyArgs>(args?: SelectSubset<T, SampleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SamplePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Sample.
-     * @param {SampleCreateArgs} args - Arguments to create a Sample.
-     * @example
-     * // Create one Sample
-     * const Sample = await prisma.sample.create({
-     *   data: {
-     *     // ... data to create a Sample
-     *   }
-     * })
-     * 
-     */
-    create<T extends SampleCreateArgs>(args: SelectSubset<T, SampleCreateArgs<ExtArgs>>): Prisma__SampleClient<$Result.GetResult<Prisma.$SamplePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Samples.
-     * @param {SampleCreateManyArgs} args - Arguments to create many Samples.
-     * @example
-     * // Create many Samples
-     * const sample = await prisma.sample.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends SampleCreateManyArgs>(args?: SelectSubset<T, SampleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Samples and returns the data saved in the database.
-     * @param {SampleCreateManyAndReturnArgs} args - Arguments to create many Samples.
-     * @example
-     * // Create many Samples
-     * const sample = await prisma.sample.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Samples and only return the `id`
-     * const sampleWithIdOnly = await prisma.sample.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends SampleCreateManyAndReturnArgs>(args?: SelectSubset<T, SampleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SamplePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Sample.
-     * @param {SampleDeleteArgs} args - Arguments to delete one Sample.
-     * @example
-     * // Delete one Sample
-     * const Sample = await prisma.sample.delete({
-     *   where: {
-     *     // ... filter to delete one Sample
-     *   }
-     * })
-     * 
-     */
-    delete<T extends SampleDeleteArgs>(args: SelectSubset<T, SampleDeleteArgs<ExtArgs>>): Prisma__SampleClient<$Result.GetResult<Prisma.$SamplePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Sample.
-     * @param {SampleUpdateArgs} args - Arguments to update one Sample.
-     * @example
-     * // Update one Sample
-     * const sample = await prisma.sample.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends SampleUpdateArgs>(args: SelectSubset<T, SampleUpdateArgs<ExtArgs>>): Prisma__SampleClient<$Result.GetResult<Prisma.$SamplePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Samples.
-     * @param {SampleDeleteManyArgs} args - Arguments to filter Samples to delete.
-     * @example
-     * // Delete a few Samples
-     * const { count } = await prisma.sample.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends SampleDeleteManyArgs>(args?: SelectSubset<T, SampleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Samples.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SampleUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Samples
-     * const sample = await prisma.sample.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends SampleUpdateManyArgs>(args: SelectSubset<T, SampleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Samples and returns the data updated in the database.
-     * @param {SampleUpdateManyAndReturnArgs} args - Arguments to update many Samples.
-     * @example
-     * // Update many Samples
-     * const sample = await prisma.sample.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Samples and only return the `id`
-     * const sampleWithIdOnly = await prisma.sample.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends SampleUpdateManyAndReturnArgs>(args: SelectSubset<T, SampleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SamplePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Sample.
-     * @param {SampleUpsertArgs} args - Arguments to update or create a Sample.
-     * @example
-     * // Update or create a Sample
-     * const sample = await prisma.sample.upsert({
-     *   create: {
-     *     // ... data to create a Sample
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Sample we want to update
-     *   }
-     * })
-     */
-    upsert<T extends SampleUpsertArgs>(args: SelectSubset<T, SampleUpsertArgs<ExtArgs>>): Prisma__SampleClient<$Result.GetResult<Prisma.$SamplePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Samples.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SampleCountArgs} args - Arguments to filter Samples to count.
-     * @example
-     * // Count the number of Samples
-     * const count = await prisma.sample.count({
-     *   where: {
-     *     // ... the filter for the Samples we want to count
-     *   }
-     * })
-    **/
-    count<T extends SampleCountArgs>(
-      args?: Subset<T, SampleCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], SampleCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Sample.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SampleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends SampleAggregateArgs>(args: Subset<T, SampleAggregateArgs>): Prisma.PrismaPromise<GetSampleAggregateType<T>>
-
-    /**
-     * Group by Sample.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SampleGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends SampleGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: SampleGroupByArgs['orderBy'] }
-        : { orderBy?: SampleGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, SampleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSampleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Sample model
-   */
-  readonly fields: SampleFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Sample.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__SampleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Sample model
-   */
-  interface SampleFieldRefs {
-    readonly id: FieldRef<"Sample", 'Int'>
-    readonly name: FieldRef<"Sample", 'String'>
-    readonly code: FieldRef<"Sample", 'String'>
-    readonly createdAt: FieldRef<"Sample", 'DateTime'>
-    readonly updatedAt: FieldRef<"Sample", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Sample findUnique
-   */
-  export type SampleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sample
-     */
-    select?: SampleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sample
-     */
-    omit?: SampleOmit<ExtArgs> | null
-    /**
-     * Filter, which Sample to fetch.
-     */
-    where: SampleWhereUniqueInput
-  }
-
-  /**
-   * Sample findUniqueOrThrow
-   */
-  export type SampleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sample
-     */
-    select?: SampleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sample
-     */
-    omit?: SampleOmit<ExtArgs> | null
-    /**
-     * Filter, which Sample to fetch.
-     */
-    where: SampleWhereUniqueInput
-  }
-
-  /**
-   * Sample findFirst
-   */
-  export type SampleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sample
-     */
-    select?: SampleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sample
-     */
-    omit?: SampleOmit<ExtArgs> | null
-    /**
-     * Filter, which Sample to fetch.
-     */
-    where?: SampleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Samples to fetch.
-     */
-    orderBy?: SampleOrderByWithRelationInput | SampleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Samples.
-     */
-    cursor?: SampleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Samples from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Samples.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Samples.
-     */
-    distinct?: SampleScalarFieldEnum | SampleScalarFieldEnum[]
-  }
-
-  /**
-   * Sample findFirstOrThrow
-   */
-  export type SampleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sample
-     */
-    select?: SampleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sample
-     */
-    omit?: SampleOmit<ExtArgs> | null
-    /**
-     * Filter, which Sample to fetch.
-     */
-    where?: SampleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Samples to fetch.
-     */
-    orderBy?: SampleOrderByWithRelationInput | SampleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Samples.
-     */
-    cursor?: SampleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Samples from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Samples.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Samples.
-     */
-    distinct?: SampleScalarFieldEnum | SampleScalarFieldEnum[]
-  }
-
-  /**
-   * Sample findMany
-   */
-  export type SampleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sample
-     */
-    select?: SampleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sample
-     */
-    omit?: SampleOmit<ExtArgs> | null
-    /**
-     * Filter, which Samples to fetch.
-     */
-    where?: SampleWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Samples to fetch.
-     */
-    orderBy?: SampleOrderByWithRelationInput | SampleOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Samples.
-     */
-    cursor?: SampleWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Samples from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Samples.
-     */
-    skip?: number
-    distinct?: SampleScalarFieldEnum | SampleScalarFieldEnum[]
-  }
-
-  /**
-   * Sample create
-   */
-  export type SampleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sample
-     */
-    select?: SampleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sample
-     */
-    omit?: SampleOmit<ExtArgs> | null
-    /**
-     * The data needed to create a Sample.
-     */
-    data: XOR<SampleCreateInput, SampleUncheckedCreateInput>
-  }
-
-  /**
-   * Sample createMany
-   */
-  export type SampleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Samples.
-     */
-    data: SampleCreateManyInput | SampleCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Sample createManyAndReturn
-   */
-  export type SampleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sample
-     */
-    select?: SampleSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sample
-     */
-    omit?: SampleOmit<ExtArgs> | null
-    /**
-     * The data used to create many Samples.
-     */
-    data: SampleCreateManyInput | SampleCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Sample update
-   */
-  export type SampleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sample
-     */
-    select?: SampleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sample
-     */
-    omit?: SampleOmit<ExtArgs> | null
-    /**
-     * The data needed to update a Sample.
-     */
-    data: XOR<SampleUpdateInput, SampleUncheckedUpdateInput>
-    /**
-     * Choose, which Sample to update.
-     */
-    where: SampleWhereUniqueInput
-  }
-
-  /**
-   * Sample updateMany
-   */
-  export type SampleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Samples.
-     */
-    data: XOR<SampleUpdateManyMutationInput, SampleUncheckedUpdateManyInput>
-    /**
-     * Filter which Samples to update
-     */
-    where?: SampleWhereInput
-    /**
-     * Limit how many Samples to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Sample updateManyAndReturn
-   */
-  export type SampleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sample
-     */
-    select?: SampleSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sample
-     */
-    omit?: SampleOmit<ExtArgs> | null
-    /**
-     * The data used to update Samples.
-     */
-    data: XOR<SampleUpdateManyMutationInput, SampleUncheckedUpdateManyInput>
-    /**
-     * Filter which Samples to update
-     */
-    where?: SampleWhereInput
-    /**
-     * Limit how many Samples to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Sample upsert
-   */
-  export type SampleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sample
-     */
-    select?: SampleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sample
-     */
-    omit?: SampleOmit<ExtArgs> | null
-    /**
-     * The filter to search for the Sample to update in case it exists.
-     */
-    where: SampleWhereUniqueInput
-    /**
-     * In case the Sample found by the `where` argument doesn't exist, create a new Sample with this data.
-     */
-    create: XOR<SampleCreateInput, SampleUncheckedCreateInput>
-    /**
-     * In case the Sample was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<SampleUpdateInput, SampleUncheckedUpdateInput>
-  }
-
-  /**
-   * Sample delete
-   */
-  export type SampleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sample
-     */
-    select?: SampleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sample
-     */
-    omit?: SampleOmit<ExtArgs> | null
-    /**
-     * Filter which Sample to delete.
-     */
-    where: SampleWhereUniqueInput
-  }
-
-  /**
-   * Sample deleteMany
-   */
-  export type SampleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Samples to delete
-     */
-    where?: SampleWhereInput
-    /**
-     * Limit how many Samples to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Sample without action
-   */
-  export type SampleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Sample
-     */
-    select?: SampleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Sample
-     */
-    omit?: SampleOmit<ExtArgs> | null
-  }
-
-
-  /**
    * Model Cashier
    */
 
   export type AggregateCashier = {
     _count: CashierCountAggregateOutputType | null
-    _avg: CashierAvgAggregateOutputType | null
-    _sum: CashierSumAggregateOutputType | null
     _min: CashierMinAggregateOutputType | null
     _max: CashierMaxAggregateOutputType | null
-  }
-
-  export type CashierAvgAggregateOutputType = {
-    passwordResetCount: number | null
-    emailChangeCount: number | null
-  }
-
-  export type CashierSumAggregateOutputType = {
-    passwordResetCount: number | null
-    emailChangeCount: number | null
   }
 
   export type CashierMinAggregateOutputType = {
@@ -2912,16 +1994,13 @@ export namespace Prisma {
     password: string | null
     phoneNumber: string | null
     gender: $Enums.Gender | null
-    dateOfBirth: string | null
     isEmailVerified: boolean | null
-    passwordResetCount: number | null
-    emailChangeCount: number | null
     avatarImgUrl: string | null
     cldPublicId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
-    shiftId: string | null
+    shift: $Enums.ShiftSession | null
   }
 
   export type CashierMaxAggregateOutputType = {
@@ -2932,16 +2011,13 @@ export namespace Prisma {
     password: string | null
     phoneNumber: string | null
     gender: $Enums.Gender | null
-    dateOfBirth: string | null
     isEmailVerified: boolean | null
-    passwordResetCount: number | null
-    emailChangeCount: number | null
     avatarImgUrl: string | null
     cldPublicId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
-    shiftId: string | null
+    shift: $Enums.ShiftSession | null
   }
 
   export type CashierCountAggregateOutputType = {
@@ -2952,29 +2028,16 @@ export namespace Prisma {
     password: number
     phoneNumber: number
     gender: number
-    dateOfBirth: number
     isEmailVerified: number
-    passwordResetCount: number
-    emailChangeCount: number
     avatarImgUrl: number
     cldPublicId: number
     createdAt: number
     updatedAt: number
     deletedAt: number
-    shiftId: number
+    shift: number
     _all: number
   }
 
-
-  export type CashierAvgAggregateInputType = {
-    passwordResetCount?: true
-    emailChangeCount?: true
-  }
-
-  export type CashierSumAggregateInputType = {
-    passwordResetCount?: true
-    emailChangeCount?: true
-  }
 
   export type CashierMinAggregateInputType = {
     id?: true
@@ -2984,16 +2047,13 @@ export namespace Prisma {
     password?: true
     phoneNumber?: true
     gender?: true
-    dateOfBirth?: true
     isEmailVerified?: true
-    passwordResetCount?: true
-    emailChangeCount?: true
     avatarImgUrl?: true
     cldPublicId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
-    shiftId?: true
+    shift?: true
   }
 
   export type CashierMaxAggregateInputType = {
@@ -3004,16 +2064,13 @@ export namespace Prisma {
     password?: true
     phoneNumber?: true
     gender?: true
-    dateOfBirth?: true
     isEmailVerified?: true
-    passwordResetCount?: true
-    emailChangeCount?: true
     avatarImgUrl?: true
     cldPublicId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
-    shiftId?: true
+    shift?: true
   }
 
   export type CashierCountAggregateInputType = {
@@ -3024,16 +2081,13 @@ export namespace Prisma {
     password?: true
     phoneNumber?: true
     gender?: true
-    dateOfBirth?: true
     isEmailVerified?: true
-    passwordResetCount?: true
-    emailChangeCount?: true
     avatarImgUrl?: true
     cldPublicId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
-    shiftId?: true
+    shift?: true
     _all?: true
   }
 
@@ -3075,18 +2129,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: CashierAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: CashierSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: CashierMinAggregateInputType
@@ -3117,8 +2159,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: CashierCountAggregateInputType | true
-    _avg?: CashierAvgAggregateInputType
-    _sum?: CashierSumAggregateInputType
     _min?: CashierMinAggregateInputType
     _max?: CashierMaxAggregateInputType
   }
@@ -3131,19 +2171,14 @@ export namespace Prisma {
     password: string
     phoneNumber: string | null
     gender: $Enums.Gender | null
-    dateOfBirth: string | null
     isEmailVerified: boolean
-    passwordResetCount: number
-    emailChangeCount: number
     avatarImgUrl: string | null
     cldPublicId: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
-    shiftId: string | null
+    shift: $Enums.ShiftSession
     _count: CashierCountAggregateOutputType | null
-    _avg: CashierAvgAggregateOutputType | null
-    _sum: CashierSumAggregateOutputType | null
     _min: CashierMinAggregateOutputType | null
     _max: CashierMaxAggregateOutputType | null
   }
@@ -3170,18 +2205,17 @@ export namespace Prisma {
     password?: boolean
     phoneNumber?: boolean
     gender?: boolean
-    dateOfBirth?: boolean
     isEmailVerified?: boolean
-    passwordResetCount?: boolean
-    emailChangeCount?: boolean
     avatarImgUrl?: boolean
     cldPublicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    shiftId?: boolean
-    shift?: boolean | Cashier$shiftArgs<ExtArgs>
+    shift?: boolean
+    cashierBalanceHistory?: boolean | Cashier$cashierBalanceHistoryArgs<ExtArgs>
     cart?: boolean | Cashier$cartArgs<ExtArgs>
+    transaction?: boolean | Cashier$transactionArgs<ExtArgs>
+    _count?: boolean | CashierCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["cashier"]>
 
   export type CashierSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3192,17 +2226,13 @@ export namespace Prisma {
     password?: boolean
     phoneNumber?: boolean
     gender?: boolean
-    dateOfBirth?: boolean
     isEmailVerified?: boolean
-    passwordResetCount?: boolean
-    emailChangeCount?: boolean
     avatarImgUrl?: boolean
     cldPublicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    shiftId?: boolean
-    shift?: boolean | Cashier$shiftArgs<ExtArgs>
+    shift?: boolean
   }, ExtArgs["result"]["cashier"]>
 
   export type CashierSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3213,17 +2243,13 @@ export namespace Prisma {
     password?: boolean
     phoneNumber?: boolean
     gender?: boolean
-    dateOfBirth?: boolean
     isEmailVerified?: boolean
-    passwordResetCount?: boolean
-    emailChangeCount?: boolean
     avatarImgUrl?: boolean
     cldPublicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    shiftId?: boolean
-    shift?: boolean | Cashier$shiftArgs<ExtArgs>
+    shift?: boolean
   }, ExtArgs["result"]["cashier"]>
 
   export type CashierSelectScalar = {
@@ -3234,35 +2260,31 @@ export namespace Prisma {
     password?: boolean
     phoneNumber?: boolean
     gender?: boolean
-    dateOfBirth?: boolean
     isEmailVerified?: boolean
-    passwordResetCount?: boolean
-    emailChangeCount?: boolean
     avatarImgUrl?: boolean
     cldPublicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    shiftId?: boolean
+    shift?: boolean
   }
 
-  export type CashierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "password" | "phoneNumber" | "gender" | "dateOfBirth" | "isEmailVerified" | "passwordResetCount" | "emailChangeCount" | "avatarImgUrl" | "cldPublicId" | "createdAt" | "updatedAt" | "deletedAt" | "shiftId", ExtArgs["result"]["cashier"]>
+  export type CashierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "password" | "phoneNumber" | "gender" | "isEmailVerified" | "avatarImgUrl" | "cldPublicId" | "createdAt" | "updatedAt" | "deletedAt" | "shift", ExtArgs["result"]["cashier"]>
   export type CashierInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    shift?: boolean | Cashier$shiftArgs<ExtArgs>
+    cashierBalanceHistory?: boolean | Cashier$cashierBalanceHistoryArgs<ExtArgs>
     cart?: boolean | Cashier$cartArgs<ExtArgs>
+    transaction?: boolean | Cashier$transactionArgs<ExtArgs>
+    _count?: boolean | CashierCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type CashierIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    shift?: boolean | Cashier$shiftArgs<ExtArgs>
-  }
-  export type CashierIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    shift?: boolean | Cashier$shiftArgs<ExtArgs>
-  }
+  export type CashierIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CashierIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $CashierPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Cashier"
     objects: {
-      shift: Prisma.$ShiftPayload<ExtArgs> | null
-      cart: Prisma.$CartPayload<ExtArgs> | null
+      cashierBalanceHistory: Prisma.$CashierBalanceHistoryPayload<ExtArgs>[]
+      cart: Prisma.$CartPayload<ExtArgs>[]
+      transaction: Prisma.$TransactionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3272,16 +2294,13 @@ export namespace Prisma {
       password: string
       phoneNumber: string | null
       gender: $Enums.Gender | null
-      dateOfBirth: string | null
       isEmailVerified: boolean
-      passwordResetCount: number
-      emailChangeCount: number
       avatarImgUrl: string | null
       cldPublicId: string | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
-      shiftId: string | null
+      shift: $Enums.ShiftSession
     }, ExtArgs["result"]["cashier"]>
     composites: {}
   }
@@ -3676,8 +2695,9 @@ export namespace Prisma {
    */
   export interface Prisma__CashierClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    shift<T extends Cashier$shiftArgs<ExtArgs> = {}>(args?: Subset<T, Cashier$shiftArgs<ExtArgs>>): Prisma__ShiftClient<$Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    cart<T extends Cashier$cartArgs<ExtArgs> = {}>(args?: Subset<T, Cashier$cartArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    cashierBalanceHistory<T extends Cashier$cashierBalanceHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Cashier$cashierBalanceHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cart<T extends Cashier$cartArgs<ExtArgs> = {}>(args?: Subset<T, Cashier$cartArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transaction<T extends Cashier$transactionArgs<ExtArgs> = {}>(args?: Subset<T, Cashier$transactionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3714,16 +2734,13 @@ export namespace Prisma {
     readonly password: FieldRef<"Cashier", 'String'>
     readonly phoneNumber: FieldRef<"Cashier", 'String'>
     readonly gender: FieldRef<"Cashier", 'Gender'>
-    readonly dateOfBirth: FieldRef<"Cashier", 'String'>
     readonly isEmailVerified: FieldRef<"Cashier", 'Boolean'>
-    readonly passwordResetCount: FieldRef<"Cashier", 'Int'>
-    readonly emailChangeCount: FieldRef<"Cashier", 'Int'>
     readonly avatarImgUrl: FieldRef<"Cashier", 'String'>
     readonly cldPublicId: FieldRef<"Cashier", 'String'>
     readonly createdAt: FieldRef<"Cashier", 'DateTime'>
     readonly updatedAt: FieldRef<"Cashier", 'DateTime'>
     readonly deletedAt: FieldRef<"Cashier", 'DateTime'>
-    readonly shiftId: FieldRef<"Cashier", 'String'>
+    readonly shift: FieldRef<"Cashier", 'ShiftSession'>
   }
     
 
@@ -3973,10 +2990,6 @@ export namespace Prisma {
      */
     data: CashierCreateManyInput | CashierCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CashierIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4047,10 +3060,6 @@ export namespace Prisma {
      * Limit how many Cashiers to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CashierIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4120,22 +3129,27 @@ export namespace Prisma {
   }
 
   /**
-   * Cashier.shift
+   * Cashier.cashierBalanceHistory
    */
-  export type Cashier$shiftArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Cashier$cashierBalanceHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Shift
+     * Select specific fields to fetch from the CashierBalanceHistory
      */
-    select?: ShiftSelect<ExtArgs> | null
+    select?: CashierBalanceHistorySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Shift
+     * Omit specific fields from the CashierBalanceHistory
      */
-    omit?: ShiftOmit<ExtArgs> | null
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ShiftInclude<ExtArgs> | null
-    where?: ShiftWhereInput
+    include?: CashierBalanceHistoryInclude<ExtArgs> | null
+    where?: CashierBalanceHistoryWhereInput
+    orderBy?: CashierBalanceHistoryOrderByWithRelationInput | CashierBalanceHistoryOrderByWithRelationInput[]
+    cursor?: CashierBalanceHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CashierBalanceHistoryScalarFieldEnum | CashierBalanceHistoryScalarFieldEnum[]
   }
 
   /**
@@ -4155,6 +3169,35 @@ export namespace Prisma {
      */
     include?: CartInclude<ExtArgs> | null
     where?: CartWhereInput
+    orderBy?: CartOrderByWithRelationInput | CartOrderByWithRelationInput[]
+    cursor?: CartWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CartScalarFieldEnum | CartScalarFieldEnum[]
+  }
+
+  /**
+   * Cashier.transaction
+   */
+  export type Cashier$transactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    where?: TransactionWhereInput
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    cursor?: TransactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
   }
 
   /**
@@ -4182,20 +3225,8 @@ export namespace Prisma {
 
   export type AggregateAdmin = {
     _count: AdminCountAggregateOutputType | null
-    _avg: AdminAvgAggregateOutputType | null
-    _sum: AdminSumAggregateOutputType | null
     _min: AdminMinAggregateOutputType | null
     _max: AdminMaxAggregateOutputType | null
-  }
-
-  export type AdminAvgAggregateOutputType = {
-    passwordResetCount: number | null
-    emailChangeCount: number | null
-  }
-
-  export type AdminSumAggregateOutputType = {
-    passwordResetCount: number | null
-    emailChangeCount: number | null
   }
 
   export type AdminMinAggregateOutputType = {
@@ -4206,8 +3237,6 @@ export namespace Prisma {
     password: string | null
     phoneNumber: string | null
     isEmailVerified: boolean | null
-    passwordResetCount: number | null
-    emailChangeCount: number | null
     avatarImgUrl: string | null
     cldPublicId: string | null
     createdAt: Date | null
@@ -4223,8 +3252,6 @@ export namespace Prisma {
     password: string | null
     phoneNumber: string | null
     isEmailVerified: boolean | null
-    passwordResetCount: number | null
-    emailChangeCount: number | null
     avatarImgUrl: string | null
     cldPublicId: string | null
     createdAt: Date | null
@@ -4240,8 +3267,6 @@ export namespace Prisma {
     password: number
     phoneNumber: number
     isEmailVerified: number
-    passwordResetCount: number
-    emailChangeCount: number
     avatarImgUrl: number
     cldPublicId: number
     createdAt: number
@@ -4251,16 +3276,6 @@ export namespace Prisma {
   }
 
 
-  export type AdminAvgAggregateInputType = {
-    passwordResetCount?: true
-    emailChangeCount?: true
-  }
-
-  export type AdminSumAggregateInputType = {
-    passwordResetCount?: true
-    emailChangeCount?: true
-  }
-
   export type AdminMinAggregateInputType = {
     id?: true
     firstName?: true
@@ -4269,8 +3284,6 @@ export namespace Prisma {
     password?: true
     phoneNumber?: true
     isEmailVerified?: true
-    passwordResetCount?: true
-    emailChangeCount?: true
     avatarImgUrl?: true
     cldPublicId?: true
     createdAt?: true
@@ -4286,8 +3299,6 @@ export namespace Prisma {
     password?: true
     phoneNumber?: true
     isEmailVerified?: true
-    passwordResetCount?: true
-    emailChangeCount?: true
     avatarImgUrl?: true
     cldPublicId?: true
     createdAt?: true
@@ -4303,8 +3314,6 @@ export namespace Prisma {
     password?: true
     phoneNumber?: true
     isEmailVerified?: true
-    passwordResetCount?: true
-    emailChangeCount?: true
     avatarImgUrl?: true
     cldPublicId?: true
     createdAt?: true
@@ -4351,18 +3360,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: AdminAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: AdminSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: AdminMinAggregateInputType
@@ -4393,8 +3390,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: AdminCountAggregateInputType | true
-    _avg?: AdminAvgAggregateInputType
-    _sum?: AdminSumAggregateInputType
     _min?: AdminMinAggregateInputType
     _max?: AdminMaxAggregateInputType
   }
@@ -4407,16 +3402,12 @@ export namespace Prisma {
     password: string
     phoneNumber: string
     isEmailVerified: boolean
-    passwordResetCount: number
-    emailChangeCount: number
     avatarImgUrl: string | null
     cldPublicId: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
     _count: AdminCountAggregateOutputType | null
-    _avg: AdminAvgAggregateOutputType | null
-    _sum: AdminSumAggregateOutputType | null
     _min: AdminMinAggregateOutputType | null
     _max: AdminMaxAggregateOutputType | null
   }
@@ -4443,8 +3434,6 @@ export namespace Prisma {
     password?: boolean
     phoneNumber?: boolean
     isEmailVerified?: boolean
-    passwordResetCount?: boolean
-    emailChangeCount?: boolean
     avatarImgUrl?: boolean
     cldPublicId?: boolean
     createdAt?: boolean
@@ -4460,8 +3449,6 @@ export namespace Prisma {
     password?: boolean
     phoneNumber?: boolean
     isEmailVerified?: boolean
-    passwordResetCount?: boolean
-    emailChangeCount?: boolean
     avatarImgUrl?: boolean
     cldPublicId?: boolean
     createdAt?: boolean
@@ -4477,8 +3464,6 @@ export namespace Prisma {
     password?: boolean
     phoneNumber?: boolean
     isEmailVerified?: boolean
-    passwordResetCount?: boolean
-    emailChangeCount?: boolean
     avatarImgUrl?: boolean
     cldPublicId?: boolean
     createdAt?: boolean
@@ -4494,8 +3479,6 @@ export namespace Prisma {
     password?: boolean
     phoneNumber?: boolean
     isEmailVerified?: boolean
-    passwordResetCount?: boolean
-    emailChangeCount?: boolean
     avatarImgUrl?: boolean
     cldPublicId?: boolean
     createdAt?: boolean
@@ -4503,7 +3486,7 @@ export namespace Prisma {
     deletedAt?: boolean
   }
 
-  export type AdminOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "password" | "phoneNumber" | "isEmailVerified" | "passwordResetCount" | "emailChangeCount" | "avatarImgUrl" | "cldPublicId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["admin"]>
+  export type AdminOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "email" | "password" | "phoneNumber" | "isEmailVerified" | "avatarImgUrl" | "cldPublicId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["admin"]>
 
   export type $AdminPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Admin"
@@ -4516,8 +3499,6 @@ export namespace Prisma {
       password: string
       phoneNumber: string
       isEmailVerified: boolean
-      passwordResetCount: number
-      emailChangeCount: number
       avatarImgUrl: string | null
       cldPublicId: string | null
       createdAt: Date
@@ -4953,8 +3934,6 @@ export namespace Prisma {
     readonly password: FieldRef<"Admin", 'String'>
     readonly phoneNumber: FieldRef<"Admin", 'String'>
     readonly isEmailVerified: FieldRef<"Admin", 'Boolean'>
-    readonly passwordResetCount: FieldRef<"Admin", 'Int'>
-    readonly emailChangeCount: FieldRef<"Admin", 'Int'>
     readonly avatarImgUrl: FieldRef<"Admin", 'String'>
     readonly cldPublicId: FieldRef<"Admin", 'String'>
     readonly createdAt: FieldRef<"Admin", 'DateTime'>
@@ -5327,37 +4306,58 @@ export namespace Prisma {
 
 
   /**
-   * Model Shift
+   * Model CashierBalanceHistory
    */
 
-  export type AggregateShift = {
-    _count: ShiftCountAggregateOutputType | null
-    _min: ShiftMinAggregateOutputType | null
-    _max: ShiftMaxAggregateOutputType | null
+  export type AggregateCashierBalanceHistory = {
+    _count: CashierBalanceHistoryCountAggregateOutputType | null
+    _avg: CashierBalanceHistoryAvgAggregateOutputType | null
+    _sum: CashierBalanceHistorySumAggregateOutputType | null
+    _min: CashierBalanceHistoryMinAggregateOutputType | null
+    _max: CashierBalanceHistoryMaxAggregateOutputType | null
   }
 
-  export type ShiftMinAggregateOutputType = {
+  export type CashierBalanceHistoryAvgAggregateOutputType = {
+    startingCash: number | null
+    endingCash: number | null
+  }
+
+  export type CashierBalanceHistorySumAggregateOutputType = {
+    startingCash: number | null
+    endingCash: number | null
+  }
+
+  export type CashierBalanceHistoryMinAggregateOutputType = {
     id: string | null
+    cashierId: string | null
     startTime: Date | null
     endTime: Date | null
+    startingCash: number | null
+    endingCash: number | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
   }
 
-  export type ShiftMaxAggregateOutputType = {
+  export type CashierBalanceHistoryMaxAggregateOutputType = {
     id: string | null
+    cashierId: string | null
     startTime: Date | null
     endTime: Date | null
+    startingCash: number | null
+    endingCash: number | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
   }
 
-  export type ShiftCountAggregateOutputType = {
+  export type CashierBalanceHistoryCountAggregateOutputType = {
     id: number
+    cashierId: number
     startTime: number
     endTime: number
+    startingCash: number
+    endingCash: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -5365,320 +4365,382 @@ export namespace Prisma {
   }
 
 
-  export type ShiftMinAggregateInputType = {
+  export type CashierBalanceHistoryAvgAggregateInputType = {
+    startingCash?: true
+    endingCash?: true
+  }
+
+  export type CashierBalanceHistorySumAggregateInputType = {
+    startingCash?: true
+    endingCash?: true
+  }
+
+  export type CashierBalanceHistoryMinAggregateInputType = {
     id?: true
+    cashierId?: true
     startTime?: true
     endTime?: true
+    startingCash?: true
+    endingCash?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
   }
 
-  export type ShiftMaxAggregateInputType = {
+  export type CashierBalanceHistoryMaxAggregateInputType = {
     id?: true
+    cashierId?: true
     startTime?: true
     endTime?: true
+    startingCash?: true
+    endingCash?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
   }
 
-  export type ShiftCountAggregateInputType = {
+  export type CashierBalanceHistoryCountAggregateInputType = {
     id?: true
+    cashierId?: true
     startTime?: true
     endTime?: true
+    startingCash?: true
+    endingCash?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
     _all?: true
   }
 
-  export type ShiftAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Shift to aggregate.
+     * Filter which CashierBalanceHistory to aggregate.
      */
-    where?: ShiftWhereInput
+    where?: CashierBalanceHistoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Shifts to fetch.
+     * Determine the order of CashierBalanceHistories to fetch.
      */
-    orderBy?: ShiftOrderByWithRelationInput | ShiftOrderByWithRelationInput[]
+    orderBy?: CashierBalanceHistoryOrderByWithRelationInput | CashierBalanceHistoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: ShiftWhereUniqueInput
+    cursor?: CashierBalanceHistoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Shifts from the position of the cursor.
+     * Take `±n` CashierBalanceHistories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Shifts.
+     * Skip the first `n` CashierBalanceHistories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Shifts
+     * Count returned CashierBalanceHistories
     **/
-    _count?: true | ShiftCountAggregateInputType
+    _count?: true | CashierBalanceHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CashierBalanceHistoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CashierBalanceHistorySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: ShiftMinAggregateInputType
+    _min?: CashierBalanceHistoryMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: ShiftMaxAggregateInputType
+    _max?: CashierBalanceHistoryMaxAggregateInputType
   }
 
-  export type GetShiftAggregateType<T extends ShiftAggregateArgs> = {
-        [P in keyof T & keyof AggregateShift]: P extends '_count' | 'count'
+  export type GetCashierBalanceHistoryAggregateType<T extends CashierBalanceHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateCashierBalanceHistory]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateShift[P]>
-      : GetScalarType<T[P], AggregateShift[P]>
+        : GetScalarType<T[P], AggregateCashierBalanceHistory[P]>
+      : GetScalarType<T[P], AggregateCashierBalanceHistory[P]>
   }
 
 
 
 
-  export type ShiftGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ShiftWhereInput
-    orderBy?: ShiftOrderByWithAggregationInput | ShiftOrderByWithAggregationInput[]
-    by: ShiftScalarFieldEnum[] | ShiftScalarFieldEnum
-    having?: ShiftScalarWhereWithAggregatesInput
+  export type CashierBalanceHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CashierBalanceHistoryWhereInput
+    orderBy?: CashierBalanceHistoryOrderByWithAggregationInput | CashierBalanceHistoryOrderByWithAggregationInput[]
+    by: CashierBalanceHistoryScalarFieldEnum[] | CashierBalanceHistoryScalarFieldEnum
+    having?: CashierBalanceHistoryScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: ShiftCountAggregateInputType | true
-    _min?: ShiftMinAggregateInputType
-    _max?: ShiftMaxAggregateInputType
+    _count?: CashierBalanceHistoryCountAggregateInputType | true
+    _avg?: CashierBalanceHistoryAvgAggregateInputType
+    _sum?: CashierBalanceHistorySumAggregateInputType
+    _min?: CashierBalanceHistoryMinAggregateInputType
+    _max?: CashierBalanceHistoryMaxAggregateInputType
   }
 
-  export type ShiftGroupByOutputType = {
+  export type CashierBalanceHistoryGroupByOutputType = {
     id: string
+    cashierId: string
     startTime: Date
     endTime: Date | null
+    startingCash: number
+    endingCash: number | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
-    _count: ShiftCountAggregateOutputType | null
-    _min: ShiftMinAggregateOutputType | null
-    _max: ShiftMaxAggregateOutputType | null
+    _count: CashierBalanceHistoryCountAggregateOutputType | null
+    _avg: CashierBalanceHistoryAvgAggregateOutputType | null
+    _sum: CashierBalanceHistorySumAggregateOutputType | null
+    _min: CashierBalanceHistoryMinAggregateOutputType | null
+    _max: CashierBalanceHistoryMaxAggregateOutputType | null
   }
 
-  type GetShiftGroupByPayload<T extends ShiftGroupByArgs> = Prisma.PrismaPromise<
+  type GetCashierBalanceHistoryGroupByPayload<T extends CashierBalanceHistoryGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<ShiftGroupByOutputType, T['by']> &
+      PickEnumerable<CashierBalanceHistoryGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof ShiftGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof CashierBalanceHistoryGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], ShiftGroupByOutputType[P]>
-            : GetScalarType<T[P], ShiftGroupByOutputType[P]>
+              : GetScalarType<T[P], CashierBalanceHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], CashierBalanceHistoryGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type ShiftSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type CashierBalanceHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    cashierId?: boolean
     startTime?: boolean
     endTime?: boolean
+    startingCash?: boolean
+    endingCash?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    cashier?: boolean | Shift$cashierArgs<ExtArgs>
-    _count?: boolean | ShiftCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["shift"]>
+    cashier?: boolean | CashierDefaultArgs<ExtArgs>
+    transaction?: boolean | CashierBalanceHistory$transactionArgs<ExtArgs>
+    _count?: boolean | CashierBalanceHistoryCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cashierBalanceHistory"]>
 
-  export type ShiftSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type CashierBalanceHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    cashierId?: boolean
     startTime?: boolean
     endTime?: boolean
+    startingCash?: boolean
+    endingCash?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-  }, ExtArgs["result"]["shift"]>
+    cashier?: boolean | CashierDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cashierBalanceHistory"]>
 
-  export type ShiftSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type CashierBalanceHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    cashierId?: boolean
     startTime?: boolean
     endTime?: boolean
+    startingCash?: boolean
+    endingCash?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-  }, ExtArgs["result"]["shift"]>
+    cashier?: boolean | CashierDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cashierBalanceHistory"]>
 
-  export type ShiftSelectScalar = {
+  export type CashierBalanceHistorySelectScalar = {
     id?: boolean
+    cashierId?: boolean
     startTime?: boolean
     endTime?: boolean
+    startingCash?: boolean
+    endingCash?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type ShiftOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "startTime" | "endTime" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["shift"]>
-  export type ShiftInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cashier?: boolean | Shift$cashierArgs<ExtArgs>
-    _count?: boolean | ShiftCountOutputTypeDefaultArgs<ExtArgs>
+  export type CashierBalanceHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cashierId" | "startTime" | "endTime" | "startingCash" | "endingCash" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["cashierBalanceHistory"]>
+  export type CashierBalanceHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cashier?: boolean | CashierDefaultArgs<ExtArgs>
+    transaction?: boolean | CashierBalanceHistory$transactionArgs<ExtArgs>
+    _count?: boolean | CashierBalanceHistoryCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type ShiftIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type ShiftIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CashierBalanceHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cashier?: boolean | CashierDefaultArgs<ExtArgs>
+  }
+  export type CashierBalanceHistoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cashier?: boolean | CashierDefaultArgs<ExtArgs>
+  }
 
-  export type $ShiftPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Shift"
+  export type $CashierBalanceHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CashierBalanceHistory"
     objects: {
-      cashier: Prisma.$CashierPayload<ExtArgs>[]
+      cashier: Prisma.$CashierPayload<ExtArgs>
+      transaction: Prisma.$TransactionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      cashierId: string
       startTime: Date
       endTime: Date | null
+      startingCash: number
+      endingCash: number | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
-    }, ExtArgs["result"]["shift"]>
+    }, ExtArgs["result"]["cashierBalanceHistory"]>
     composites: {}
   }
 
-  type ShiftGetPayload<S extends boolean | null | undefined | ShiftDefaultArgs> = $Result.GetResult<Prisma.$ShiftPayload, S>
+  type CashierBalanceHistoryGetPayload<S extends boolean | null | undefined | CashierBalanceHistoryDefaultArgs> = $Result.GetResult<Prisma.$CashierBalanceHistoryPayload, S>
 
-  type ShiftCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ShiftFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ShiftCountAggregateInputType | true
+  type CashierBalanceHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CashierBalanceHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CashierBalanceHistoryCountAggregateInputType | true
     }
 
-  export interface ShiftDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Shift'], meta: { name: 'Shift' } }
+  export interface CashierBalanceHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CashierBalanceHistory'], meta: { name: 'CashierBalanceHistory' } }
     /**
-     * Find zero or one Shift that matches the filter.
-     * @param {ShiftFindUniqueArgs} args - Arguments to find a Shift
+     * Find zero or one CashierBalanceHistory that matches the filter.
+     * @param {CashierBalanceHistoryFindUniqueArgs} args - Arguments to find a CashierBalanceHistory
      * @example
-     * // Get one Shift
-     * const shift = await prisma.shift.findUnique({
+     * // Get one CashierBalanceHistory
+     * const cashierBalanceHistory = await prisma.cashierBalanceHistory.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends ShiftFindUniqueArgs>(args: SelectSubset<T, ShiftFindUniqueArgs<ExtArgs>>): Prisma__ShiftClient<$Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends CashierBalanceHistoryFindUniqueArgs>(args: SelectSubset<T, CashierBalanceHistoryFindUniqueArgs<ExtArgs>>): Prisma__CashierBalanceHistoryClient<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Shift that matches the filter or throw an error with `error.code='P2025'`
+     * Find one CashierBalanceHistory that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {ShiftFindUniqueOrThrowArgs} args - Arguments to find a Shift
+     * @param {CashierBalanceHistoryFindUniqueOrThrowArgs} args - Arguments to find a CashierBalanceHistory
      * @example
-     * // Get one Shift
-     * const shift = await prisma.shift.findUniqueOrThrow({
+     * // Get one CashierBalanceHistory
+     * const cashierBalanceHistory = await prisma.cashierBalanceHistory.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends ShiftFindUniqueOrThrowArgs>(args: SelectSubset<T, ShiftFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ShiftClient<$Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends CashierBalanceHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, CashierBalanceHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CashierBalanceHistoryClient<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Shift that matches the filter.
+     * Find the first CashierBalanceHistory that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ShiftFindFirstArgs} args - Arguments to find a Shift
+     * @param {CashierBalanceHistoryFindFirstArgs} args - Arguments to find a CashierBalanceHistory
      * @example
-     * // Get one Shift
-     * const shift = await prisma.shift.findFirst({
+     * // Get one CashierBalanceHistory
+     * const cashierBalanceHistory = await prisma.cashierBalanceHistory.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends ShiftFindFirstArgs>(args?: SelectSubset<T, ShiftFindFirstArgs<ExtArgs>>): Prisma__ShiftClient<$Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends CashierBalanceHistoryFindFirstArgs>(args?: SelectSubset<T, CashierBalanceHistoryFindFirstArgs<ExtArgs>>): Prisma__CashierBalanceHistoryClient<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Shift that matches the filter or
+     * Find the first CashierBalanceHistory that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ShiftFindFirstOrThrowArgs} args - Arguments to find a Shift
+     * @param {CashierBalanceHistoryFindFirstOrThrowArgs} args - Arguments to find a CashierBalanceHistory
      * @example
-     * // Get one Shift
-     * const shift = await prisma.shift.findFirstOrThrow({
+     * // Get one CashierBalanceHistory
+     * const cashierBalanceHistory = await prisma.cashierBalanceHistory.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends ShiftFindFirstOrThrowArgs>(args?: SelectSubset<T, ShiftFindFirstOrThrowArgs<ExtArgs>>): Prisma__ShiftClient<$Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends CashierBalanceHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, CashierBalanceHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__CashierBalanceHistoryClient<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Shifts that matches the filter.
+     * Find zero or more CashierBalanceHistories that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ShiftFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {CashierBalanceHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Shifts
-     * const shifts = await prisma.shift.findMany()
+     * // Get all CashierBalanceHistories
+     * const cashierBalanceHistories = await prisma.cashierBalanceHistory.findMany()
      * 
-     * // Get first 10 Shifts
-     * const shifts = await prisma.shift.findMany({ take: 10 })
+     * // Get first 10 CashierBalanceHistories
+     * const cashierBalanceHistories = await prisma.cashierBalanceHistory.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const shiftWithIdOnly = await prisma.shift.findMany({ select: { id: true } })
+     * const cashierBalanceHistoryWithIdOnly = await prisma.cashierBalanceHistory.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends ShiftFindManyArgs>(args?: SelectSubset<T, ShiftFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends CashierBalanceHistoryFindManyArgs>(args?: SelectSubset<T, CashierBalanceHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Shift.
-     * @param {ShiftCreateArgs} args - Arguments to create a Shift.
+     * Create a CashierBalanceHistory.
+     * @param {CashierBalanceHistoryCreateArgs} args - Arguments to create a CashierBalanceHistory.
      * @example
-     * // Create one Shift
-     * const Shift = await prisma.shift.create({
+     * // Create one CashierBalanceHistory
+     * const CashierBalanceHistory = await prisma.cashierBalanceHistory.create({
      *   data: {
-     *     // ... data to create a Shift
+     *     // ... data to create a CashierBalanceHistory
      *   }
      * })
      * 
      */
-    create<T extends ShiftCreateArgs>(args: SelectSubset<T, ShiftCreateArgs<ExtArgs>>): Prisma__ShiftClient<$Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends CashierBalanceHistoryCreateArgs>(args: SelectSubset<T, CashierBalanceHistoryCreateArgs<ExtArgs>>): Prisma__CashierBalanceHistoryClient<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Shifts.
-     * @param {ShiftCreateManyArgs} args - Arguments to create many Shifts.
+     * Create many CashierBalanceHistories.
+     * @param {CashierBalanceHistoryCreateManyArgs} args - Arguments to create many CashierBalanceHistories.
      * @example
-     * // Create many Shifts
-     * const shift = await prisma.shift.createMany({
+     * // Create many CashierBalanceHistories
+     * const cashierBalanceHistory = await prisma.cashierBalanceHistory.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends ShiftCreateManyArgs>(args?: SelectSubset<T, ShiftCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends CashierBalanceHistoryCreateManyArgs>(args?: SelectSubset<T, CashierBalanceHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many Shifts and returns the data saved in the database.
-     * @param {ShiftCreateManyAndReturnArgs} args - Arguments to create many Shifts.
+     * Create many CashierBalanceHistories and returns the data saved in the database.
+     * @param {CashierBalanceHistoryCreateManyAndReturnArgs} args - Arguments to create many CashierBalanceHistories.
      * @example
-     * // Create many Shifts
-     * const shift = await prisma.shift.createManyAndReturn({
+     * // Create many CashierBalanceHistories
+     * const cashierBalanceHistory = await prisma.cashierBalanceHistory.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many Shifts and only return the `id`
-     * const shiftWithIdOnly = await prisma.shift.createManyAndReturn({
+     * // Create many CashierBalanceHistories and only return the `id`
+     * const cashierBalanceHistoryWithIdOnly = await prisma.cashierBalanceHistory.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -5688,28 +4750,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends ShiftCreateManyAndReturnArgs>(args?: SelectSubset<T, ShiftCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends CashierBalanceHistoryCreateManyAndReturnArgs>(args?: SelectSubset<T, CashierBalanceHistoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a Shift.
-     * @param {ShiftDeleteArgs} args - Arguments to delete one Shift.
+     * Delete a CashierBalanceHistory.
+     * @param {CashierBalanceHistoryDeleteArgs} args - Arguments to delete one CashierBalanceHistory.
      * @example
-     * // Delete one Shift
-     * const Shift = await prisma.shift.delete({
+     * // Delete one CashierBalanceHistory
+     * const CashierBalanceHistory = await prisma.cashierBalanceHistory.delete({
      *   where: {
-     *     // ... filter to delete one Shift
+     *     // ... filter to delete one CashierBalanceHistory
      *   }
      * })
      * 
      */
-    delete<T extends ShiftDeleteArgs>(args: SelectSubset<T, ShiftDeleteArgs<ExtArgs>>): Prisma__ShiftClient<$Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends CashierBalanceHistoryDeleteArgs>(args: SelectSubset<T, CashierBalanceHistoryDeleteArgs<ExtArgs>>): Prisma__CashierBalanceHistoryClient<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Shift.
-     * @param {ShiftUpdateArgs} args - Arguments to update one Shift.
+     * Update one CashierBalanceHistory.
+     * @param {CashierBalanceHistoryUpdateArgs} args - Arguments to update one CashierBalanceHistory.
      * @example
-     * // Update one Shift
-     * const shift = await prisma.shift.update({
+     * // Update one CashierBalanceHistory
+     * const cashierBalanceHistory = await prisma.cashierBalanceHistory.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5719,30 +4781,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends ShiftUpdateArgs>(args: SelectSubset<T, ShiftUpdateArgs<ExtArgs>>): Prisma__ShiftClient<$Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends CashierBalanceHistoryUpdateArgs>(args: SelectSubset<T, CashierBalanceHistoryUpdateArgs<ExtArgs>>): Prisma__CashierBalanceHistoryClient<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Shifts.
-     * @param {ShiftDeleteManyArgs} args - Arguments to filter Shifts to delete.
+     * Delete zero or more CashierBalanceHistories.
+     * @param {CashierBalanceHistoryDeleteManyArgs} args - Arguments to filter CashierBalanceHistories to delete.
      * @example
-     * // Delete a few Shifts
-     * const { count } = await prisma.shift.deleteMany({
+     * // Delete a few CashierBalanceHistories
+     * const { count } = await prisma.cashierBalanceHistory.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends ShiftDeleteManyArgs>(args?: SelectSubset<T, ShiftDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends CashierBalanceHistoryDeleteManyArgs>(args?: SelectSubset<T, CashierBalanceHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Shifts.
+     * Update zero or more CashierBalanceHistories.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ShiftUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {CashierBalanceHistoryUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Shifts
-     * const shift = await prisma.shift.updateMany({
+     * // Update many CashierBalanceHistories
+     * const cashierBalanceHistory = await prisma.cashierBalanceHistory.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5752,14 +4814,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends ShiftUpdateManyArgs>(args: SelectSubset<T, ShiftUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends CashierBalanceHistoryUpdateManyArgs>(args: SelectSubset<T, CashierBalanceHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Shifts and returns the data updated in the database.
-     * @param {ShiftUpdateManyAndReturnArgs} args - Arguments to update many Shifts.
+     * Update zero or more CashierBalanceHistories and returns the data updated in the database.
+     * @param {CashierBalanceHistoryUpdateManyAndReturnArgs} args - Arguments to update many CashierBalanceHistories.
      * @example
-     * // Update many Shifts
-     * const shift = await prisma.shift.updateManyAndReturn({
+     * // Update many CashierBalanceHistories
+     * const cashierBalanceHistory = await prisma.cashierBalanceHistory.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5768,8 +4830,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Shifts and only return the `id`
-     * const shiftWithIdOnly = await prisma.shift.updateManyAndReturn({
+     * // Update zero or more CashierBalanceHistories and only return the `id`
+     * const cashierBalanceHistoryWithIdOnly = await prisma.cashierBalanceHistory.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -5782,56 +4844,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends ShiftUpdateManyAndReturnArgs>(args: SelectSubset<T, ShiftUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends CashierBalanceHistoryUpdateManyAndReturnArgs>(args: SelectSubset<T, CashierBalanceHistoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one Shift.
-     * @param {ShiftUpsertArgs} args - Arguments to update or create a Shift.
+     * Create or update one CashierBalanceHistory.
+     * @param {CashierBalanceHistoryUpsertArgs} args - Arguments to update or create a CashierBalanceHistory.
      * @example
-     * // Update or create a Shift
-     * const shift = await prisma.shift.upsert({
+     * // Update or create a CashierBalanceHistory
+     * const cashierBalanceHistory = await prisma.cashierBalanceHistory.upsert({
      *   create: {
-     *     // ... data to create a Shift
+     *     // ... data to create a CashierBalanceHistory
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Shift we want to update
+     *     // ... the filter for the CashierBalanceHistory we want to update
      *   }
      * })
      */
-    upsert<T extends ShiftUpsertArgs>(args: SelectSubset<T, ShiftUpsertArgs<ExtArgs>>): Prisma__ShiftClient<$Result.GetResult<Prisma.$ShiftPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends CashierBalanceHistoryUpsertArgs>(args: SelectSubset<T, CashierBalanceHistoryUpsertArgs<ExtArgs>>): Prisma__CashierBalanceHistoryClient<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Shifts.
+     * Count the number of CashierBalanceHistories.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ShiftCountArgs} args - Arguments to filter Shifts to count.
+     * @param {CashierBalanceHistoryCountArgs} args - Arguments to filter CashierBalanceHistories to count.
      * @example
-     * // Count the number of Shifts
-     * const count = await prisma.shift.count({
+     * // Count the number of CashierBalanceHistories
+     * const count = await prisma.cashierBalanceHistory.count({
      *   where: {
-     *     // ... the filter for the Shifts we want to count
+     *     // ... the filter for the CashierBalanceHistories we want to count
      *   }
      * })
     **/
-    count<T extends ShiftCountArgs>(
-      args?: Subset<T, ShiftCountArgs>,
+    count<T extends CashierBalanceHistoryCountArgs>(
+      args?: Subset<T, CashierBalanceHistoryCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], ShiftCountAggregateOutputType>
+          : GetScalarType<T['select'], CashierBalanceHistoryCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Shift.
+     * Allows you to perform aggregations operations on a CashierBalanceHistory.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ShiftAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {CashierBalanceHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -5851,13 +4913,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends ShiftAggregateArgs>(args: Subset<T, ShiftAggregateArgs>): Prisma.PrismaPromise<GetShiftAggregateType<T>>
+    aggregate<T extends CashierBalanceHistoryAggregateArgs>(args: Subset<T, CashierBalanceHistoryAggregateArgs>): Prisma.PrismaPromise<GetCashierBalanceHistoryAggregateType<T>>
 
     /**
-     * Group by Shift.
+     * Group by CashierBalanceHistory.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ShiftGroupByArgs} args - Group by arguments.
+     * @param {CashierBalanceHistoryGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -5872,14 +4934,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends ShiftGroupByArgs,
+      T extends CashierBalanceHistoryGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ShiftGroupByArgs['orderBy'] }
-        : { orderBy?: ShiftGroupByArgs['orderBy'] },
+        ? { orderBy: CashierBalanceHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: CashierBalanceHistoryGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -5928,22 +4990,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ShiftGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShiftGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, CashierBalanceHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCashierBalanceHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Shift model
+   * Fields of the CashierBalanceHistory model
    */
-  readonly fields: ShiftFieldRefs;
+  readonly fields: CashierBalanceHistoryFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Shift.
+   * The delegate class that acts as a "Promise-like" for CashierBalanceHistory.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__ShiftClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__CashierBalanceHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    cashier<T extends Shift$cashierArgs<ExtArgs> = {}>(args?: Subset<T, Shift$cashierArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CashierPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cashier<T extends CashierDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CashierDefaultArgs<ExtArgs>>): Prisma__CashierClient<$Result.GetResult<Prisma.$CashierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    transaction<T extends CashierBalanceHistory$transactionArgs<ExtArgs> = {}>(args?: Subset<T, CashierBalanceHistory$transactionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5970,442 +5033,453 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Shift model
+   * Fields of the CashierBalanceHistory model
    */
-  interface ShiftFieldRefs {
-    readonly id: FieldRef<"Shift", 'String'>
-    readonly startTime: FieldRef<"Shift", 'DateTime'>
-    readonly endTime: FieldRef<"Shift", 'DateTime'>
-    readonly createdAt: FieldRef<"Shift", 'DateTime'>
-    readonly updatedAt: FieldRef<"Shift", 'DateTime'>
-    readonly deletedAt: FieldRef<"Shift", 'DateTime'>
+  interface CashierBalanceHistoryFieldRefs {
+    readonly id: FieldRef<"CashierBalanceHistory", 'String'>
+    readonly cashierId: FieldRef<"CashierBalanceHistory", 'String'>
+    readonly startTime: FieldRef<"CashierBalanceHistory", 'DateTime'>
+    readonly endTime: FieldRef<"CashierBalanceHistory", 'DateTime'>
+    readonly startingCash: FieldRef<"CashierBalanceHistory", 'Float'>
+    readonly endingCash: FieldRef<"CashierBalanceHistory", 'Float'>
+    readonly createdAt: FieldRef<"CashierBalanceHistory", 'DateTime'>
+    readonly updatedAt: FieldRef<"CashierBalanceHistory", 'DateTime'>
+    readonly deletedAt: FieldRef<"CashierBalanceHistory", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Shift findUnique
+   * CashierBalanceHistory findUnique
    */
-  export type ShiftFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Shift
+     * Select specific fields to fetch from the CashierBalanceHistory
      */
-    select?: ShiftSelect<ExtArgs> | null
+    select?: CashierBalanceHistorySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Shift
+     * Omit specific fields from the CashierBalanceHistory
      */
-    omit?: ShiftOmit<ExtArgs> | null
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ShiftInclude<ExtArgs> | null
+    include?: CashierBalanceHistoryInclude<ExtArgs> | null
     /**
-     * Filter, which Shift to fetch.
+     * Filter, which CashierBalanceHistory to fetch.
      */
-    where: ShiftWhereUniqueInput
+    where: CashierBalanceHistoryWhereUniqueInput
   }
 
   /**
-   * Shift findUniqueOrThrow
+   * CashierBalanceHistory findUniqueOrThrow
    */
-  export type ShiftFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Shift
+     * Select specific fields to fetch from the CashierBalanceHistory
      */
-    select?: ShiftSelect<ExtArgs> | null
+    select?: CashierBalanceHistorySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Shift
+     * Omit specific fields from the CashierBalanceHistory
      */
-    omit?: ShiftOmit<ExtArgs> | null
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ShiftInclude<ExtArgs> | null
+    include?: CashierBalanceHistoryInclude<ExtArgs> | null
     /**
-     * Filter, which Shift to fetch.
+     * Filter, which CashierBalanceHistory to fetch.
      */
-    where: ShiftWhereUniqueInput
+    where: CashierBalanceHistoryWhereUniqueInput
   }
 
   /**
-   * Shift findFirst
+   * CashierBalanceHistory findFirst
    */
-  export type ShiftFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Shift
+     * Select specific fields to fetch from the CashierBalanceHistory
      */
-    select?: ShiftSelect<ExtArgs> | null
+    select?: CashierBalanceHistorySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Shift
+     * Omit specific fields from the CashierBalanceHistory
      */
-    omit?: ShiftOmit<ExtArgs> | null
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ShiftInclude<ExtArgs> | null
+    include?: CashierBalanceHistoryInclude<ExtArgs> | null
     /**
-     * Filter, which Shift to fetch.
+     * Filter, which CashierBalanceHistory to fetch.
      */
-    where?: ShiftWhereInput
+    where?: CashierBalanceHistoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Shifts to fetch.
+     * Determine the order of CashierBalanceHistories to fetch.
      */
-    orderBy?: ShiftOrderByWithRelationInput | ShiftOrderByWithRelationInput[]
+    orderBy?: CashierBalanceHistoryOrderByWithRelationInput | CashierBalanceHistoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Shifts.
+     * Sets the position for searching for CashierBalanceHistories.
      */
-    cursor?: ShiftWhereUniqueInput
+    cursor?: CashierBalanceHistoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Shifts from the position of the cursor.
+     * Take `±n` CashierBalanceHistories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Shifts.
+     * Skip the first `n` CashierBalanceHistories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Shifts.
+     * Filter by unique combinations of CashierBalanceHistories.
      */
-    distinct?: ShiftScalarFieldEnum | ShiftScalarFieldEnum[]
+    distinct?: CashierBalanceHistoryScalarFieldEnum | CashierBalanceHistoryScalarFieldEnum[]
   }
 
   /**
-   * Shift findFirstOrThrow
+   * CashierBalanceHistory findFirstOrThrow
    */
-  export type ShiftFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Shift
+     * Select specific fields to fetch from the CashierBalanceHistory
      */
-    select?: ShiftSelect<ExtArgs> | null
+    select?: CashierBalanceHistorySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Shift
+     * Omit specific fields from the CashierBalanceHistory
      */
-    omit?: ShiftOmit<ExtArgs> | null
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ShiftInclude<ExtArgs> | null
+    include?: CashierBalanceHistoryInclude<ExtArgs> | null
     /**
-     * Filter, which Shift to fetch.
+     * Filter, which CashierBalanceHistory to fetch.
      */
-    where?: ShiftWhereInput
+    where?: CashierBalanceHistoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Shifts to fetch.
+     * Determine the order of CashierBalanceHistories to fetch.
      */
-    orderBy?: ShiftOrderByWithRelationInput | ShiftOrderByWithRelationInput[]
+    orderBy?: CashierBalanceHistoryOrderByWithRelationInput | CashierBalanceHistoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Shifts.
+     * Sets the position for searching for CashierBalanceHistories.
      */
-    cursor?: ShiftWhereUniqueInput
+    cursor?: CashierBalanceHistoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Shifts from the position of the cursor.
+     * Take `±n` CashierBalanceHistories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Shifts.
+     * Skip the first `n` CashierBalanceHistories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Shifts.
+     * Filter by unique combinations of CashierBalanceHistories.
      */
-    distinct?: ShiftScalarFieldEnum | ShiftScalarFieldEnum[]
+    distinct?: CashierBalanceHistoryScalarFieldEnum | CashierBalanceHistoryScalarFieldEnum[]
   }
 
   /**
-   * Shift findMany
+   * CashierBalanceHistory findMany
    */
-  export type ShiftFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Shift
+     * Select specific fields to fetch from the CashierBalanceHistory
      */
-    select?: ShiftSelect<ExtArgs> | null
+    select?: CashierBalanceHistorySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Shift
+     * Omit specific fields from the CashierBalanceHistory
      */
-    omit?: ShiftOmit<ExtArgs> | null
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ShiftInclude<ExtArgs> | null
+    include?: CashierBalanceHistoryInclude<ExtArgs> | null
     /**
-     * Filter, which Shifts to fetch.
+     * Filter, which CashierBalanceHistories to fetch.
      */
-    where?: ShiftWhereInput
+    where?: CashierBalanceHistoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Shifts to fetch.
+     * Determine the order of CashierBalanceHistories to fetch.
      */
-    orderBy?: ShiftOrderByWithRelationInput | ShiftOrderByWithRelationInput[]
+    orderBy?: CashierBalanceHistoryOrderByWithRelationInput | CashierBalanceHistoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Shifts.
+     * Sets the position for listing CashierBalanceHistories.
      */
-    cursor?: ShiftWhereUniqueInput
+    cursor?: CashierBalanceHistoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Shifts from the position of the cursor.
+     * Take `±n` CashierBalanceHistories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Shifts.
+     * Skip the first `n` CashierBalanceHistories.
      */
     skip?: number
-    distinct?: ShiftScalarFieldEnum | ShiftScalarFieldEnum[]
+    distinct?: CashierBalanceHistoryScalarFieldEnum | CashierBalanceHistoryScalarFieldEnum[]
   }
 
   /**
-   * Shift create
+   * CashierBalanceHistory create
    */
-  export type ShiftCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Shift
+     * Select specific fields to fetch from the CashierBalanceHistory
      */
-    select?: ShiftSelect<ExtArgs> | null
+    select?: CashierBalanceHistorySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Shift
+     * Omit specific fields from the CashierBalanceHistory
      */
-    omit?: ShiftOmit<ExtArgs> | null
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ShiftInclude<ExtArgs> | null
+    include?: CashierBalanceHistoryInclude<ExtArgs> | null
     /**
-     * The data needed to create a Shift.
+     * The data needed to create a CashierBalanceHistory.
      */
-    data: XOR<ShiftCreateInput, ShiftUncheckedCreateInput>
+    data: XOR<CashierBalanceHistoryCreateInput, CashierBalanceHistoryUncheckedCreateInput>
   }
 
   /**
-   * Shift createMany
+   * CashierBalanceHistory createMany
    */
-  export type ShiftCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Shifts.
+     * The data used to create many CashierBalanceHistories.
      */
-    data: ShiftCreateManyInput | ShiftCreateManyInput[]
+    data: CashierBalanceHistoryCreateManyInput | CashierBalanceHistoryCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Shift createManyAndReturn
+   * CashierBalanceHistory createManyAndReturn
    */
-  export type ShiftCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Shift
+     * Select specific fields to fetch from the CashierBalanceHistory
      */
-    select?: ShiftSelectCreateManyAndReturn<ExtArgs> | null
+    select?: CashierBalanceHistorySelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Shift
+     * Omit specific fields from the CashierBalanceHistory
      */
-    omit?: ShiftOmit<ExtArgs> | null
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
     /**
-     * The data used to create many Shifts.
+     * The data used to create many CashierBalanceHistories.
      */
-    data: ShiftCreateManyInput | ShiftCreateManyInput[]
+    data: CashierBalanceHistoryCreateManyInput | CashierBalanceHistoryCreateManyInput[]
     skipDuplicates?: boolean
-  }
-
-  /**
-   * Shift update
-   */
-  export type ShiftUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Shift
-     */
-    select?: ShiftSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Shift
-     */
-    omit?: ShiftOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ShiftInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Shift.
-     */
-    data: XOR<ShiftUpdateInput, ShiftUncheckedUpdateInput>
-    /**
-     * Choose, which Shift to update.
-     */
-    where: ShiftWhereUniqueInput
+    include?: CashierBalanceHistoryIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * Shift updateMany
+   * CashierBalanceHistory update
    */
-  export type ShiftUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Shifts.
+     * Select specific fields to fetch from the CashierBalanceHistory
      */
-    data: XOR<ShiftUpdateManyMutationInput, ShiftUncheckedUpdateManyInput>
+    select?: CashierBalanceHistorySelect<ExtArgs> | null
     /**
-     * Filter which Shifts to update
+     * Omit specific fields from the CashierBalanceHistory
      */
-    where?: ShiftWhereInput
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
     /**
-     * Limit how many Shifts to update.
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashierBalanceHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CashierBalanceHistory.
+     */
+    data: XOR<CashierBalanceHistoryUpdateInput, CashierBalanceHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which CashierBalanceHistory to update.
+     */
+    where: CashierBalanceHistoryWhereUniqueInput
+  }
+
+  /**
+   * CashierBalanceHistory updateMany
+   */
+  export type CashierBalanceHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CashierBalanceHistories.
+     */
+    data: XOR<CashierBalanceHistoryUpdateManyMutationInput, CashierBalanceHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which CashierBalanceHistories to update
+     */
+    where?: CashierBalanceHistoryWhereInput
+    /**
+     * Limit how many CashierBalanceHistories to update.
      */
     limit?: number
   }
 
   /**
-   * Shift updateManyAndReturn
+   * CashierBalanceHistory updateManyAndReturn
    */
-  export type ShiftUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Shift
+     * Select specific fields to fetch from the CashierBalanceHistory
      */
-    select?: ShiftSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: CashierBalanceHistorySelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the Shift
+     * Omit specific fields from the CashierBalanceHistory
      */
-    omit?: ShiftOmit<ExtArgs> | null
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
     /**
-     * The data used to update Shifts.
+     * The data used to update CashierBalanceHistories.
      */
-    data: XOR<ShiftUpdateManyMutationInput, ShiftUncheckedUpdateManyInput>
+    data: XOR<CashierBalanceHistoryUpdateManyMutationInput, CashierBalanceHistoryUncheckedUpdateManyInput>
     /**
-     * Filter which Shifts to update
+     * Filter which CashierBalanceHistories to update
      */
-    where?: ShiftWhereInput
+    where?: CashierBalanceHistoryWhereInput
     /**
-     * Limit how many Shifts to update.
+     * Limit how many CashierBalanceHistories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashierBalanceHistoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CashierBalanceHistory upsert
+   */
+  export type CashierBalanceHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashierBalanceHistory
+     */
+    select?: CashierBalanceHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashierBalanceHistory
+     */
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashierBalanceHistoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CashierBalanceHistory to update in case it exists.
+     */
+    where: CashierBalanceHistoryWhereUniqueInput
+    /**
+     * In case the CashierBalanceHistory found by the `where` argument doesn't exist, create a new CashierBalanceHistory with this data.
+     */
+    create: XOR<CashierBalanceHistoryCreateInput, CashierBalanceHistoryUncheckedCreateInput>
+    /**
+     * In case the CashierBalanceHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CashierBalanceHistoryUpdateInput, CashierBalanceHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * CashierBalanceHistory delete
+   */
+  export type CashierBalanceHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashierBalanceHistory
+     */
+    select?: CashierBalanceHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashierBalanceHistory
+     */
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashierBalanceHistoryInclude<ExtArgs> | null
+    /**
+     * Filter which CashierBalanceHistory to delete.
+     */
+    where: CashierBalanceHistoryWhereUniqueInput
+  }
+
+  /**
+   * CashierBalanceHistory deleteMany
+   */
+  export type CashierBalanceHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CashierBalanceHistories to delete
+     */
+    where?: CashierBalanceHistoryWhereInput
+    /**
+     * Limit how many CashierBalanceHistories to delete.
      */
     limit?: number
   }
 
   /**
-   * Shift upsert
+   * CashierBalanceHistory.transaction
    */
-  export type ShiftUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistory$transactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Shift
+     * Select specific fields to fetch from the Transaction
      */
-    select?: ShiftSelect<ExtArgs> | null
+    select?: TransactionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Shift
+     * Omit specific fields from the Transaction
      */
-    omit?: ShiftOmit<ExtArgs> | null
+    omit?: TransactionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ShiftInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Shift to update in case it exists.
-     */
-    where: ShiftWhereUniqueInput
-    /**
-     * In case the Shift found by the `where` argument doesn't exist, create a new Shift with this data.
-     */
-    create: XOR<ShiftCreateInput, ShiftUncheckedCreateInput>
-    /**
-     * In case the Shift was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ShiftUpdateInput, ShiftUncheckedUpdateInput>
-  }
-
-  /**
-   * Shift delete
-   */
-  export type ShiftDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Shift
-     */
-    select?: ShiftSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Shift
-     */
-    omit?: ShiftOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ShiftInclude<ExtArgs> | null
-    /**
-     * Filter which Shift to delete.
-     */
-    where: ShiftWhereUniqueInput
-  }
-
-  /**
-   * Shift deleteMany
-   */
-  export type ShiftDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Shifts to delete
-     */
-    where?: ShiftWhereInput
-    /**
-     * Limit how many Shifts to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Shift.cashier
-   */
-  export type Shift$cashierArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Cashier
-     */
-    select?: CashierSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Cashier
-     */
-    omit?: CashierOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CashierInclude<ExtArgs> | null
-    where?: CashierWhereInput
-    orderBy?: CashierOrderByWithRelationInput | CashierOrderByWithRelationInput[]
-    cursor?: CashierWhereUniqueInput
+    include?: TransactionInclude<ExtArgs> | null
+    where?: TransactionWhereInput
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    cursor?: TransactionWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: CashierScalarFieldEnum | CashierScalarFieldEnum[]
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
   }
 
   /**
-   * Shift without action
+   * CashierBalanceHistory without action
    */
-  export type ShiftDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CashierBalanceHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Shift
+     * Select specific fields to fetch from the CashierBalanceHistory
      */
-    select?: ShiftSelect<ExtArgs> | null
+    select?: CashierBalanceHistorySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Shift
+     * Omit specific fields from the CashierBalanceHistory
      */
-    omit?: ShiftOmit<ExtArgs> | null
+    omit?: CashierBalanceHistoryOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ShiftInclude<ExtArgs> | null
+    include?: CashierBalanceHistoryInclude<ExtArgs> | null
   }
 
 
@@ -6645,6 +5719,8 @@ export namespace Prisma {
     deletedAt?: boolean
     productStock?: boolean | Product$productStockArgs<ExtArgs>
     productCategory?: boolean | ProductCategoryDefaultArgs<ExtArgs>
+    cartItems?: boolean | Product$cartItemsArgs<ExtArgs>
+    transactionItems?: boolean | Product$transactionItemsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -6690,6 +5766,8 @@ export namespace Prisma {
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     productStock?: boolean | Product$productStockArgs<ExtArgs>
     productCategory?: boolean | ProductCategoryDefaultArgs<ExtArgs>
+    cartItems?: boolean | Product$cartItemsArgs<ExtArgs>
+    transactionItems?: boolean | Product$transactionItemsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6704,6 +5782,8 @@ export namespace Prisma {
     objects: {
       productStock: Prisma.$ProductStockPayload<ExtArgs>[]
       productCategory: Prisma.$ProductCategoryPayload<ExtArgs>
+      cartItems: Prisma.$CartItemPayload<ExtArgs>[]
+      transactionItems: Prisma.$TransactionItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7111,6 +6191,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     productStock<T extends Product$productStockArgs<ExtArgs> = {}>(args?: Subset<T, Product$productStockArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     productCategory<T extends ProductCategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductCategoryDefaultArgs<ExtArgs>>): Prisma__ProductCategoryClient<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    cartItems<T extends Product$cartItemsArgs<ExtArgs> = {}>(args?: Subset<T, Product$cartItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transactionItems<T extends Product$transactionItemsArgs<ExtArgs> = {}>(args?: Subset<T, Product$transactionItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7569,6 +6651,54 @@ export namespace Prisma {
   }
 
   /**
+   * Product.cartItems
+   */
+  export type Product$cartItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    where?: CartItemWhereInput
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    cursor?: CartItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
+  }
+
+  /**
+   * Product.transactionItems
+   */
+  export type Product$transactionItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TransactionItem
+     */
+    select?: TransactionItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TransactionItem
+     */
+    omit?: TransactionItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionItemInclude<ExtArgs> | null
+    where?: TransactionItemWhereInput
+    orderBy?: TransactionItemOrderByWithRelationInput | TransactionItemOrderByWithRelationInput[]
+    cursor?: TransactionItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionItemScalarFieldEnum | TransactionItemScalarFieldEnum[]
+  }
+
+  /**
    * Product without action
    */
   export type ProductDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7611,7 +6741,6 @@ export namespace Prisma {
     id: number | null
     name: string | null
     slug: string | null
-    description: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -7621,7 +6750,6 @@ export namespace Prisma {
     id: number | null
     name: string | null
     slug: string | null
-    description: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -7631,7 +6759,6 @@ export namespace Prisma {
     id: number
     name: number
     slug: number
-    description: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -7651,7 +6778,6 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
-    description?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -7661,7 +6787,6 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
-    description?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -7671,7 +6796,6 @@ export namespace Prisma {
     id?: true
     name?: true
     slug?: true
-    description?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -7768,7 +6892,6 @@ export namespace Prisma {
     id: number
     name: string
     slug: string
-    description: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -7797,7 +6920,6 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
-    description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -7809,7 +6931,6 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
-    description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -7819,7 +6940,6 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
-    description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -7829,13 +6949,12 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     slug?: boolean
-    description?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type ProductCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["productCategory"]>
+  export type ProductCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["productCategory"]>
   export type ProductCategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     product?: boolean | ProductCategory$productArgs<ExtArgs>
     _count?: boolean | ProductCategoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -7852,7 +6971,6 @@ export namespace Prisma {
       id: number
       name: string
       slug: string
-      description: string | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -8283,7 +7401,6 @@ export namespace Prisma {
     readonly id: FieldRef<"ProductCategory", 'Int'>
     readonly name: FieldRef<"ProductCategory", 'String'>
     readonly slug: FieldRef<"ProductCategory", 'String'>
-    readonly description: FieldRef<"ProductCategory", 'String'>
     readonly createdAt: FieldRef<"ProductCategory", 'DateTime'>
     readonly updatedAt: FieldRef<"ProductCategory", 'DateTime'>
     readonly deletedAt: FieldRef<"ProductCategory", 'DateTime'>
@@ -9821,7 +8938,9 @@ export namespace Prisma {
 
   export type CartMinAggregateOutputType = {
     id: string | null
+    customerName: string | null
     cashierId: string | null
+    status: $Enums.CartStatus | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -9829,7 +8948,9 @@ export namespace Prisma {
 
   export type CartMaxAggregateOutputType = {
     id: string | null
+    customerName: string | null
     cashierId: string | null
+    status: $Enums.CartStatus | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -9837,7 +8958,9 @@ export namespace Prisma {
 
   export type CartCountAggregateOutputType = {
     id: number
+    customerName: number
     cashierId: number
+    status: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -9847,7 +8970,9 @@ export namespace Prisma {
 
   export type CartMinAggregateInputType = {
     id?: true
+    customerName?: true
     cashierId?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -9855,7 +8980,9 @@ export namespace Prisma {
 
   export type CartMaxAggregateInputType = {
     id?: true
+    customerName?: true
     cashierId?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -9863,7 +8990,9 @@ export namespace Prisma {
 
   export type CartCountAggregateInputType = {
     id?: true
+    customerName?: true
     cashierId?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -9944,7 +9073,9 @@ export namespace Prisma {
 
   export type CartGroupByOutputType = {
     id: string
+    customerName: string
     cashierId: string
+    status: $Enums.CartStatus
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -9969,16 +9100,23 @@ export namespace Prisma {
 
   export type CartSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    customerName?: boolean
     cashierId?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    cartItems?: boolean | Cart$cartItemsArgs<ExtArgs>
     cashier?: boolean | CashierDefaultArgs<ExtArgs>
+    transaction?: boolean | Cart$transactionArgs<ExtArgs>
+    _count?: boolean | CartCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["cart"]>
 
   export type CartSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    customerName?: boolean
     cashierId?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -9987,7 +9125,9 @@ export namespace Prisma {
 
   export type CartSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    customerName?: boolean
     cashierId?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -9996,15 +9136,20 @@ export namespace Prisma {
 
   export type CartSelectScalar = {
     id?: boolean
+    customerName?: boolean
     cashierId?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type CartOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cashierId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["cart"]>
+  export type CartOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customerName" | "cashierId" | "status" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["cart"]>
   export type CartInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cartItems?: boolean | Cart$cartItemsArgs<ExtArgs>
     cashier?: boolean | CashierDefaultArgs<ExtArgs>
+    transaction?: boolean | Cart$transactionArgs<ExtArgs>
+    _count?: boolean | CartCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CartIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     cashier?: boolean | CashierDefaultArgs<ExtArgs>
@@ -10016,11 +9161,15 @@ export namespace Prisma {
   export type $CartPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Cart"
     objects: {
+      cartItems: Prisma.$CartItemPayload<ExtArgs>[]
       cashier: Prisma.$CashierPayload<ExtArgs>
+      transaction: Prisma.$TransactionPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      customerName: string
       cashierId: string
+      status: $Enums.CartStatus
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -10418,7 +9567,9 @@ export namespace Prisma {
    */
   export interface Prisma__CartClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    cartItems<T extends Cart$cartItemsArgs<ExtArgs> = {}>(args?: Subset<T, Cart$cartItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     cashier<T extends CashierDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CashierDefaultArgs<ExtArgs>>): Prisma__CashierClient<$Result.GetResult<Prisma.$CashierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    transaction<T extends Cart$transactionArgs<ExtArgs> = {}>(args?: Subset<T, Cart$transactionArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10449,7 +9600,9 @@ export namespace Prisma {
    */
   interface CartFieldRefs {
     readonly id: FieldRef<"Cart", 'String'>
+    readonly customerName: FieldRef<"Cart", 'String'>
     readonly cashierId: FieldRef<"Cart", 'String'>
+    readonly status: FieldRef<"Cart", 'CartStatus'>
     readonly createdAt: FieldRef<"Cart", 'DateTime'>
     readonly updatedAt: FieldRef<"Cart", 'DateTime'>
     readonly deletedAt: FieldRef<"Cart", 'DateTime'>
@@ -10849,6 +10002,49 @@ export namespace Prisma {
   }
 
   /**
+   * Cart.cartItems
+   */
+  export type Cart$cartItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    where?: CartItemWhereInput
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    cursor?: CartItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
+  }
+
+  /**
+   * Cart.transaction
+   */
+  export type Cart$transactionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    where?: TransactionWhereInput
+  }
+
+  /**
    * Cart without action
    */
   export type CartDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10868,6 +10064,1132 @@ export namespace Prisma {
 
 
   /**
+   * Model CartItem
+   */
+
+  export type AggregateCartItem = {
+    _count: CartItemCountAggregateOutputType | null
+    _avg: CartItemAvgAggregateOutputType | null
+    _sum: CartItemSumAggregateOutputType | null
+    _min: CartItemMinAggregateOutputType | null
+    _max: CartItemMaxAggregateOutputType | null
+  }
+
+  export type CartItemAvgAggregateOutputType = {
+    quantity: number | null
+  }
+
+  export type CartItemSumAggregateOutputType = {
+    quantity: number | null
+  }
+
+  export type CartItemMinAggregateOutputType = {
+    id: string | null
+    cartId: string | null
+    productId: string | null
+    quantity: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type CartItemMaxAggregateOutputType = {
+    id: string | null
+    cartId: string | null
+    productId: string | null
+    quantity: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type CartItemCountAggregateOutputType = {
+    id: number
+    cartId: number
+    productId: number
+    quantity: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type CartItemAvgAggregateInputType = {
+    quantity?: true
+  }
+
+  export type CartItemSumAggregateInputType = {
+    quantity?: true
+  }
+
+  export type CartItemMinAggregateInputType = {
+    id?: true
+    cartId?: true
+    productId?: true
+    quantity?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type CartItemMaxAggregateInputType = {
+    id?: true
+    cartId?: true
+    productId?: true
+    quantity?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type CartItemCountAggregateInputType = {
+    id?: true
+    cartId?: true
+    productId?: true
+    quantity?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type CartItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CartItem to aggregate.
+     */
+    where?: CartItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CartItems to fetch.
+     */
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CartItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CartItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CartItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CartItems
+    **/
+    _count?: true | CartItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CartItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CartItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CartItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CartItemMaxAggregateInputType
+  }
+
+  export type GetCartItemAggregateType<T extends CartItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateCartItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCartItem[P]>
+      : GetScalarType<T[P], AggregateCartItem[P]>
+  }
+
+
+
+
+  export type CartItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CartItemWhereInput
+    orderBy?: CartItemOrderByWithAggregationInput | CartItemOrderByWithAggregationInput[]
+    by: CartItemScalarFieldEnum[] | CartItemScalarFieldEnum
+    having?: CartItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CartItemCountAggregateInputType | true
+    _avg?: CartItemAvgAggregateInputType
+    _sum?: CartItemSumAggregateInputType
+    _min?: CartItemMinAggregateInputType
+    _max?: CartItemMaxAggregateInputType
+  }
+
+  export type CartItemGroupByOutputType = {
+    id: string
+    cartId: string
+    productId: string
+    quantity: number
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: CartItemCountAggregateOutputType | null
+    _avg: CartItemAvgAggregateOutputType | null
+    _sum: CartItemSumAggregateOutputType | null
+    _min: CartItemMinAggregateOutputType | null
+    _max: CartItemMaxAggregateOutputType | null
+  }
+
+  type GetCartItemGroupByPayload<T extends CartItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CartItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CartItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CartItemGroupByOutputType[P]>
+            : GetScalarType<T[P], CartItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CartItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    cartId?: boolean
+    productId?: boolean
+    quantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    cart?: boolean | CartDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cartItem"]>
+
+  export type CartItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    cartId?: boolean
+    productId?: boolean
+    quantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    cart?: boolean | CartDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cartItem"]>
+
+  export type CartItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    cartId?: boolean
+    productId?: boolean
+    quantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    cart?: boolean | CartDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cartItem"]>
+
+  export type CartItemSelectScalar = {
+    id?: boolean
+    cartId?: boolean
+    productId?: boolean
+    quantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type CartItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cartId" | "productId" | "quantity" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["cartItem"]>
+  export type CartItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cart?: boolean | CartDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type CartItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cart?: boolean | CartDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type CartItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cart?: boolean | CartDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+
+  export type $CartItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CartItem"
+    objects: {
+      cart: Prisma.$CartPayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      cartId: string
+      productId: string
+      quantity: number
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["cartItem"]>
+    composites: {}
+  }
+
+  type CartItemGetPayload<S extends boolean | null | undefined | CartItemDefaultArgs> = $Result.GetResult<Prisma.$CartItemPayload, S>
+
+  type CartItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CartItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CartItemCountAggregateInputType | true
+    }
+
+  export interface CartItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CartItem'], meta: { name: 'CartItem' } }
+    /**
+     * Find zero or one CartItem that matches the filter.
+     * @param {CartItemFindUniqueArgs} args - Arguments to find a CartItem
+     * @example
+     * // Get one CartItem
+     * const cartItem = await prisma.cartItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CartItemFindUniqueArgs>(args: SelectSubset<T, CartItemFindUniqueArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CartItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CartItemFindUniqueOrThrowArgs} args - Arguments to find a CartItem
+     * @example
+     * // Get one CartItem
+     * const cartItem = await prisma.cartItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CartItemFindUniqueOrThrowArgs>(args: SelectSubset<T, CartItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CartItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemFindFirstArgs} args - Arguments to find a CartItem
+     * @example
+     * // Get one CartItem
+     * const cartItem = await prisma.cartItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CartItemFindFirstArgs>(args?: SelectSubset<T, CartItemFindFirstArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CartItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemFindFirstOrThrowArgs} args - Arguments to find a CartItem
+     * @example
+     * // Get one CartItem
+     * const cartItem = await prisma.cartItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CartItemFindFirstOrThrowArgs>(args?: SelectSubset<T, CartItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CartItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CartItems
+     * const cartItems = await prisma.cartItem.findMany()
+     * 
+     * // Get first 10 CartItems
+     * const cartItems = await prisma.cartItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cartItemWithIdOnly = await prisma.cartItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CartItemFindManyArgs>(args?: SelectSubset<T, CartItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CartItem.
+     * @param {CartItemCreateArgs} args - Arguments to create a CartItem.
+     * @example
+     * // Create one CartItem
+     * const CartItem = await prisma.cartItem.create({
+     *   data: {
+     *     // ... data to create a CartItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends CartItemCreateArgs>(args: SelectSubset<T, CartItemCreateArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CartItems.
+     * @param {CartItemCreateManyArgs} args - Arguments to create many CartItems.
+     * @example
+     * // Create many CartItems
+     * const cartItem = await prisma.cartItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CartItemCreateManyArgs>(args?: SelectSubset<T, CartItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CartItems and returns the data saved in the database.
+     * @param {CartItemCreateManyAndReturnArgs} args - Arguments to create many CartItems.
+     * @example
+     * // Create many CartItems
+     * const cartItem = await prisma.cartItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CartItems and only return the `id`
+     * const cartItemWithIdOnly = await prisma.cartItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CartItemCreateManyAndReturnArgs>(args?: SelectSubset<T, CartItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CartItem.
+     * @param {CartItemDeleteArgs} args - Arguments to delete one CartItem.
+     * @example
+     * // Delete one CartItem
+     * const CartItem = await prisma.cartItem.delete({
+     *   where: {
+     *     // ... filter to delete one CartItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CartItemDeleteArgs>(args: SelectSubset<T, CartItemDeleteArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CartItem.
+     * @param {CartItemUpdateArgs} args - Arguments to update one CartItem.
+     * @example
+     * // Update one CartItem
+     * const cartItem = await prisma.cartItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CartItemUpdateArgs>(args: SelectSubset<T, CartItemUpdateArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CartItems.
+     * @param {CartItemDeleteManyArgs} args - Arguments to filter CartItems to delete.
+     * @example
+     * // Delete a few CartItems
+     * const { count } = await prisma.cartItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CartItemDeleteManyArgs>(args?: SelectSubset<T, CartItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CartItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CartItems
+     * const cartItem = await prisma.cartItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CartItemUpdateManyArgs>(args: SelectSubset<T, CartItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CartItems and returns the data updated in the database.
+     * @param {CartItemUpdateManyAndReturnArgs} args - Arguments to update many CartItems.
+     * @example
+     * // Update many CartItems
+     * const cartItem = await prisma.cartItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CartItems and only return the `id`
+     * const cartItemWithIdOnly = await prisma.cartItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CartItemUpdateManyAndReturnArgs>(args: SelectSubset<T, CartItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CartItem.
+     * @param {CartItemUpsertArgs} args - Arguments to update or create a CartItem.
+     * @example
+     * // Update or create a CartItem
+     * const cartItem = await prisma.cartItem.upsert({
+     *   create: {
+     *     // ... data to create a CartItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CartItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CartItemUpsertArgs>(args: SelectSubset<T, CartItemUpsertArgs<ExtArgs>>): Prisma__CartItemClient<$Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CartItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemCountArgs} args - Arguments to filter CartItems to count.
+     * @example
+     * // Count the number of CartItems
+     * const count = await prisma.cartItem.count({
+     *   where: {
+     *     // ... the filter for the CartItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends CartItemCountArgs>(
+      args?: Subset<T, CartItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CartItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CartItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CartItemAggregateArgs>(args: Subset<T, CartItemAggregateArgs>): Prisma.PrismaPromise<GetCartItemAggregateType<T>>
+
+    /**
+     * Group by CartItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CartItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CartItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CartItemGroupByArgs['orderBy'] }
+        : { orderBy?: CartItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CartItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCartItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CartItem model
+   */
+  readonly fields: CartItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CartItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CartItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    cart<T extends CartDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CartDefaultArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CartItem model
+   */
+  interface CartItemFieldRefs {
+    readonly id: FieldRef<"CartItem", 'String'>
+    readonly cartId: FieldRef<"CartItem", 'String'>
+    readonly productId: FieldRef<"CartItem", 'String'>
+    readonly quantity: FieldRef<"CartItem", 'Int'>
+    readonly createdAt: FieldRef<"CartItem", 'DateTime'>
+    readonly updatedAt: FieldRef<"CartItem", 'DateTime'>
+    readonly deletedAt: FieldRef<"CartItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CartItem findUnique
+   */
+  export type CartItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CartItem to fetch.
+     */
+    where: CartItemWhereUniqueInput
+  }
+
+  /**
+   * CartItem findUniqueOrThrow
+   */
+  export type CartItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CartItem to fetch.
+     */
+    where: CartItemWhereUniqueInput
+  }
+
+  /**
+   * CartItem findFirst
+   */
+  export type CartItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CartItem to fetch.
+     */
+    where?: CartItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CartItems to fetch.
+     */
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CartItems.
+     */
+    cursor?: CartItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CartItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CartItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CartItems.
+     */
+    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
+  }
+
+  /**
+   * CartItem findFirstOrThrow
+   */
+  export type CartItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CartItem to fetch.
+     */
+    where?: CartItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CartItems to fetch.
+     */
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CartItems.
+     */
+    cursor?: CartItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CartItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CartItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CartItems.
+     */
+    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
+  }
+
+  /**
+   * CartItem findMany
+   */
+  export type CartItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * Filter, which CartItems to fetch.
+     */
+    where?: CartItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CartItems to fetch.
+     */
+    orderBy?: CartItemOrderByWithRelationInput | CartItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CartItems.
+     */
+    cursor?: CartItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CartItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CartItems.
+     */
+    skip?: number
+    distinct?: CartItemScalarFieldEnum | CartItemScalarFieldEnum[]
+  }
+
+  /**
+   * CartItem create
+   */
+  export type CartItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CartItem.
+     */
+    data: XOR<CartItemCreateInput, CartItemUncheckedCreateInput>
+  }
+
+  /**
+   * CartItem createMany
+   */
+  export type CartItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CartItems.
+     */
+    data: CartItemCreateManyInput | CartItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CartItem createManyAndReturn
+   */
+  export type CartItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many CartItems.
+     */
+    data: CartItemCreateManyInput | CartItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CartItem update
+   */
+  export type CartItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CartItem.
+     */
+    data: XOR<CartItemUpdateInput, CartItemUncheckedUpdateInput>
+    /**
+     * Choose, which CartItem to update.
+     */
+    where: CartItemWhereUniqueInput
+  }
+
+  /**
+   * CartItem updateMany
+   */
+  export type CartItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CartItems.
+     */
+    data: XOR<CartItemUpdateManyMutationInput, CartItemUncheckedUpdateManyInput>
+    /**
+     * Filter which CartItems to update
+     */
+    where?: CartItemWhereInput
+    /**
+     * Limit how many CartItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CartItem updateManyAndReturn
+   */
+  export type CartItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * The data used to update CartItems.
+     */
+    data: XOR<CartItemUpdateManyMutationInput, CartItemUncheckedUpdateManyInput>
+    /**
+     * Filter which CartItems to update
+     */
+    where?: CartItemWhereInput
+    /**
+     * Limit how many CartItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CartItem upsert
+   */
+  export type CartItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CartItem to update in case it exists.
+     */
+    where: CartItemWhereUniqueInput
+    /**
+     * In case the CartItem found by the `where` argument doesn't exist, create a new CartItem with this data.
+     */
+    create: XOR<CartItemCreateInput, CartItemUncheckedCreateInput>
+    /**
+     * In case the CartItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CartItemUpdateInput, CartItemUncheckedUpdateInput>
+  }
+
+  /**
+   * CartItem delete
+   */
+  export type CartItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+    /**
+     * Filter which CartItem to delete.
+     */
+    where: CartItemWhereUniqueInput
+  }
+
+  /**
+   * CartItem deleteMany
+   */
+  export type CartItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CartItems to delete
+     */
+    where?: CartItemWhereInput
+    /**
+     * Limit how many CartItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CartItem without action
+   */
+  export type CartItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CartItem
+     */
+    select?: CartItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CartItem
+     */
+    omit?: CartItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CartItemInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Transaction
    */
 
@@ -10880,17 +11202,24 @@ export namespace Prisma {
   }
 
   export type TransactionAvgAggregateOutputType = {
-    paymentAmount: number | null
+    totalAmount: number | null
+    changeAmount: number | null
   }
 
   export type TransactionSumAggregateOutputType = {
-    paymentAmount: number | null
+    totalAmount: number | null
+    changeAmount: number | null
   }
 
   export type TransactionMinAggregateOutputType = {
     id: string | null
+    cartId: string | null
+    cashierId: string | null
+    cashierBalanceHistoryId: string | null
     paymentType: $Enums.PaymentType | null
-    paymentAmount: number | null
+    debitCardNumber: string | null
+    totalAmount: number | null
+    changeAmount: number | null
     paymentDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -10899,8 +11228,13 @@ export namespace Prisma {
 
   export type TransactionMaxAggregateOutputType = {
     id: string | null
+    cartId: string | null
+    cashierId: string | null
+    cashierBalanceHistoryId: string | null
     paymentType: $Enums.PaymentType | null
-    paymentAmount: number | null
+    debitCardNumber: string | null
+    totalAmount: number | null
+    changeAmount: number | null
     paymentDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -10909,8 +11243,13 @@ export namespace Prisma {
 
   export type TransactionCountAggregateOutputType = {
     id: number
+    cartId: number
+    cashierId: number
+    cashierBalanceHistoryId: number
     paymentType: number
-    paymentAmount: number
+    debitCardNumber: number
+    totalAmount: number
+    changeAmount: number
     paymentDate: number
     createdAt: number
     updatedAt: number
@@ -10920,17 +11259,24 @@ export namespace Prisma {
 
 
   export type TransactionAvgAggregateInputType = {
-    paymentAmount?: true
+    totalAmount?: true
+    changeAmount?: true
   }
 
   export type TransactionSumAggregateInputType = {
-    paymentAmount?: true
+    totalAmount?: true
+    changeAmount?: true
   }
 
   export type TransactionMinAggregateInputType = {
     id?: true
+    cartId?: true
+    cashierId?: true
+    cashierBalanceHistoryId?: true
     paymentType?: true
-    paymentAmount?: true
+    debitCardNumber?: true
+    totalAmount?: true
+    changeAmount?: true
     paymentDate?: true
     createdAt?: true
     updatedAt?: true
@@ -10939,8 +11285,13 @@ export namespace Prisma {
 
   export type TransactionMaxAggregateInputType = {
     id?: true
+    cartId?: true
+    cashierId?: true
+    cashierBalanceHistoryId?: true
     paymentType?: true
-    paymentAmount?: true
+    debitCardNumber?: true
+    totalAmount?: true
+    changeAmount?: true
     paymentDate?: true
     createdAt?: true
     updatedAt?: true
@@ -10949,8 +11300,13 @@ export namespace Prisma {
 
   export type TransactionCountAggregateInputType = {
     id?: true
+    cartId?: true
+    cashierId?: true
+    cashierBalanceHistoryId?: true
     paymentType?: true
-    paymentAmount?: true
+    debitCardNumber?: true
+    totalAmount?: true
+    changeAmount?: true
     paymentDate?: true
     createdAt?: true
     updatedAt?: true
@@ -11046,8 +11402,13 @@ export namespace Prisma {
 
   export type TransactionGroupByOutputType = {
     id: string
+    cartId: string
+    cashierId: string
+    cashierBalanceHistoryId: string
     paymentType: $Enums.PaymentType
-    paymentAmount: number
+    debitCardNumber: string | null
+    totalAmount: number
+    changeAmount: number | null
     paymentDate: Date
     createdAt: Date
     updatedAt: Date
@@ -11075,63 +11436,111 @@ export namespace Prisma {
 
   export type TransactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    cartId?: boolean
+    cashierId?: boolean
+    cashierBalanceHistoryId?: boolean
     paymentType?: boolean
-    paymentAmount?: boolean
+    debitCardNumber?: boolean
+    totalAmount?: boolean
+    changeAmount?: boolean
     paymentDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    transactionHistory?: boolean | Transaction$transactionHistoryArgs<ExtArgs>
+    cart?: boolean | CartDefaultArgs<ExtArgs>
+    cashier?: boolean | CashierDefaultArgs<ExtArgs>
+    cashierBalanceHistory?: boolean | CashierBalanceHistoryDefaultArgs<ExtArgs>
+    transactionItems?: boolean | Transaction$transactionItemsArgs<ExtArgs>
     _count?: boolean | TransactionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    cartId?: boolean
+    cashierId?: boolean
+    cashierBalanceHistoryId?: boolean
     paymentType?: boolean
-    paymentAmount?: boolean
+    debitCardNumber?: boolean
+    totalAmount?: boolean
+    changeAmount?: boolean
     paymentDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    cart?: boolean | CartDefaultArgs<ExtArgs>
+    cashier?: boolean | CashierDefaultArgs<ExtArgs>
+    cashierBalanceHistory?: boolean | CashierBalanceHistoryDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    cartId?: boolean
+    cashierId?: boolean
+    cashierBalanceHistoryId?: boolean
     paymentType?: boolean
-    paymentAmount?: boolean
+    debitCardNumber?: boolean
+    totalAmount?: boolean
+    changeAmount?: boolean
     paymentDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    cart?: boolean | CartDefaultArgs<ExtArgs>
+    cashier?: boolean | CashierDefaultArgs<ExtArgs>
+    cashierBalanceHistory?: boolean | CashierBalanceHistoryDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectScalar = {
     id?: boolean
+    cartId?: boolean
+    cashierId?: boolean
+    cashierBalanceHistoryId?: boolean
     paymentType?: boolean
-    paymentAmount?: boolean
+    debitCardNumber?: boolean
+    totalAmount?: boolean
+    changeAmount?: boolean
     paymentDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paymentType" | "paymentAmount" | "paymentDate" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cartId" | "cashierId" | "cashierBalanceHistoryId" | "paymentType" | "debitCardNumber" | "totalAmount" | "changeAmount" | "paymentDate" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    transactionHistory?: boolean | Transaction$transactionHistoryArgs<ExtArgs>
+    cart?: boolean | CartDefaultArgs<ExtArgs>
+    cashier?: boolean | CashierDefaultArgs<ExtArgs>
+    cashierBalanceHistory?: boolean | CashierBalanceHistoryDefaultArgs<ExtArgs>
+    transactionItems?: boolean | Transaction$transactionItemsArgs<ExtArgs>
     _count?: boolean | TransactionCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type TransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type TransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cart?: boolean | CartDefaultArgs<ExtArgs>
+    cashier?: boolean | CashierDefaultArgs<ExtArgs>
+    cashierBalanceHistory?: boolean | CashierBalanceHistoryDefaultArgs<ExtArgs>
+  }
+  export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cart?: boolean | CartDefaultArgs<ExtArgs>
+    cashier?: boolean | CashierDefaultArgs<ExtArgs>
+    cashierBalanceHistory?: boolean | CashierBalanceHistoryDefaultArgs<ExtArgs>
+  }
 
   export type $TransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Transaction"
     objects: {
-      transactionHistory: Prisma.$TransactionHistoryPayload<ExtArgs>[]
+      cart: Prisma.$CartPayload<ExtArgs>
+      cashier: Prisma.$CashierPayload<ExtArgs>
+      cashierBalanceHistory: Prisma.$CashierBalanceHistoryPayload<ExtArgs>
+      transactionItems: Prisma.$TransactionItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      cartId: string
+      cashierId: string
+      cashierBalanceHistoryId: string
       paymentType: $Enums.PaymentType
-      paymentAmount: number
+      debitCardNumber: string | null
+      totalAmount: number
+      changeAmount: number | null
       paymentDate: Date
       createdAt: Date
       updatedAt: Date
@@ -11530,7 +11939,10 @@ export namespace Prisma {
    */
   export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    transactionHistory<T extends Transaction$transactionHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$transactionHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cart<T extends CartDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CartDefaultArgs<ExtArgs>>): Prisma__CartClient<$Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    cashier<T extends CashierDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CashierDefaultArgs<ExtArgs>>): Prisma__CashierClient<$Result.GetResult<Prisma.$CashierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    cashierBalanceHistory<T extends CashierBalanceHistoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CashierBalanceHistoryDefaultArgs<ExtArgs>>): Prisma__CashierBalanceHistoryClient<$Result.GetResult<Prisma.$CashierBalanceHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    transactionItems<T extends Transaction$transactionItemsArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$transactionItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11561,8 +11973,13 @@ export namespace Prisma {
    */
   interface TransactionFieldRefs {
     readonly id: FieldRef<"Transaction", 'String'>
+    readonly cartId: FieldRef<"Transaction", 'String'>
+    readonly cashierId: FieldRef<"Transaction", 'String'>
+    readonly cashierBalanceHistoryId: FieldRef<"Transaction", 'String'>
     readonly paymentType: FieldRef<"Transaction", 'PaymentType'>
-    readonly paymentAmount: FieldRef<"Transaction", 'Float'>
+    readonly debitCardNumber: FieldRef<"Transaction", 'String'>
+    readonly totalAmount: FieldRef<"Transaction", 'Float'>
+    readonly changeAmount: FieldRef<"Transaction", 'Float'>
     readonly paymentDate: FieldRef<"Transaction", 'DateTime'>
     readonly createdAt: FieldRef<"Transaction", 'DateTime'>
     readonly updatedAt: FieldRef<"Transaction", 'DateTime'>
@@ -11816,6 +12233,10 @@ export namespace Prisma {
      */
     data: TransactionCreateManyInput | TransactionCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -11886,6 +12307,10 @@ export namespace Prisma {
      * Limit how many Transactions to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -11955,27 +12380,27 @@ export namespace Prisma {
   }
 
   /**
-   * Transaction.transactionHistory
+   * Transaction.transactionItems
    */
-  export type Transaction$transactionHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Transaction$transactionItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelect<ExtArgs> | null
+    select?: TransactionItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryInclude<ExtArgs> | null
-    where?: TransactionHistoryWhereInput
-    orderBy?: TransactionHistoryOrderByWithRelationInput | TransactionHistoryOrderByWithRelationInput[]
-    cursor?: TransactionHistoryWhereUniqueInput
+    include?: TransactionItemInclude<ExtArgs> | null
+    where?: TransactionItemWhereInput
+    orderBy?: TransactionItemOrderByWithRelationInput | TransactionItemOrderByWithRelationInput[]
+    cursor?: TransactionItemWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: TransactionHistoryScalarFieldEnum | TransactionHistoryScalarFieldEnum[]
+    distinct?: TransactionItemScalarFieldEnum | TransactionItemScalarFieldEnum[]
   }
 
   /**
@@ -11998,314 +12423,447 @@ export namespace Prisma {
 
 
   /**
-   * Model TransactionHistory
+   * Model TransactionItem
    */
 
-  export type AggregateTransactionHistory = {
-    _count: TransactionHistoryCountAggregateOutputType | null
-    _min: TransactionHistoryMinAggregateOutputType | null
-    _max: TransactionHistoryMaxAggregateOutputType | null
+  export type AggregateTransactionItem = {
+    _count: TransactionItemCountAggregateOutputType | null
+    _avg: TransactionItemAvgAggregateOutputType | null
+    _sum: TransactionItemSumAggregateOutputType | null
+    _min: TransactionItemMinAggregateOutputType | null
+    _max: TransactionItemMaxAggregateOutputType | null
   }
 
-  export type TransactionHistoryMinAggregateOutputType = {
+  export type TransactionItemAvgAggregateOutputType = {
+    quantity: number | null
+    unitPrice: number | null
+    subTotal: number | null
+  }
+
+  export type TransactionItemSumAggregateOutputType = {
+    quantity: number | null
+    unitPrice: number | null
+    subTotal: number | null
+  }
+
+  export type TransactionItemMinAggregateOutputType = {
     id: string | null
     transactionId: string | null
+    productId: string | null
+    quantity: number | null
+    unitPrice: number | null
+    subTotal: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
   }
 
-  export type TransactionHistoryMaxAggregateOutputType = {
+  export type TransactionItemMaxAggregateOutputType = {
     id: string | null
     transactionId: string | null
+    productId: string | null
+    quantity: number | null
+    unitPrice: number | null
+    subTotal: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
   }
 
-  export type TransactionHistoryCountAggregateOutputType = {
+  export type TransactionItemCountAggregateOutputType = {
     id: number
     transactionId: number
+    productId: number
+    quantity: number
+    unitPrice: number
+    subTotal: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
     _all: number
   }
 
 
-  export type TransactionHistoryMinAggregateInputType = {
-    id?: true
-    transactionId?: true
+  export type TransactionItemAvgAggregateInputType = {
+    quantity?: true
+    unitPrice?: true
+    subTotal?: true
   }
 
-  export type TransactionHistoryMaxAggregateInputType = {
-    id?: true
-    transactionId?: true
+  export type TransactionItemSumAggregateInputType = {
+    quantity?: true
+    unitPrice?: true
+    subTotal?: true
   }
 
-  export type TransactionHistoryCountAggregateInputType = {
+  export type TransactionItemMinAggregateInputType = {
     id?: true
     transactionId?: true
+    productId?: true
+    quantity?: true
+    unitPrice?: true
+    subTotal?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type TransactionItemMaxAggregateInputType = {
+    id?: true
+    transactionId?: true
+    productId?: true
+    quantity?: true
+    unitPrice?: true
+    subTotal?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type TransactionItemCountAggregateInputType = {
+    id?: true
+    transactionId?: true
+    productId?: true
+    quantity?: true
+    unitPrice?: true
+    subTotal?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
     _all?: true
   }
 
-  export type TransactionHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which TransactionHistory to aggregate.
+     * Filter which TransactionItem to aggregate.
      */
-    where?: TransactionHistoryWhereInput
+    where?: TransactionItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of TransactionHistories to fetch.
+     * Determine the order of TransactionItems to fetch.
      */
-    orderBy?: TransactionHistoryOrderByWithRelationInput | TransactionHistoryOrderByWithRelationInput[]
+    orderBy?: TransactionItemOrderByWithRelationInput | TransactionItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: TransactionHistoryWhereUniqueInput
+    cursor?: TransactionItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` TransactionHistories from the position of the cursor.
+     * Take `±n` TransactionItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` TransactionHistories.
+     * Skip the first `n` TransactionItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned TransactionHistories
+     * Count returned TransactionItems
     **/
-    _count?: true | TransactionHistoryCountAggregateInputType
+    _count?: true | TransactionItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TransactionItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TransactionItemSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: TransactionHistoryMinAggregateInputType
+    _min?: TransactionItemMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: TransactionHistoryMaxAggregateInputType
+    _max?: TransactionItemMaxAggregateInputType
   }
 
-  export type GetTransactionHistoryAggregateType<T extends TransactionHistoryAggregateArgs> = {
-        [P in keyof T & keyof AggregateTransactionHistory]: P extends '_count' | 'count'
+  export type GetTransactionItemAggregateType<T extends TransactionItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateTransactionItem]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateTransactionHistory[P]>
-      : GetScalarType<T[P], AggregateTransactionHistory[P]>
+        : GetScalarType<T[P], AggregateTransactionItem[P]>
+      : GetScalarType<T[P], AggregateTransactionItem[P]>
   }
 
 
 
 
-  export type TransactionHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TransactionHistoryWhereInput
-    orderBy?: TransactionHistoryOrderByWithAggregationInput | TransactionHistoryOrderByWithAggregationInput[]
-    by: TransactionHistoryScalarFieldEnum[] | TransactionHistoryScalarFieldEnum
-    having?: TransactionHistoryScalarWhereWithAggregatesInput
+  export type TransactionItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionItemWhereInput
+    orderBy?: TransactionItemOrderByWithAggregationInput | TransactionItemOrderByWithAggregationInput[]
+    by: TransactionItemScalarFieldEnum[] | TransactionItemScalarFieldEnum
+    having?: TransactionItemScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: TransactionHistoryCountAggregateInputType | true
-    _min?: TransactionHistoryMinAggregateInputType
-    _max?: TransactionHistoryMaxAggregateInputType
+    _count?: TransactionItemCountAggregateInputType | true
+    _avg?: TransactionItemAvgAggregateInputType
+    _sum?: TransactionItemSumAggregateInputType
+    _min?: TransactionItemMinAggregateInputType
+    _max?: TransactionItemMaxAggregateInputType
   }
 
-  export type TransactionHistoryGroupByOutputType = {
+  export type TransactionItemGroupByOutputType = {
     id: string
     transactionId: string
-    _count: TransactionHistoryCountAggregateOutputType | null
-    _min: TransactionHistoryMinAggregateOutputType | null
-    _max: TransactionHistoryMaxAggregateOutputType | null
+    productId: string
+    quantity: number
+    unitPrice: number
+    subTotal: number
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: TransactionItemCountAggregateOutputType | null
+    _avg: TransactionItemAvgAggregateOutputType | null
+    _sum: TransactionItemSumAggregateOutputType | null
+    _min: TransactionItemMinAggregateOutputType | null
+    _max: TransactionItemMaxAggregateOutputType | null
   }
 
-  type GetTransactionHistoryGroupByPayload<T extends TransactionHistoryGroupByArgs> = Prisma.PrismaPromise<
+  type GetTransactionItemGroupByPayload<T extends TransactionItemGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<TransactionHistoryGroupByOutputType, T['by']> &
+      PickEnumerable<TransactionItemGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof TransactionHistoryGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof TransactionItemGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], TransactionHistoryGroupByOutputType[P]>
-            : GetScalarType<T[P], TransactionHistoryGroupByOutputType[P]>
+              : GetScalarType<T[P], TransactionItemGroupByOutputType[P]>
+            : GetScalarType<T[P], TransactionItemGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type TransactionHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type TransactionItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     transactionId?: boolean
+    productId?: boolean
+    quantity?: boolean
+    unitPrice?: boolean
+    subTotal?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["transactionHistory"]>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["transactionItem"]>
 
-  export type TransactionHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type TransactionItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     transactionId?: boolean
+    productId?: boolean
+    quantity?: boolean
+    unitPrice?: boolean
+    subTotal?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["transactionHistory"]>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["transactionItem"]>
 
-  export type TransactionHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type TransactionItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     transactionId?: boolean
+    productId?: boolean
+    quantity?: boolean
+    unitPrice?: boolean
+    subTotal?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["transactionHistory"]>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["transactionItem"]>
 
-  export type TransactionHistorySelectScalar = {
+  export type TransactionItemSelectScalar = {
     id?: boolean
     transactionId?: boolean
+    productId?: boolean
+    quantity?: boolean
+    unitPrice?: boolean
+    subTotal?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
   }
 
-  export type TransactionHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "transactionId", ExtArgs["result"]["transactionHistory"]>
-  export type TransactionHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "transactionId" | "productId" | "quantity" | "unitPrice" | "subTotal" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["transactionItem"]>
+  export type TransactionItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
-  export type TransactionHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
-  export type TransactionHistoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     transaction?: boolean | TransactionDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
 
-  export type $TransactionHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "TransactionHistory"
+  export type $TransactionItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TransactionItem"
     objects: {
       transaction: Prisma.$TransactionPayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       transactionId: string
-    }, ExtArgs["result"]["transactionHistory"]>
+      productId: string
+      quantity: number
+      unitPrice: number
+      subTotal: number
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["transactionItem"]>
     composites: {}
   }
 
-  type TransactionHistoryGetPayload<S extends boolean | null | undefined | TransactionHistoryDefaultArgs> = $Result.GetResult<Prisma.$TransactionHistoryPayload, S>
+  type TransactionItemGetPayload<S extends boolean | null | undefined | TransactionItemDefaultArgs> = $Result.GetResult<Prisma.$TransactionItemPayload, S>
 
-  type TransactionHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<TransactionHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: TransactionHistoryCountAggregateInputType | true
+  type TransactionItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TransactionItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TransactionItemCountAggregateInputType | true
     }
 
-  export interface TransactionHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TransactionHistory'], meta: { name: 'TransactionHistory' } }
+  export interface TransactionItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TransactionItem'], meta: { name: 'TransactionItem' } }
     /**
-     * Find zero or one TransactionHistory that matches the filter.
-     * @param {TransactionHistoryFindUniqueArgs} args - Arguments to find a TransactionHistory
+     * Find zero or one TransactionItem that matches the filter.
+     * @param {TransactionItemFindUniqueArgs} args - Arguments to find a TransactionItem
      * @example
-     * // Get one TransactionHistory
-     * const transactionHistory = await prisma.transactionHistory.findUnique({
+     * // Get one TransactionItem
+     * const transactionItem = await prisma.transactionItem.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends TransactionHistoryFindUniqueArgs>(args: SelectSubset<T, TransactionHistoryFindUniqueArgs<ExtArgs>>): Prisma__TransactionHistoryClient<$Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends TransactionItemFindUniqueArgs>(args: SelectSubset<T, TransactionItemFindUniqueArgs<ExtArgs>>): Prisma__TransactionItemClient<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one TransactionHistory that matches the filter or throw an error with `error.code='P2025'`
+     * Find one TransactionItem that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {TransactionHistoryFindUniqueOrThrowArgs} args - Arguments to find a TransactionHistory
+     * @param {TransactionItemFindUniqueOrThrowArgs} args - Arguments to find a TransactionItem
      * @example
-     * // Get one TransactionHistory
-     * const transactionHistory = await prisma.transactionHistory.findUniqueOrThrow({
+     * // Get one TransactionItem
+     * const transactionItem = await prisma.transactionItem.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends TransactionHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, TransactionHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TransactionHistoryClient<$Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends TransactionItemFindUniqueOrThrowArgs>(args: SelectSubset<T, TransactionItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TransactionItemClient<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first TransactionHistory that matches the filter.
+     * Find the first TransactionItem that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TransactionHistoryFindFirstArgs} args - Arguments to find a TransactionHistory
+     * @param {TransactionItemFindFirstArgs} args - Arguments to find a TransactionItem
      * @example
-     * // Get one TransactionHistory
-     * const transactionHistory = await prisma.transactionHistory.findFirst({
+     * // Get one TransactionItem
+     * const transactionItem = await prisma.transactionItem.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends TransactionHistoryFindFirstArgs>(args?: SelectSubset<T, TransactionHistoryFindFirstArgs<ExtArgs>>): Prisma__TransactionHistoryClient<$Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends TransactionItemFindFirstArgs>(args?: SelectSubset<T, TransactionItemFindFirstArgs<ExtArgs>>): Prisma__TransactionItemClient<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first TransactionHistory that matches the filter or
+     * Find the first TransactionItem that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TransactionHistoryFindFirstOrThrowArgs} args - Arguments to find a TransactionHistory
+     * @param {TransactionItemFindFirstOrThrowArgs} args - Arguments to find a TransactionItem
      * @example
-     * // Get one TransactionHistory
-     * const transactionHistory = await prisma.transactionHistory.findFirstOrThrow({
+     * // Get one TransactionItem
+     * const transactionItem = await prisma.transactionItem.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends TransactionHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, TransactionHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__TransactionHistoryClient<$Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends TransactionItemFindFirstOrThrowArgs>(args?: SelectSubset<T, TransactionItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__TransactionItemClient<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more TransactionHistories that matches the filter.
+     * Find zero or more TransactionItems that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TransactionHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {TransactionItemFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all TransactionHistories
-     * const transactionHistories = await prisma.transactionHistory.findMany()
+     * // Get all TransactionItems
+     * const transactionItems = await prisma.transactionItem.findMany()
      * 
-     * // Get first 10 TransactionHistories
-     * const transactionHistories = await prisma.transactionHistory.findMany({ take: 10 })
+     * // Get first 10 TransactionItems
+     * const transactionItems = await prisma.transactionItem.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const transactionHistoryWithIdOnly = await prisma.transactionHistory.findMany({ select: { id: true } })
+     * const transactionItemWithIdOnly = await prisma.transactionItem.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends TransactionHistoryFindManyArgs>(args?: SelectSubset<T, TransactionHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends TransactionItemFindManyArgs>(args?: SelectSubset<T, TransactionItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a TransactionHistory.
-     * @param {TransactionHistoryCreateArgs} args - Arguments to create a TransactionHistory.
+     * Create a TransactionItem.
+     * @param {TransactionItemCreateArgs} args - Arguments to create a TransactionItem.
      * @example
-     * // Create one TransactionHistory
-     * const TransactionHistory = await prisma.transactionHistory.create({
+     * // Create one TransactionItem
+     * const TransactionItem = await prisma.transactionItem.create({
      *   data: {
-     *     // ... data to create a TransactionHistory
+     *     // ... data to create a TransactionItem
      *   }
      * })
      * 
      */
-    create<T extends TransactionHistoryCreateArgs>(args: SelectSubset<T, TransactionHistoryCreateArgs<ExtArgs>>): Prisma__TransactionHistoryClient<$Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends TransactionItemCreateArgs>(args: SelectSubset<T, TransactionItemCreateArgs<ExtArgs>>): Prisma__TransactionItemClient<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many TransactionHistories.
-     * @param {TransactionHistoryCreateManyArgs} args - Arguments to create many TransactionHistories.
+     * Create many TransactionItems.
+     * @param {TransactionItemCreateManyArgs} args - Arguments to create many TransactionItems.
      * @example
-     * // Create many TransactionHistories
-     * const transactionHistory = await prisma.transactionHistory.createMany({
+     * // Create many TransactionItems
+     * const transactionItem = await prisma.transactionItem.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends TransactionHistoryCreateManyArgs>(args?: SelectSubset<T, TransactionHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends TransactionItemCreateManyArgs>(args?: SelectSubset<T, TransactionItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many TransactionHistories and returns the data saved in the database.
-     * @param {TransactionHistoryCreateManyAndReturnArgs} args - Arguments to create many TransactionHistories.
+     * Create many TransactionItems and returns the data saved in the database.
+     * @param {TransactionItemCreateManyAndReturnArgs} args - Arguments to create many TransactionItems.
      * @example
-     * // Create many TransactionHistories
-     * const transactionHistory = await prisma.transactionHistory.createManyAndReturn({
+     * // Create many TransactionItems
+     * const transactionItem = await prisma.transactionItem.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many TransactionHistories and only return the `id`
-     * const transactionHistoryWithIdOnly = await prisma.transactionHistory.createManyAndReturn({
+     * // Create many TransactionItems and only return the `id`
+     * const transactionItemWithIdOnly = await prisma.transactionItem.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -12315,28 +12873,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends TransactionHistoryCreateManyAndReturnArgs>(args?: SelectSubset<T, TransactionHistoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends TransactionItemCreateManyAndReturnArgs>(args?: SelectSubset<T, TransactionItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a TransactionHistory.
-     * @param {TransactionHistoryDeleteArgs} args - Arguments to delete one TransactionHistory.
+     * Delete a TransactionItem.
+     * @param {TransactionItemDeleteArgs} args - Arguments to delete one TransactionItem.
      * @example
-     * // Delete one TransactionHistory
-     * const TransactionHistory = await prisma.transactionHistory.delete({
+     * // Delete one TransactionItem
+     * const TransactionItem = await prisma.transactionItem.delete({
      *   where: {
-     *     // ... filter to delete one TransactionHistory
+     *     // ... filter to delete one TransactionItem
      *   }
      * })
      * 
      */
-    delete<T extends TransactionHistoryDeleteArgs>(args: SelectSubset<T, TransactionHistoryDeleteArgs<ExtArgs>>): Prisma__TransactionHistoryClient<$Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends TransactionItemDeleteArgs>(args: SelectSubset<T, TransactionItemDeleteArgs<ExtArgs>>): Prisma__TransactionItemClient<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one TransactionHistory.
-     * @param {TransactionHistoryUpdateArgs} args - Arguments to update one TransactionHistory.
+     * Update one TransactionItem.
+     * @param {TransactionItemUpdateArgs} args - Arguments to update one TransactionItem.
      * @example
-     * // Update one TransactionHistory
-     * const transactionHistory = await prisma.transactionHistory.update({
+     * // Update one TransactionItem
+     * const transactionItem = await prisma.transactionItem.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -12346,30 +12904,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends TransactionHistoryUpdateArgs>(args: SelectSubset<T, TransactionHistoryUpdateArgs<ExtArgs>>): Prisma__TransactionHistoryClient<$Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends TransactionItemUpdateArgs>(args: SelectSubset<T, TransactionItemUpdateArgs<ExtArgs>>): Prisma__TransactionItemClient<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more TransactionHistories.
-     * @param {TransactionHistoryDeleteManyArgs} args - Arguments to filter TransactionHistories to delete.
+     * Delete zero or more TransactionItems.
+     * @param {TransactionItemDeleteManyArgs} args - Arguments to filter TransactionItems to delete.
      * @example
-     * // Delete a few TransactionHistories
-     * const { count } = await prisma.transactionHistory.deleteMany({
+     * // Delete a few TransactionItems
+     * const { count } = await prisma.transactionItem.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends TransactionHistoryDeleteManyArgs>(args?: SelectSubset<T, TransactionHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends TransactionItemDeleteManyArgs>(args?: SelectSubset<T, TransactionItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more TransactionHistories.
+     * Update zero or more TransactionItems.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TransactionHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {TransactionItemUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many TransactionHistories
-     * const transactionHistory = await prisma.transactionHistory.updateMany({
+     * // Update many TransactionItems
+     * const transactionItem = await prisma.transactionItem.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -12379,14 +12937,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends TransactionHistoryUpdateManyArgs>(args: SelectSubset<T, TransactionHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends TransactionItemUpdateManyArgs>(args: SelectSubset<T, TransactionItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more TransactionHistories and returns the data updated in the database.
-     * @param {TransactionHistoryUpdateManyAndReturnArgs} args - Arguments to update many TransactionHistories.
+     * Update zero or more TransactionItems and returns the data updated in the database.
+     * @param {TransactionItemUpdateManyAndReturnArgs} args - Arguments to update many TransactionItems.
      * @example
-     * // Update many TransactionHistories
-     * const transactionHistory = await prisma.transactionHistory.updateManyAndReturn({
+     * // Update many TransactionItems
+     * const transactionItem = await prisma.transactionItem.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -12395,8 +12953,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more TransactionHistories and only return the `id`
-     * const transactionHistoryWithIdOnly = await prisma.transactionHistory.updateManyAndReturn({
+     * // Update zero or more TransactionItems and only return the `id`
+     * const transactionItemWithIdOnly = await prisma.transactionItem.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -12409,56 +12967,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends TransactionHistoryUpdateManyAndReturnArgs>(args: SelectSubset<T, TransactionHistoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends TransactionItemUpdateManyAndReturnArgs>(args: SelectSubset<T, TransactionItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one TransactionHistory.
-     * @param {TransactionHistoryUpsertArgs} args - Arguments to update or create a TransactionHistory.
+     * Create or update one TransactionItem.
+     * @param {TransactionItemUpsertArgs} args - Arguments to update or create a TransactionItem.
      * @example
-     * // Update or create a TransactionHistory
-     * const transactionHistory = await prisma.transactionHistory.upsert({
+     * // Update or create a TransactionItem
+     * const transactionItem = await prisma.transactionItem.upsert({
      *   create: {
-     *     // ... data to create a TransactionHistory
+     *     // ... data to create a TransactionItem
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the TransactionHistory we want to update
+     *     // ... the filter for the TransactionItem we want to update
      *   }
      * })
      */
-    upsert<T extends TransactionHistoryUpsertArgs>(args: SelectSubset<T, TransactionHistoryUpsertArgs<ExtArgs>>): Prisma__TransactionHistoryClient<$Result.GetResult<Prisma.$TransactionHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends TransactionItemUpsertArgs>(args: SelectSubset<T, TransactionItemUpsertArgs<ExtArgs>>): Prisma__TransactionItemClient<$Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of TransactionHistories.
+     * Count the number of TransactionItems.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TransactionHistoryCountArgs} args - Arguments to filter TransactionHistories to count.
+     * @param {TransactionItemCountArgs} args - Arguments to filter TransactionItems to count.
      * @example
-     * // Count the number of TransactionHistories
-     * const count = await prisma.transactionHistory.count({
+     * // Count the number of TransactionItems
+     * const count = await prisma.transactionItem.count({
      *   where: {
-     *     // ... the filter for the TransactionHistories we want to count
+     *     // ... the filter for the TransactionItems we want to count
      *   }
      * })
     **/
-    count<T extends TransactionHistoryCountArgs>(
-      args?: Subset<T, TransactionHistoryCountArgs>,
+    count<T extends TransactionItemCountArgs>(
+      args?: Subset<T, TransactionItemCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], TransactionHistoryCountAggregateOutputType>
+          : GetScalarType<T['select'], TransactionItemCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a TransactionHistory.
+     * Allows you to perform aggregations operations on a TransactionItem.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TransactionHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {TransactionItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -12478,13 +13036,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends TransactionHistoryAggregateArgs>(args: Subset<T, TransactionHistoryAggregateArgs>): Prisma.PrismaPromise<GetTransactionHistoryAggregateType<T>>
+    aggregate<T extends TransactionItemAggregateArgs>(args: Subset<T, TransactionItemAggregateArgs>): Prisma.PrismaPromise<GetTransactionItemAggregateType<T>>
 
     /**
-     * Group by TransactionHistory.
+     * Group by TransactionItem.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {TransactionHistoryGroupByArgs} args - Group by arguments.
+     * @param {TransactionItemGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -12499,14 +13057,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends TransactionHistoryGroupByArgs,
+      T extends TransactionItemGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: TransactionHistoryGroupByArgs['orderBy'] }
-        : { orderBy?: TransactionHistoryGroupByArgs['orderBy'] },
+        ? { orderBy: TransactionItemGroupByArgs['orderBy'] }
+        : { orderBy?: TransactionItemGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -12555,22 +13113,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, TransactionHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTransactionHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, TransactionItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTransactionItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the TransactionHistory model
+   * Fields of the TransactionItem model
    */
-  readonly fields: TransactionHistoryFieldRefs;
+  readonly fields: TransactionItemFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for TransactionHistory.
+   * The delegate class that acts as a "Promise-like" for TransactionItem.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__TransactionHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__TransactionItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     transaction<T extends TransactionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TransactionDefaultArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12597,422 +13156,429 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the TransactionHistory model
+   * Fields of the TransactionItem model
    */
-  interface TransactionHistoryFieldRefs {
-    readonly id: FieldRef<"TransactionHistory", 'String'>
-    readonly transactionId: FieldRef<"TransactionHistory", 'String'>
+  interface TransactionItemFieldRefs {
+    readonly id: FieldRef<"TransactionItem", 'String'>
+    readonly transactionId: FieldRef<"TransactionItem", 'String'>
+    readonly productId: FieldRef<"TransactionItem", 'String'>
+    readonly quantity: FieldRef<"TransactionItem", 'Int'>
+    readonly unitPrice: FieldRef<"TransactionItem", 'Float'>
+    readonly subTotal: FieldRef<"TransactionItem", 'Float'>
+    readonly createdAt: FieldRef<"TransactionItem", 'DateTime'>
+    readonly updatedAt: FieldRef<"TransactionItem", 'DateTime'>
+    readonly deletedAt: FieldRef<"TransactionItem", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * TransactionHistory findUnique
+   * TransactionItem findUnique
    */
-  export type TransactionHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelect<ExtArgs> | null
+    select?: TransactionItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryInclude<ExtArgs> | null
+    include?: TransactionItemInclude<ExtArgs> | null
     /**
-     * Filter, which TransactionHistory to fetch.
+     * Filter, which TransactionItem to fetch.
      */
-    where: TransactionHistoryWhereUniqueInput
+    where: TransactionItemWhereUniqueInput
   }
 
   /**
-   * TransactionHistory findUniqueOrThrow
+   * TransactionItem findUniqueOrThrow
    */
-  export type TransactionHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelect<ExtArgs> | null
+    select?: TransactionItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryInclude<ExtArgs> | null
+    include?: TransactionItemInclude<ExtArgs> | null
     /**
-     * Filter, which TransactionHistory to fetch.
+     * Filter, which TransactionItem to fetch.
      */
-    where: TransactionHistoryWhereUniqueInput
+    where: TransactionItemWhereUniqueInput
   }
 
   /**
-   * TransactionHistory findFirst
+   * TransactionItem findFirst
    */
-  export type TransactionHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelect<ExtArgs> | null
+    select?: TransactionItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryInclude<ExtArgs> | null
+    include?: TransactionItemInclude<ExtArgs> | null
     /**
-     * Filter, which TransactionHistory to fetch.
+     * Filter, which TransactionItem to fetch.
      */
-    where?: TransactionHistoryWhereInput
+    where?: TransactionItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of TransactionHistories to fetch.
+     * Determine the order of TransactionItems to fetch.
      */
-    orderBy?: TransactionHistoryOrderByWithRelationInput | TransactionHistoryOrderByWithRelationInput[]
+    orderBy?: TransactionItemOrderByWithRelationInput | TransactionItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for TransactionHistories.
+     * Sets the position for searching for TransactionItems.
      */
-    cursor?: TransactionHistoryWhereUniqueInput
+    cursor?: TransactionItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` TransactionHistories from the position of the cursor.
+     * Take `±n` TransactionItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` TransactionHistories.
+     * Skip the first `n` TransactionItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of TransactionHistories.
+     * Filter by unique combinations of TransactionItems.
      */
-    distinct?: TransactionHistoryScalarFieldEnum | TransactionHistoryScalarFieldEnum[]
+    distinct?: TransactionItemScalarFieldEnum | TransactionItemScalarFieldEnum[]
   }
 
   /**
-   * TransactionHistory findFirstOrThrow
+   * TransactionItem findFirstOrThrow
    */
-  export type TransactionHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelect<ExtArgs> | null
+    select?: TransactionItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryInclude<ExtArgs> | null
+    include?: TransactionItemInclude<ExtArgs> | null
     /**
-     * Filter, which TransactionHistory to fetch.
+     * Filter, which TransactionItem to fetch.
      */
-    where?: TransactionHistoryWhereInput
+    where?: TransactionItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of TransactionHistories to fetch.
+     * Determine the order of TransactionItems to fetch.
      */
-    orderBy?: TransactionHistoryOrderByWithRelationInput | TransactionHistoryOrderByWithRelationInput[]
+    orderBy?: TransactionItemOrderByWithRelationInput | TransactionItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for TransactionHistories.
+     * Sets the position for searching for TransactionItems.
      */
-    cursor?: TransactionHistoryWhereUniqueInput
+    cursor?: TransactionItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` TransactionHistories from the position of the cursor.
+     * Take `±n` TransactionItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` TransactionHistories.
+     * Skip the first `n` TransactionItems.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of TransactionHistories.
+     * Filter by unique combinations of TransactionItems.
      */
-    distinct?: TransactionHistoryScalarFieldEnum | TransactionHistoryScalarFieldEnum[]
+    distinct?: TransactionItemScalarFieldEnum | TransactionItemScalarFieldEnum[]
   }
 
   /**
-   * TransactionHistory findMany
+   * TransactionItem findMany
    */
-  export type TransactionHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelect<ExtArgs> | null
+    select?: TransactionItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryInclude<ExtArgs> | null
+    include?: TransactionItemInclude<ExtArgs> | null
     /**
-     * Filter, which TransactionHistories to fetch.
+     * Filter, which TransactionItems to fetch.
      */
-    where?: TransactionHistoryWhereInput
+    where?: TransactionItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of TransactionHistories to fetch.
+     * Determine the order of TransactionItems to fetch.
      */
-    orderBy?: TransactionHistoryOrderByWithRelationInput | TransactionHistoryOrderByWithRelationInput[]
+    orderBy?: TransactionItemOrderByWithRelationInput | TransactionItemOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing TransactionHistories.
+     * Sets the position for listing TransactionItems.
      */
-    cursor?: TransactionHistoryWhereUniqueInput
+    cursor?: TransactionItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` TransactionHistories from the position of the cursor.
+     * Take `±n` TransactionItems from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` TransactionHistories.
+     * Skip the first `n` TransactionItems.
      */
     skip?: number
-    distinct?: TransactionHistoryScalarFieldEnum | TransactionHistoryScalarFieldEnum[]
+    distinct?: TransactionItemScalarFieldEnum | TransactionItemScalarFieldEnum[]
   }
 
   /**
-   * TransactionHistory create
+   * TransactionItem create
    */
-  export type TransactionHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelect<ExtArgs> | null
+    select?: TransactionItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryInclude<ExtArgs> | null
+    include?: TransactionItemInclude<ExtArgs> | null
     /**
-     * The data needed to create a TransactionHistory.
+     * The data needed to create a TransactionItem.
      */
-    data: XOR<TransactionHistoryCreateInput, TransactionHistoryUncheckedCreateInput>
+    data: XOR<TransactionItemCreateInput, TransactionItemUncheckedCreateInput>
   }
 
   /**
-   * TransactionHistory createMany
+   * TransactionItem createMany
    */
-  export type TransactionHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many TransactionHistories.
+     * The data used to create many TransactionItems.
      */
-    data: TransactionHistoryCreateManyInput | TransactionHistoryCreateManyInput[]
+    data: TransactionItemCreateManyInput | TransactionItemCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * TransactionHistory createManyAndReturn
+   * TransactionItem createManyAndReturn
    */
-  export type TransactionHistoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelectCreateManyAndReturn<ExtArgs> | null
+    select?: TransactionItemSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
-     * The data used to create many TransactionHistories.
+     * The data used to create many TransactionItems.
      */
-    data: TransactionHistoryCreateManyInput | TransactionHistoryCreateManyInput[]
+    data: TransactionItemCreateManyInput | TransactionItemCreateManyInput[]
     skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryIncludeCreateManyAndReturn<ExtArgs> | null
+    include?: TransactionItemIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * TransactionHistory update
+   * TransactionItem update
    */
-  export type TransactionHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelect<ExtArgs> | null
+    select?: TransactionItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryInclude<ExtArgs> | null
+    include?: TransactionItemInclude<ExtArgs> | null
     /**
-     * The data needed to update a TransactionHistory.
+     * The data needed to update a TransactionItem.
      */
-    data: XOR<TransactionHistoryUpdateInput, TransactionHistoryUncheckedUpdateInput>
+    data: XOR<TransactionItemUpdateInput, TransactionItemUncheckedUpdateInput>
     /**
-     * Choose, which TransactionHistory to update.
+     * Choose, which TransactionItem to update.
      */
-    where: TransactionHistoryWhereUniqueInput
+    where: TransactionItemWhereUniqueInput
   }
 
   /**
-   * TransactionHistory updateMany
+   * TransactionItem updateMany
    */
-  export type TransactionHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update TransactionHistories.
+     * The data used to update TransactionItems.
      */
-    data: XOR<TransactionHistoryUpdateManyMutationInput, TransactionHistoryUncheckedUpdateManyInput>
+    data: XOR<TransactionItemUpdateManyMutationInput, TransactionItemUncheckedUpdateManyInput>
     /**
-     * Filter which TransactionHistories to update
+     * Filter which TransactionItems to update
      */
-    where?: TransactionHistoryWhereInput
+    where?: TransactionItemWhereInput
     /**
-     * Limit how many TransactionHistories to update.
+     * Limit how many TransactionItems to update.
      */
     limit?: number
   }
 
   /**
-   * TransactionHistory updateManyAndReturn
+   * TransactionItem updateManyAndReturn
    */
-  export type TransactionHistoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelectUpdateManyAndReturn<ExtArgs> | null
+    select?: TransactionItemSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
-     * The data used to update TransactionHistories.
+     * The data used to update TransactionItems.
      */
-    data: XOR<TransactionHistoryUpdateManyMutationInput, TransactionHistoryUncheckedUpdateManyInput>
+    data: XOR<TransactionItemUpdateManyMutationInput, TransactionItemUncheckedUpdateManyInput>
     /**
-     * Filter which TransactionHistories to update
+     * Filter which TransactionItems to update
      */
-    where?: TransactionHistoryWhereInput
+    where?: TransactionItemWhereInput
     /**
-     * Limit how many TransactionHistories to update.
+     * Limit how many TransactionItems to update.
      */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryIncludeUpdateManyAndReturn<ExtArgs> | null
+    include?: TransactionItemIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
-   * TransactionHistory upsert
+   * TransactionItem upsert
    */
-  export type TransactionHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelect<ExtArgs> | null
+    select?: TransactionItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryInclude<ExtArgs> | null
+    include?: TransactionItemInclude<ExtArgs> | null
     /**
-     * The filter to search for the TransactionHistory to update in case it exists.
+     * The filter to search for the TransactionItem to update in case it exists.
      */
-    where: TransactionHistoryWhereUniqueInput
+    where: TransactionItemWhereUniqueInput
     /**
-     * In case the TransactionHistory found by the `where` argument doesn't exist, create a new TransactionHistory with this data.
+     * In case the TransactionItem found by the `where` argument doesn't exist, create a new TransactionItem with this data.
      */
-    create: XOR<TransactionHistoryCreateInput, TransactionHistoryUncheckedCreateInput>
+    create: XOR<TransactionItemCreateInput, TransactionItemUncheckedCreateInput>
     /**
-     * In case the TransactionHistory was found with the provided `where` argument, update it with this data.
+     * In case the TransactionItem was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<TransactionHistoryUpdateInput, TransactionHistoryUncheckedUpdateInput>
+    update: XOR<TransactionItemUpdateInput, TransactionItemUncheckedUpdateInput>
   }
 
   /**
-   * TransactionHistory delete
+   * TransactionItem delete
    */
-  export type TransactionHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelect<ExtArgs> | null
+    select?: TransactionItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryInclude<ExtArgs> | null
+    include?: TransactionItemInclude<ExtArgs> | null
     /**
-     * Filter which TransactionHistory to delete.
+     * Filter which TransactionItem to delete.
      */
-    where: TransactionHistoryWhereUniqueInput
+    where: TransactionItemWhereUniqueInput
   }
 
   /**
-   * TransactionHistory deleteMany
+   * TransactionItem deleteMany
    */
-  export type TransactionHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which TransactionHistories to delete
+     * Filter which TransactionItems to delete
      */
-    where?: TransactionHistoryWhereInput
+    where?: TransactionItemWhereInput
     /**
-     * Limit how many TransactionHistories to delete.
+     * Limit how many TransactionItems to delete.
      */
     limit?: number
   }
 
   /**
-   * TransactionHistory without action
+   * TransactionItem without action
    */
-  export type TransactionHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TransactionItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the TransactionHistory
+     * Select specific fields to fetch from the TransactionItem
      */
-    select?: TransactionHistorySelect<ExtArgs> | null
+    select?: TransactionItemSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the TransactionHistory
+     * Omit specific fields from the TransactionItem
      */
-    omit?: TransactionHistoryOmit<ExtArgs> | null
+    omit?: TransactionItemOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: TransactionHistoryInclude<ExtArgs> | null
+    include?: TransactionItemInclude<ExtArgs> | null
   }
 
 
@@ -13030,17 +13596,6 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-  export const SampleScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    code: 'code',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type SampleScalarFieldEnum = (typeof SampleScalarFieldEnum)[keyof typeof SampleScalarFieldEnum]
-
-
   export const CashierScalarFieldEnum: {
     id: 'id',
     firstName: 'firstName',
@@ -13049,16 +13604,13 @@ export namespace Prisma {
     password: 'password',
     phoneNumber: 'phoneNumber',
     gender: 'gender',
-    dateOfBirth: 'dateOfBirth',
     isEmailVerified: 'isEmailVerified',
-    passwordResetCount: 'passwordResetCount',
-    emailChangeCount: 'emailChangeCount',
     avatarImgUrl: 'avatarImgUrl',
     cldPublicId: 'cldPublicId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt',
-    shiftId: 'shiftId'
+    shift: 'shift'
   };
 
   export type CashierScalarFieldEnum = (typeof CashierScalarFieldEnum)[keyof typeof CashierScalarFieldEnum]
@@ -13072,8 +13624,6 @@ export namespace Prisma {
     password: 'password',
     phoneNumber: 'phoneNumber',
     isEmailVerified: 'isEmailVerified',
-    passwordResetCount: 'passwordResetCount',
-    emailChangeCount: 'emailChangeCount',
     avatarImgUrl: 'avatarImgUrl',
     cldPublicId: 'cldPublicId',
     createdAt: 'createdAt',
@@ -13084,16 +13634,19 @@ export namespace Prisma {
   export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
 
 
-  export const ShiftScalarFieldEnum: {
+  export const CashierBalanceHistoryScalarFieldEnum: {
     id: 'id',
+    cashierId: 'cashierId',
     startTime: 'startTime',
     endTime: 'endTime',
+    startingCash: 'startingCash',
+    endingCash: 'endingCash',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
   };
 
-  export type ShiftScalarFieldEnum = (typeof ShiftScalarFieldEnum)[keyof typeof ShiftScalarFieldEnum]
+  export type CashierBalanceHistoryScalarFieldEnum = (typeof CashierBalanceHistoryScalarFieldEnum)[keyof typeof CashierBalanceHistoryScalarFieldEnum]
 
 
   export const ProductScalarFieldEnum: {
@@ -13115,7 +13668,6 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     slug: 'slug',
-    description: 'description',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -13137,7 +13689,9 @@ export namespace Prisma {
 
   export const CartScalarFieldEnum: {
     id: 'id',
+    customerName: 'customerName',
     cashierId: 'cashierId',
+    status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -13146,10 +13700,28 @@ export namespace Prisma {
   export type CartScalarFieldEnum = (typeof CartScalarFieldEnum)[keyof typeof CartScalarFieldEnum]
 
 
+  export const CartItemScalarFieldEnum: {
+    id: 'id',
+    cartId: 'cartId',
+    productId: 'productId',
+    quantity: 'quantity',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type CartItemScalarFieldEnum = (typeof CartItemScalarFieldEnum)[keyof typeof CartItemScalarFieldEnum]
+
+
   export const TransactionScalarFieldEnum: {
     id: 'id',
+    cartId: 'cartId',
+    cashierId: 'cashierId',
+    cashierBalanceHistoryId: 'cashierBalanceHistoryId',
     paymentType: 'paymentType',
-    paymentAmount: 'paymentAmount',
+    debitCardNumber: 'debitCardNumber',
+    totalAmount: 'totalAmount',
+    changeAmount: 'changeAmount',
     paymentDate: 'paymentDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -13159,12 +13731,19 @@ export namespace Prisma {
   export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
 
 
-  export const TransactionHistoryScalarFieldEnum: {
+  export const TransactionItemScalarFieldEnum: {
     id: 'id',
-    transactionId: 'transactionId'
+    transactionId: 'transactionId',
+    productId: 'productId',
+    quantity: 'quantity',
+    unitPrice: 'unitPrice',
+    subTotal: 'subTotal',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
   };
 
-  export type TransactionHistoryScalarFieldEnum = (typeof TransactionHistoryScalarFieldEnum)[keyof typeof TransactionHistoryScalarFieldEnum]
+  export type TransactionItemScalarFieldEnum = (typeof TransactionItemScalarFieldEnum)[keyof typeof TransactionItemScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -13197,20 +13776,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-  /**
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
@@ -13221,20 +13786,6 @@ export namespace Prisma {
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'DateTime'
-   */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-  /**
-   * Reference to a field of type 'DateTime[]'
-   */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -13260,6 +13811,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ShiftSession'
+   */
+  export type EnumShiftSessionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShiftSession'>
+    
+
+
+  /**
+   * Reference to a field of type 'ShiftSession[]'
+   */
+  export type ListEnumShiftSessionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShiftSession[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -13270,6 +13849,34 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CartStatus'
+   */
+  export type EnumCartStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CartStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'CartStatus[]'
+   */
+  export type ListEnumCartStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CartStatus[]'>
     
 
 
@@ -13290,60 +13897,6 @@ export namespace Prisma {
    */
 
 
-  export type SampleWhereInput = {
-    AND?: SampleWhereInput | SampleWhereInput[]
-    OR?: SampleWhereInput[]
-    NOT?: SampleWhereInput | SampleWhereInput[]
-    id?: IntFilter<"Sample"> | number
-    name?: StringFilter<"Sample"> | string
-    code?: StringFilter<"Sample"> | string
-    createdAt?: DateTimeFilter<"Sample"> | Date | string
-    updatedAt?: DateTimeFilter<"Sample"> | Date | string
-  }
-
-  export type SampleOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    code?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type SampleWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    code?: string
-    AND?: SampleWhereInput | SampleWhereInput[]
-    OR?: SampleWhereInput[]
-    NOT?: SampleWhereInput | SampleWhereInput[]
-    name?: StringFilter<"Sample"> | string
-    createdAt?: DateTimeFilter<"Sample"> | Date | string
-    updatedAt?: DateTimeFilter<"Sample"> | Date | string
-  }, "id" | "code">
-
-  export type SampleOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    code?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: SampleCountOrderByAggregateInput
-    _avg?: SampleAvgOrderByAggregateInput
-    _max?: SampleMaxOrderByAggregateInput
-    _min?: SampleMinOrderByAggregateInput
-    _sum?: SampleSumOrderByAggregateInput
-  }
-
-  export type SampleScalarWhereWithAggregatesInput = {
-    AND?: SampleScalarWhereWithAggregatesInput | SampleScalarWhereWithAggregatesInput[]
-    OR?: SampleScalarWhereWithAggregatesInput[]
-    NOT?: SampleScalarWhereWithAggregatesInput | SampleScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Sample"> | number
-    name?: StringWithAggregatesFilter<"Sample"> | string
-    code?: StringWithAggregatesFilter<"Sample"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"Sample"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Sample"> | Date | string
-  }
-
   export type CashierWhereInput = {
     AND?: CashierWhereInput | CashierWhereInput[]
     OR?: CashierWhereInput[]
@@ -13355,18 +13908,16 @@ export namespace Prisma {
     password?: StringFilter<"Cashier"> | string
     phoneNumber?: StringNullableFilter<"Cashier"> | string | null
     gender?: EnumGenderNullableFilter<"Cashier"> | $Enums.Gender | null
-    dateOfBirth?: StringNullableFilter<"Cashier"> | string | null
     isEmailVerified?: BoolFilter<"Cashier"> | boolean
-    passwordResetCount?: IntFilter<"Cashier"> | number
-    emailChangeCount?: IntFilter<"Cashier"> | number
     avatarImgUrl?: StringNullableFilter<"Cashier"> | string | null
     cldPublicId?: StringNullableFilter<"Cashier"> | string | null
     createdAt?: DateTimeFilter<"Cashier"> | Date | string
     updatedAt?: DateTimeFilter<"Cashier"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Cashier"> | Date | string | null
-    shiftId?: StringNullableFilter<"Cashier"> | string | null
-    shift?: XOR<ShiftNullableScalarRelationFilter, ShiftWhereInput> | null
-    cart?: XOR<CartNullableScalarRelationFilter, CartWhereInput> | null
+    shift?: EnumShiftSessionFilter<"Cashier"> | $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryListRelationFilter
+    cart?: CartListRelationFilter
+    transaction?: TransactionListRelationFilter
   }
 
   export type CashierOrderByWithRelationInput = {
@@ -13377,18 +13928,16 @@ export namespace Prisma {
     password?: SortOrder
     phoneNumber?: SortOrderInput | SortOrder
     gender?: SortOrderInput | SortOrder
-    dateOfBirth?: SortOrderInput | SortOrder
     isEmailVerified?: SortOrder
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
     avatarImgUrl?: SortOrderInput | SortOrder
     cldPublicId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    shiftId?: SortOrderInput | SortOrder
-    shift?: ShiftOrderByWithRelationInput
-    cart?: CartOrderByWithRelationInput
+    shift?: SortOrder
+    cashierBalanceHistory?: CashierBalanceHistoryOrderByRelationAggregateInput
+    cart?: CartOrderByRelationAggregateInput
+    transaction?: TransactionOrderByRelationAggregateInput
   }
 
   export type CashierWhereUniqueInput = Prisma.AtLeast<{
@@ -13402,18 +13951,16 @@ export namespace Prisma {
     lastName?: StringNullableFilter<"Cashier"> | string | null
     password?: StringFilter<"Cashier"> | string
     gender?: EnumGenderNullableFilter<"Cashier"> | $Enums.Gender | null
-    dateOfBirth?: StringNullableFilter<"Cashier"> | string | null
     isEmailVerified?: BoolFilter<"Cashier"> | boolean
-    passwordResetCount?: IntFilter<"Cashier"> | number
-    emailChangeCount?: IntFilter<"Cashier"> | number
     avatarImgUrl?: StringNullableFilter<"Cashier"> | string | null
     cldPublicId?: StringNullableFilter<"Cashier"> | string | null
     createdAt?: DateTimeFilter<"Cashier"> | Date | string
     updatedAt?: DateTimeFilter<"Cashier"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Cashier"> | Date | string | null
-    shiftId?: StringNullableFilter<"Cashier"> | string | null
-    shift?: XOR<ShiftNullableScalarRelationFilter, ShiftWhereInput> | null
-    cart?: XOR<CartNullableScalarRelationFilter, CartWhereInput> | null
+    shift?: EnumShiftSessionFilter<"Cashier"> | $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryListRelationFilter
+    cart?: CartListRelationFilter
+    transaction?: TransactionListRelationFilter
   }, "id" | "email" | "phoneNumber">
 
   export type CashierOrderByWithAggregationInput = {
@@ -13424,21 +13971,16 @@ export namespace Prisma {
     password?: SortOrder
     phoneNumber?: SortOrderInput | SortOrder
     gender?: SortOrderInput | SortOrder
-    dateOfBirth?: SortOrderInput | SortOrder
     isEmailVerified?: SortOrder
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
     avatarImgUrl?: SortOrderInput | SortOrder
     cldPublicId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    shiftId?: SortOrderInput | SortOrder
+    shift?: SortOrder
     _count?: CashierCountOrderByAggregateInput
-    _avg?: CashierAvgOrderByAggregateInput
     _max?: CashierMaxOrderByAggregateInput
     _min?: CashierMinOrderByAggregateInput
-    _sum?: CashierSumOrderByAggregateInput
   }
 
   export type CashierScalarWhereWithAggregatesInput = {
@@ -13452,16 +13994,13 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"Cashier"> | string
     phoneNumber?: StringNullableWithAggregatesFilter<"Cashier"> | string | null
     gender?: EnumGenderNullableWithAggregatesFilter<"Cashier"> | $Enums.Gender | null
-    dateOfBirth?: StringNullableWithAggregatesFilter<"Cashier"> | string | null
     isEmailVerified?: BoolWithAggregatesFilter<"Cashier"> | boolean
-    passwordResetCount?: IntWithAggregatesFilter<"Cashier"> | number
-    emailChangeCount?: IntWithAggregatesFilter<"Cashier"> | number
     avatarImgUrl?: StringNullableWithAggregatesFilter<"Cashier"> | string | null
     cldPublicId?: StringNullableWithAggregatesFilter<"Cashier"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Cashier"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Cashier"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Cashier"> | Date | string | null
-    shiftId?: StringNullableWithAggregatesFilter<"Cashier"> | string | null
+    shift?: EnumShiftSessionWithAggregatesFilter<"Cashier"> | $Enums.ShiftSession
   }
 
   export type AdminWhereInput = {
@@ -13475,8 +14014,6 @@ export namespace Prisma {
     password?: StringFilter<"Admin"> | string
     phoneNumber?: StringFilter<"Admin"> | string
     isEmailVerified?: BoolFilter<"Admin"> | boolean
-    passwordResetCount?: IntFilter<"Admin"> | number
-    emailChangeCount?: IntFilter<"Admin"> | number
     avatarImgUrl?: StringNullableFilter<"Admin"> | string | null
     cldPublicId?: StringNullableFilter<"Admin"> | string | null
     createdAt?: DateTimeFilter<"Admin"> | Date | string
@@ -13492,8 +14029,6 @@ export namespace Prisma {
     password?: SortOrder
     phoneNumber?: SortOrder
     isEmailVerified?: SortOrder
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
     avatarImgUrl?: SortOrderInput | SortOrder
     cldPublicId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -13512,8 +14047,6 @@ export namespace Prisma {
     lastName?: StringNullableFilter<"Admin"> | string | null
     password?: StringFilter<"Admin"> | string
     isEmailVerified?: BoolFilter<"Admin"> | boolean
-    passwordResetCount?: IntFilter<"Admin"> | number
-    emailChangeCount?: IntFilter<"Admin"> | number
     avatarImgUrl?: StringNullableFilter<"Admin"> | string | null
     cldPublicId?: StringNullableFilter<"Admin"> | string | null
     createdAt?: DateTimeFilter<"Admin"> | Date | string
@@ -13529,18 +14062,14 @@ export namespace Prisma {
     password?: SortOrder
     phoneNumber?: SortOrder
     isEmailVerified?: SortOrder
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
     avatarImgUrl?: SortOrderInput | SortOrder
     cldPublicId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     _count?: AdminCountOrderByAggregateInput
-    _avg?: AdminAvgOrderByAggregateInput
     _max?: AdminMaxOrderByAggregateInput
     _min?: AdminMinOrderByAggregateInput
-    _sum?: AdminSumOrderByAggregateInput
   }
 
   export type AdminScalarWhereWithAggregatesInput = {
@@ -13554,8 +14083,6 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"Admin"> | string
     phoneNumber?: StringWithAggregatesFilter<"Admin"> | string
     isEmailVerified?: BoolWithAggregatesFilter<"Admin"> | boolean
-    passwordResetCount?: IntWithAggregatesFilter<"Admin"> | number
-    emailChangeCount?: IntWithAggregatesFilter<"Admin"> | number
     avatarImgUrl?: StringNullableWithAggregatesFilter<"Admin"> | string | null
     cldPublicId?: StringNullableWithAggregatesFilter<"Admin"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Admin"> | Date | string
@@ -13563,64 +14090,84 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Admin"> | Date | string | null
   }
 
-  export type ShiftWhereInput = {
-    AND?: ShiftWhereInput | ShiftWhereInput[]
-    OR?: ShiftWhereInput[]
-    NOT?: ShiftWhereInput | ShiftWhereInput[]
-    id?: StringFilter<"Shift"> | string
-    startTime?: DateTimeFilter<"Shift"> | Date | string
-    endTime?: DateTimeNullableFilter<"Shift"> | Date | string | null
-    createdAt?: DateTimeFilter<"Shift"> | Date | string
-    updatedAt?: DateTimeFilter<"Shift"> | Date | string
-    deletedAt?: DateTimeNullableFilter<"Shift"> | Date | string | null
-    cashier?: CashierListRelationFilter
+  export type CashierBalanceHistoryWhereInput = {
+    AND?: CashierBalanceHistoryWhereInput | CashierBalanceHistoryWhereInput[]
+    OR?: CashierBalanceHistoryWhereInput[]
+    NOT?: CashierBalanceHistoryWhereInput | CashierBalanceHistoryWhereInput[]
+    id?: StringFilter<"CashierBalanceHistory"> | string
+    cashierId?: StringFilter<"CashierBalanceHistory"> | string
+    startTime?: DateTimeFilter<"CashierBalanceHistory"> | Date | string
+    endTime?: DateTimeNullableFilter<"CashierBalanceHistory"> | Date | string | null
+    startingCash?: FloatFilter<"CashierBalanceHistory"> | number
+    endingCash?: FloatNullableFilter<"CashierBalanceHistory"> | number | null
+    createdAt?: DateTimeFilter<"CashierBalanceHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"CashierBalanceHistory"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"CashierBalanceHistory"> | Date | string | null
+    cashier?: XOR<CashierScalarRelationFilter, CashierWhereInput>
+    transaction?: TransactionListRelationFilter
   }
 
-  export type ShiftOrderByWithRelationInput = {
+  export type CashierBalanceHistoryOrderByWithRelationInput = {
     id?: SortOrder
+    cashierId?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrderInput | SortOrder
+    startingCash?: SortOrder
+    endingCash?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    cashier?: CashierOrderByRelationAggregateInput
+    cashier?: CashierOrderByWithRelationInput
+    transaction?: TransactionOrderByRelationAggregateInput
   }
 
-  export type ShiftWhereUniqueInput = Prisma.AtLeast<{
+  export type CashierBalanceHistoryWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: ShiftWhereInput | ShiftWhereInput[]
-    OR?: ShiftWhereInput[]
-    NOT?: ShiftWhereInput | ShiftWhereInput[]
-    startTime?: DateTimeFilter<"Shift"> | Date | string
-    endTime?: DateTimeNullableFilter<"Shift"> | Date | string | null
-    createdAt?: DateTimeFilter<"Shift"> | Date | string
-    updatedAt?: DateTimeFilter<"Shift"> | Date | string
-    deletedAt?: DateTimeNullableFilter<"Shift"> | Date | string | null
-    cashier?: CashierListRelationFilter
+    AND?: CashierBalanceHistoryWhereInput | CashierBalanceHistoryWhereInput[]
+    OR?: CashierBalanceHistoryWhereInput[]
+    NOT?: CashierBalanceHistoryWhereInput | CashierBalanceHistoryWhereInput[]
+    cashierId?: StringFilter<"CashierBalanceHistory"> | string
+    startTime?: DateTimeFilter<"CashierBalanceHistory"> | Date | string
+    endTime?: DateTimeNullableFilter<"CashierBalanceHistory"> | Date | string | null
+    startingCash?: FloatFilter<"CashierBalanceHistory"> | number
+    endingCash?: FloatNullableFilter<"CashierBalanceHistory"> | number | null
+    createdAt?: DateTimeFilter<"CashierBalanceHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"CashierBalanceHistory"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"CashierBalanceHistory"> | Date | string | null
+    cashier?: XOR<CashierScalarRelationFilter, CashierWhereInput>
+    transaction?: TransactionListRelationFilter
   }, "id">
 
-  export type ShiftOrderByWithAggregationInput = {
+  export type CashierBalanceHistoryOrderByWithAggregationInput = {
     id?: SortOrder
+    cashierId?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrderInput | SortOrder
+    startingCash?: SortOrder
+    endingCash?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    _count?: ShiftCountOrderByAggregateInput
-    _max?: ShiftMaxOrderByAggregateInput
-    _min?: ShiftMinOrderByAggregateInput
+    _count?: CashierBalanceHistoryCountOrderByAggregateInput
+    _avg?: CashierBalanceHistoryAvgOrderByAggregateInput
+    _max?: CashierBalanceHistoryMaxOrderByAggregateInput
+    _min?: CashierBalanceHistoryMinOrderByAggregateInput
+    _sum?: CashierBalanceHistorySumOrderByAggregateInput
   }
 
-  export type ShiftScalarWhereWithAggregatesInput = {
-    AND?: ShiftScalarWhereWithAggregatesInput | ShiftScalarWhereWithAggregatesInput[]
-    OR?: ShiftScalarWhereWithAggregatesInput[]
-    NOT?: ShiftScalarWhereWithAggregatesInput | ShiftScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Shift"> | string
-    startTime?: DateTimeWithAggregatesFilter<"Shift"> | Date | string
-    endTime?: DateTimeNullableWithAggregatesFilter<"Shift"> | Date | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"Shift"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Shift"> | Date | string
-    deletedAt?: DateTimeNullableWithAggregatesFilter<"Shift"> | Date | string | null
+  export type CashierBalanceHistoryScalarWhereWithAggregatesInput = {
+    AND?: CashierBalanceHistoryScalarWhereWithAggregatesInput | CashierBalanceHistoryScalarWhereWithAggregatesInput[]
+    OR?: CashierBalanceHistoryScalarWhereWithAggregatesInput[]
+    NOT?: CashierBalanceHistoryScalarWhereWithAggregatesInput | CashierBalanceHistoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CashierBalanceHistory"> | string
+    cashierId?: StringWithAggregatesFilter<"CashierBalanceHistory"> | string
+    startTime?: DateTimeWithAggregatesFilter<"CashierBalanceHistory"> | Date | string
+    endTime?: DateTimeNullableWithAggregatesFilter<"CashierBalanceHistory"> | Date | string | null
+    startingCash?: FloatWithAggregatesFilter<"CashierBalanceHistory"> | number
+    endingCash?: FloatNullableWithAggregatesFilter<"CashierBalanceHistory"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"CashierBalanceHistory"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CashierBalanceHistory"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CashierBalanceHistory"> | Date | string | null
   }
 
   export type ProductWhereInput = {
@@ -13638,6 +14185,8 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
     productStock?: ProductStockListRelationFilter
     productCategory?: XOR<ProductCategoryScalarRelationFilter, ProductCategoryWhereInput>
+    cartItems?: CartItemListRelationFilter
+    transactionItems?: TransactionItemListRelationFilter
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -13652,6 +14201,8 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder
     productStock?: ProductStockOrderByRelationAggregateInput
     productCategory?: ProductCategoryOrderByWithRelationInput
+    cartItems?: CartItemOrderByRelationAggregateInput
+    transactionItems?: TransactionItemOrderByRelationAggregateInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -13669,6 +14220,8 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
     productStock?: ProductStockListRelationFilter
     productCategory?: XOR<ProductCategoryScalarRelationFilter, ProductCategoryWhereInput>
+    cartItems?: CartItemListRelationFilter
+    transactionItems?: TransactionItemListRelationFilter
   }, "id" | "slug">
 
   export type ProductOrderByWithAggregationInput = {
@@ -13710,7 +14263,6 @@ export namespace Prisma {
     id?: IntFilter<"ProductCategory"> | number
     name?: StringFilter<"ProductCategory"> | string
     slug?: StringFilter<"ProductCategory"> | string
-    description?: StringNullableFilter<"ProductCategory"> | string | null
     createdAt?: DateTimeFilter<"ProductCategory"> | Date | string
     updatedAt?: DateTimeFilter<"ProductCategory"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ProductCategory"> | Date | string | null
@@ -13721,7 +14273,6 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
-    description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -13735,7 +14286,6 @@ export namespace Prisma {
     OR?: ProductCategoryWhereInput[]
     NOT?: ProductCategoryWhereInput | ProductCategoryWhereInput[]
     name?: StringFilter<"ProductCategory"> | string
-    description?: StringNullableFilter<"ProductCategory"> | string | null
     createdAt?: DateTimeFilter<"ProductCategory"> | Date | string
     updatedAt?: DateTimeFilter<"ProductCategory"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ProductCategory"> | Date | string | null
@@ -13746,7 +14296,6 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
-    description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -13764,7 +14313,6 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"ProductCategory"> | number
     name?: StringWithAggregatesFilter<"ProductCategory"> | string
     slug?: StringWithAggregatesFilter<"ProductCategory"> | string
-    description?: StringNullableWithAggregatesFilter<"ProductCategory"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"ProductCategory"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ProductCategory"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"ProductCategory"> | Date | string | null
@@ -13832,37 +14380,51 @@ export namespace Prisma {
     OR?: CartWhereInput[]
     NOT?: CartWhereInput | CartWhereInput[]
     id?: StringFilter<"Cart"> | string
+    customerName?: StringFilter<"Cart"> | string
     cashierId?: StringFilter<"Cart"> | string
+    status?: EnumCartStatusFilter<"Cart"> | $Enums.CartStatus
     createdAt?: DateTimeFilter<"Cart"> | Date | string
     updatedAt?: DateTimeFilter<"Cart"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Cart"> | Date | string | null
+    cartItems?: CartItemListRelationFilter
     cashier?: XOR<CashierScalarRelationFilter, CashierWhereInput>
+    transaction?: XOR<TransactionNullableScalarRelationFilter, TransactionWhereInput> | null
   }
 
   export type CartOrderByWithRelationInput = {
     id?: SortOrder
+    customerName?: SortOrder
     cashierId?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    cartItems?: CartItemOrderByRelationAggregateInput
     cashier?: CashierOrderByWithRelationInput
+    transaction?: TransactionOrderByWithRelationInput
   }
 
   export type CartWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    cashierId?: string
     AND?: CartWhereInput | CartWhereInput[]
     OR?: CartWhereInput[]
     NOT?: CartWhereInput | CartWhereInput[]
+    customerName?: StringFilter<"Cart"> | string
+    cashierId?: StringFilter<"Cart"> | string
+    status?: EnumCartStatusFilter<"Cart"> | $Enums.CartStatus
     createdAt?: DateTimeFilter<"Cart"> | Date | string
     updatedAt?: DateTimeFilter<"Cart"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Cart"> | Date | string | null
+    cartItems?: CartItemListRelationFilter
     cashier?: XOR<CashierScalarRelationFilter, CashierWhereInput>
-  }, "id" | "cashierId">
+    transaction?: XOR<TransactionNullableScalarRelationFilter, TransactionWhereInput> | null
+  }, "id">
 
   export type CartOrderByWithAggregationInput = {
     id?: SortOrder
+    customerName?: SortOrder
     cashierId?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -13876,10 +14438,82 @@ export namespace Prisma {
     OR?: CartScalarWhereWithAggregatesInput[]
     NOT?: CartScalarWhereWithAggregatesInput | CartScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Cart"> | string
+    customerName?: StringWithAggregatesFilter<"Cart"> | string
     cashierId?: StringWithAggregatesFilter<"Cart"> | string
+    status?: EnumCartStatusWithAggregatesFilter<"Cart"> | $Enums.CartStatus
     createdAt?: DateTimeWithAggregatesFilter<"Cart"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Cart"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Cart"> | Date | string | null
+  }
+
+  export type CartItemWhereInput = {
+    AND?: CartItemWhereInput | CartItemWhereInput[]
+    OR?: CartItemWhereInput[]
+    NOT?: CartItemWhereInput | CartItemWhereInput[]
+    id?: StringFilter<"CartItem"> | string
+    cartId?: StringFilter<"CartItem"> | string
+    productId?: StringFilter<"CartItem"> | string
+    quantity?: IntFilter<"CartItem"> | number
+    createdAt?: DateTimeFilter<"CartItem"> | Date | string
+    updatedAt?: DateTimeFilter<"CartItem"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"CartItem"> | Date | string | null
+    cart?: XOR<CartScalarRelationFilter, CartWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }
+
+  export type CartItemOrderByWithRelationInput = {
+    id?: SortOrder
+    cartId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    cart?: CartOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
+  }
+
+  export type CartItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CartItemWhereInput | CartItemWhereInput[]
+    OR?: CartItemWhereInput[]
+    NOT?: CartItemWhereInput | CartItemWhereInput[]
+    cartId?: StringFilter<"CartItem"> | string
+    productId?: StringFilter<"CartItem"> | string
+    quantity?: IntFilter<"CartItem"> | number
+    createdAt?: DateTimeFilter<"CartItem"> | Date | string
+    updatedAt?: DateTimeFilter<"CartItem"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"CartItem"> | Date | string | null
+    cart?: XOR<CartScalarRelationFilter, CartWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }, "id">
+
+  export type CartItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    cartId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: CartItemCountOrderByAggregateInput
+    _avg?: CartItemAvgOrderByAggregateInput
+    _max?: CartItemMaxOrderByAggregateInput
+    _min?: CartItemMinOrderByAggregateInput
+    _sum?: CartItemSumOrderByAggregateInput
+  }
+
+  export type CartItemScalarWhereWithAggregatesInput = {
+    AND?: CartItemScalarWhereWithAggregatesInput | CartItemScalarWhereWithAggregatesInput[]
+    OR?: CartItemScalarWhereWithAggregatesInput[]
+    NOT?: CartItemScalarWhereWithAggregatesInput | CartItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CartItem"> | string
+    cartId?: StringWithAggregatesFilter<"CartItem"> | string
+    productId?: StringWithAggregatesFilter<"CartItem"> | string
+    quantity?: IntWithAggregatesFilter<"CartItem"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"CartItem"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CartItem"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"CartItem"> | Date | string | null
   }
 
   export type TransactionWhereInput = {
@@ -13887,44 +14521,73 @@ export namespace Prisma {
     OR?: TransactionWhereInput[]
     NOT?: TransactionWhereInput | TransactionWhereInput[]
     id?: StringFilter<"Transaction"> | string
+    cartId?: StringFilter<"Transaction"> | string
+    cashierId?: StringFilter<"Transaction"> | string
+    cashierBalanceHistoryId?: StringFilter<"Transaction"> | string
     paymentType?: EnumPaymentTypeFilter<"Transaction"> | $Enums.PaymentType
-    paymentAmount?: FloatFilter<"Transaction"> | number
+    debitCardNumber?: StringNullableFilter<"Transaction"> | string | null
+    totalAmount?: FloatFilter<"Transaction"> | number
+    changeAmount?: FloatNullableFilter<"Transaction"> | number | null
     paymentDate?: DateTimeFilter<"Transaction"> | Date | string
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Transaction"> | Date | string | null
-    transactionHistory?: TransactionHistoryListRelationFilter
+    cart?: XOR<CartScalarRelationFilter, CartWhereInput>
+    cashier?: XOR<CashierScalarRelationFilter, CashierWhereInput>
+    cashierBalanceHistory?: XOR<CashierBalanceHistoryScalarRelationFilter, CashierBalanceHistoryWhereInput>
+    transactionItems?: TransactionItemListRelationFilter
   }
 
   export type TransactionOrderByWithRelationInput = {
     id?: SortOrder
+    cartId?: SortOrder
+    cashierId?: SortOrder
+    cashierBalanceHistoryId?: SortOrder
     paymentType?: SortOrder
-    paymentAmount?: SortOrder
+    debitCardNumber?: SortOrderInput | SortOrder
+    totalAmount?: SortOrder
+    changeAmount?: SortOrderInput | SortOrder
     paymentDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    transactionHistory?: TransactionHistoryOrderByRelationAggregateInput
+    cart?: CartOrderByWithRelationInput
+    cashier?: CashierOrderByWithRelationInput
+    cashierBalanceHistory?: CashierBalanceHistoryOrderByWithRelationInput
+    transactionItems?: TransactionItemOrderByRelationAggregateInput
   }
 
   export type TransactionWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    cartId?: string
     AND?: TransactionWhereInput | TransactionWhereInput[]
     OR?: TransactionWhereInput[]
     NOT?: TransactionWhereInput | TransactionWhereInput[]
+    cashierId?: StringFilter<"Transaction"> | string
+    cashierBalanceHistoryId?: StringFilter<"Transaction"> | string
     paymentType?: EnumPaymentTypeFilter<"Transaction"> | $Enums.PaymentType
-    paymentAmount?: FloatFilter<"Transaction"> | number
+    debitCardNumber?: StringNullableFilter<"Transaction"> | string | null
+    totalAmount?: FloatFilter<"Transaction"> | number
+    changeAmount?: FloatNullableFilter<"Transaction"> | number | null
     paymentDate?: DateTimeFilter<"Transaction"> | Date | string
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Transaction"> | Date | string | null
-    transactionHistory?: TransactionHistoryListRelationFilter
-  }, "id">
+    cart?: XOR<CartScalarRelationFilter, CartWhereInput>
+    cashier?: XOR<CashierScalarRelationFilter, CashierWhereInput>
+    cashierBalanceHistory?: XOR<CashierBalanceHistoryScalarRelationFilter, CashierBalanceHistoryWhereInput>
+    transactionItems?: TransactionItemListRelationFilter
+  }, "id" | "cartId">
 
   export type TransactionOrderByWithAggregationInput = {
     id?: SortOrder
+    cartId?: SortOrder
+    cashierId?: SortOrder
+    cashierBalanceHistoryId?: SortOrder
     paymentType?: SortOrder
-    paymentAmount?: SortOrder
+    debitCardNumber?: SortOrderInput | SortOrder
+    totalAmount?: SortOrder
+    changeAmount?: SortOrderInput | SortOrder
     paymentDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13941,105 +14604,97 @@ export namespace Prisma {
     OR?: TransactionScalarWhereWithAggregatesInput[]
     NOT?: TransactionScalarWhereWithAggregatesInput | TransactionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Transaction"> | string
+    cartId?: StringWithAggregatesFilter<"Transaction"> | string
+    cashierId?: StringWithAggregatesFilter<"Transaction"> | string
+    cashierBalanceHistoryId?: StringWithAggregatesFilter<"Transaction"> | string
     paymentType?: EnumPaymentTypeWithAggregatesFilter<"Transaction"> | $Enums.PaymentType
-    paymentAmount?: FloatWithAggregatesFilter<"Transaction"> | number
+    debitCardNumber?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    totalAmount?: FloatWithAggregatesFilter<"Transaction"> | number
+    changeAmount?: FloatNullableWithAggregatesFilter<"Transaction"> | number | null
     paymentDate?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Transaction"> | Date | string | null
   }
 
-  export type TransactionHistoryWhereInput = {
-    AND?: TransactionHistoryWhereInput | TransactionHistoryWhereInput[]
-    OR?: TransactionHistoryWhereInput[]
-    NOT?: TransactionHistoryWhereInput | TransactionHistoryWhereInput[]
-    id?: StringFilter<"TransactionHistory"> | string
-    transactionId?: StringFilter<"TransactionHistory"> | string
+  export type TransactionItemWhereInput = {
+    AND?: TransactionItemWhereInput | TransactionItemWhereInput[]
+    OR?: TransactionItemWhereInput[]
+    NOT?: TransactionItemWhereInput | TransactionItemWhereInput[]
+    id?: StringFilter<"TransactionItem"> | string
+    transactionId?: StringFilter<"TransactionItem"> | string
+    productId?: StringFilter<"TransactionItem"> | string
+    quantity?: IntFilter<"TransactionItem"> | number
+    unitPrice?: FloatFilter<"TransactionItem"> | number
+    subTotal?: FloatFilter<"TransactionItem"> | number
+    createdAt?: DateTimeFilter<"TransactionItem"> | Date | string
+    updatedAt?: DateTimeFilter<"TransactionItem"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"TransactionItem"> | Date | string | null
     transaction?: XOR<TransactionScalarRelationFilter, TransactionWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }
 
-  export type TransactionHistoryOrderByWithRelationInput = {
+  export type TransactionItemOrderByWithRelationInput = {
     id?: SortOrder
     transactionId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+    subTotal?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     transaction?: TransactionOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
   }
 
-  export type TransactionHistoryWhereUniqueInput = Prisma.AtLeast<{
+  export type TransactionItemWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: TransactionHistoryWhereInput | TransactionHistoryWhereInput[]
-    OR?: TransactionHistoryWhereInput[]
-    NOT?: TransactionHistoryWhereInput | TransactionHistoryWhereInput[]
-    transactionId?: StringFilter<"TransactionHistory"> | string
+    AND?: TransactionItemWhereInput | TransactionItemWhereInput[]
+    OR?: TransactionItemWhereInput[]
+    NOT?: TransactionItemWhereInput | TransactionItemWhereInput[]
+    transactionId?: StringFilter<"TransactionItem"> | string
+    productId?: StringFilter<"TransactionItem"> | string
+    quantity?: IntFilter<"TransactionItem"> | number
+    unitPrice?: FloatFilter<"TransactionItem"> | number
+    subTotal?: FloatFilter<"TransactionItem"> | number
+    createdAt?: DateTimeFilter<"TransactionItem"> | Date | string
+    updatedAt?: DateTimeFilter<"TransactionItem"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"TransactionItem"> | Date | string | null
     transaction?: XOR<TransactionScalarRelationFilter, TransactionWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }, "id">
 
-  export type TransactionHistoryOrderByWithAggregationInput = {
+  export type TransactionItemOrderByWithAggregationInput = {
     id?: SortOrder
     transactionId?: SortOrder
-    _count?: TransactionHistoryCountOrderByAggregateInput
-    _max?: TransactionHistoryMaxOrderByAggregateInput
-    _min?: TransactionHistoryMinOrderByAggregateInput
+    productId?: SortOrder
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+    subTotal?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: TransactionItemCountOrderByAggregateInput
+    _avg?: TransactionItemAvgOrderByAggregateInput
+    _max?: TransactionItemMaxOrderByAggregateInput
+    _min?: TransactionItemMinOrderByAggregateInput
+    _sum?: TransactionItemSumOrderByAggregateInput
   }
 
-  export type TransactionHistoryScalarWhereWithAggregatesInput = {
-    AND?: TransactionHistoryScalarWhereWithAggregatesInput | TransactionHistoryScalarWhereWithAggregatesInput[]
-    OR?: TransactionHistoryScalarWhereWithAggregatesInput[]
-    NOT?: TransactionHistoryScalarWhereWithAggregatesInput | TransactionHistoryScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"TransactionHistory"> | string
-    transactionId?: StringWithAggregatesFilter<"TransactionHistory"> | string
-  }
-
-  export type SampleCreateInput = {
-    name: string
-    code: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type SampleUncheckedCreateInput = {
-    id?: number
-    name: string
-    code: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type SampleUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SampleUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SampleCreateManyInput = {
-    id?: number
-    name: string
-    code: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type SampleUpdateManyMutationInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SampleUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type TransactionItemScalarWhereWithAggregatesInput = {
+    AND?: TransactionItemScalarWhereWithAggregatesInput | TransactionItemScalarWhereWithAggregatesInput[]
+    OR?: TransactionItemScalarWhereWithAggregatesInput[]
+    NOT?: TransactionItemScalarWhereWithAggregatesInput | TransactionItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TransactionItem"> | string
+    transactionId?: StringWithAggregatesFilter<"TransactionItem"> | string
+    productId?: StringWithAggregatesFilter<"TransactionItem"> | string
+    quantity?: IntWithAggregatesFilter<"TransactionItem"> | number
+    unitPrice?: FloatWithAggregatesFilter<"TransactionItem"> | number
+    subTotal?: FloatWithAggregatesFilter<"TransactionItem"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"TransactionItem"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TransactionItem"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"TransactionItem"> | Date | string | null
   }
 
   export type CashierCreateInput = {
@@ -14050,17 +14705,16 @@ export namespace Prisma {
     password: string
     phoneNumber?: string | null
     gender?: $Enums.Gender | null
-    dateOfBirth?: string | null
     isEmailVerified?: boolean
-    passwordResetCount?: number
-    emailChangeCount?: number
     avatarImgUrl?: string | null
     cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    shift?: ShiftCreateNestedOneWithoutCashierInput
-    cart?: CartCreateNestedOneWithoutCashierInput
+    shift: $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryCreateNestedManyWithoutCashierInput
+    cart?: CartCreateNestedManyWithoutCashierInput
+    transaction?: TransactionCreateNestedManyWithoutCashierInput
   }
 
   export type CashierUncheckedCreateInput = {
@@ -14071,17 +14725,16 @@ export namespace Prisma {
     password: string
     phoneNumber?: string | null
     gender?: $Enums.Gender | null
-    dateOfBirth?: string | null
     isEmailVerified?: boolean
-    passwordResetCount?: number
-    emailChangeCount?: number
     avatarImgUrl?: string | null
     cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    shiftId?: string | null
-    cart?: CartUncheckedCreateNestedOneWithoutCashierInput
+    shift: $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryUncheckedCreateNestedManyWithoutCashierInput
+    cart?: CartUncheckedCreateNestedManyWithoutCashierInput
+    transaction?: TransactionUncheckedCreateNestedManyWithoutCashierInput
   }
 
   export type CashierUpdateInput = {
@@ -14092,17 +14745,16 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
     avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
     cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shift?: ShiftUpdateOneWithoutCashierNestedInput
-    cart?: CartUpdateOneWithoutCashierNestedInput
+    shift?: EnumShiftSessionFieldUpdateOperationsInput | $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryUpdateManyWithoutCashierNestedInput
+    cart?: CartUpdateManyWithoutCashierNestedInput
+    transaction?: TransactionUpdateManyWithoutCashierNestedInput
   }
 
   export type CashierUncheckedUpdateInput = {
@@ -14113,17 +14765,16 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
     avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
     cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shiftId?: NullableStringFieldUpdateOperationsInput | string | null
-    cart?: CartUncheckedUpdateOneWithoutCashierNestedInput
+    shift?: EnumShiftSessionFieldUpdateOperationsInput | $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryUncheckedUpdateManyWithoutCashierNestedInput
+    cart?: CartUncheckedUpdateManyWithoutCashierNestedInput
+    transaction?: TransactionUncheckedUpdateManyWithoutCashierNestedInput
   }
 
   export type CashierCreateManyInput = {
@@ -14134,16 +14785,13 @@ export namespace Prisma {
     password: string
     phoneNumber?: string | null
     gender?: $Enums.Gender | null
-    dateOfBirth?: string | null
     isEmailVerified?: boolean
-    passwordResetCount?: number
-    emailChangeCount?: number
     avatarImgUrl?: string | null
     cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    shiftId?: string | null
+    shift: $Enums.ShiftSession
   }
 
   export type CashierUpdateManyMutationInput = {
@@ -14154,15 +14802,13 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
     avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
     cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shift?: EnumShiftSessionFieldUpdateOperationsInput | $Enums.ShiftSession
   }
 
   export type CashierUncheckedUpdateManyInput = {
@@ -14173,16 +14819,13 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
     avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
     cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    shift?: EnumShiftSessionFieldUpdateOperationsInput | $Enums.ShiftSession
   }
 
   export type AdminCreateInput = {
@@ -14193,8 +14836,6 @@ export namespace Prisma {
     password: string
     phoneNumber: string
     isEmailVerified?: boolean
-    passwordResetCount?: number
-    emailChangeCount?: number
     avatarImgUrl?: string | null
     cldPublicId?: string | null
     createdAt?: Date | string
@@ -14210,8 +14851,6 @@ export namespace Prisma {
     password: string
     phoneNumber: string
     isEmailVerified?: boolean
-    passwordResetCount?: number
-    emailChangeCount?: number
     avatarImgUrl?: string | null
     cldPublicId?: string | null
     createdAt?: Date | string
@@ -14227,8 +14866,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
     avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
     cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14244,8 +14881,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
     avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
     cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14261,8 +14896,6 @@ export namespace Prisma {
     password: string
     phoneNumber: string
     isEmailVerified?: boolean
-    passwordResetCount?: number
-    emailChangeCount?: number
     avatarImgUrl?: string | null
     cldPublicId?: string | null
     createdAt?: Date | string
@@ -14278,8 +14911,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
     avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
     cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14295,8 +14926,6 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
     avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
     cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14304,68 +14933,88 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type ShiftCreateInput = {
+  export type CashierBalanceHistoryCreateInput = {
     id?: string
     startTime: Date | string
     endTime?: Date | string | null
+    startingCash: number
+    endingCash?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    cashier?: CashierCreateNestedManyWithoutShiftInput
+    cashier: CashierCreateNestedOneWithoutCashierBalanceHistoryInput
+    transaction?: TransactionCreateNestedManyWithoutCashierBalanceHistoryInput
   }
 
-  export type ShiftUncheckedCreateInput = {
+  export type CashierBalanceHistoryUncheckedCreateInput = {
     id?: string
+    cashierId: string
     startTime: Date | string
     endTime?: Date | string | null
+    startingCash: number
+    endingCash?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    cashier?: CashierUncheckedCreateNestedManyWithoutShiftInput
+    transaction?: TransactionUncheckedCreateNestedManyWithoutCashierBalanceHistoryInput
   }
 
-  export type ShiftUpdateInput = {
+  export type CashierBalanceHistoryUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startingCash?: FloatFieldUpdateOperationsInput | number
+    endingCash?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cashier?: CashierUpdateManyWithoutShiftNestedInput
+    cashier?: CashierUpdateOneRequiredWithoutCashierBalanceHistoryNestedInput
+    transaction?: TransactionUpdateManyWithoutCashierBalanceHistoryNestedInput
   }
 
-  export type ShiftUncheckedUpdateInput = {
+  export type CashierBalanceHistoryUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    cashierId?: StringFieldUpdateOperationsInput | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startingCash?: FloatFieldUpdateOperationsInput | number
+    endingCash?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cashier?: CashierUncheckedUpdateManyWithoutShiftNestedInput
+    transaction?: TransactionUncheckedUpdateManyWithoutCashierBalanceHistoryNestedInput
   }
 
-  export type ShiftCreateManyInput = {
+  export type CashierBalanceHistoryCreateManyInput = {
     id?: string
+    cashierId: string
     startTime: Date | string
     endTime?: Date | string | null
+    startingCash: number
+    endingCash?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
   }
 
-  export type ShiftUpdateManyMutationInput = {
+  export type CashierBalanceHistoryUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startingCash?: FloatFieldUpdateOperationsInput | number
+    endingCash?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type ShiftUncheckedUpdateManyInput = {
+  export type CashierBalanceHistoryUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    cashierId?: StringFieldUpdateOperationsInput | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startingCash?: FloatFieldUpdateOperationsInput | number
+    endingCash?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14382,6 +15031,8 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     productStock?: ProductStockCreateNestedManyWithoutProductInput
     productCategory: ProductCategoryCreateNestedOneWithoutProductInput
+    cartItems?: CartItemCreateNestedManyWithoutProductInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -14395,6 +15046,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     productStock?: ProductStockUncheckedCreateNestedManyWithoutProductInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductUpdateInput = {
@@ -14408,6 +15061,8 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     productStock?: ProductStockUpdateManyWithoutProductNestedInput
     productCategory?: ProductCategoryUpdateOneRequiredWithoutProductNestedInput
+    cartItems?: CartItemUpdateManyWithoutProductNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -14421,6 +15076,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     productStock?: ProductStockUncheckedUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -14461,7 +15118,6 @@ export namespace Prisma {
   export type ProductCategoryCreateInput = {
     name: string
     slug: string
-    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -14472,7 +15128,6 @@ export namespace Prisma {
     id?: number
     name: string
     slug: string
-    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -14482,7 +15137,6 @@ export namespace Prisma {
   export type ProductCategoryUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14493,7 +15147,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14504,7 +15157,6 @@ export namespace Prisma {
     id?: number
     name: string
     slug: string
-    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -14513,7 +15165,6 @@ export namespace Prisma {
   export type ProductCategoryUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14523,7 +15174,6 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14586,39 +15236,57 @@ export namespace Prisma {
 
   export type CartCreateInput = {
     id?: string
+    customerName: string
+    status?: $Enums.CartStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    cartItems?: CartItemCreateNestedManyWithoutCartInput
     cashier: CashierCreateNestedOneWithoutCartInput
+    transaction?: TransactionCreateNestedOneWithoutCartInput
   }
 
   export type CartUncheckedCreateInput = {
     id?: string
+    customerName: string
     cashierId: string
+    status?: $Enums.CartStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutCartInput
+    transaction?: TransactionUncheckedCreateNestedOneWithoutCartInput
   }
 
   export type CartUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    customerName?: StringFieldUpdateOperationsInput | string
+    status?: EnumCartStatusFieldUpdateOperationsInput | $Enums.CartStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartItems?: CartItemUpdateManyWithoutCartNestedInput
     cashier?: CashierUpdateOneRequiredWithoutCartNestedInput
+    transaction?: TransactionUpdateOneWithoutCartNestedInput
   }
 
   export type CartUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    customerName?: StringFieldUpdateOperationsInput | string
     cashierId?: StringFieldUpdateOperationsInput | string
+    status?: EnumCartStatusFieldUpdateOperationsInput | $Enums.CartStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartItems?: CartItemUncheckedUpdateManyWithoutCartNestedInput
+    transaction?: TransactionUncheckedUpdateOneWithoutCartNestedInput
   }
 
   export type CartCreateManyInput = {
     id?: string
+    customerName: string
     cashierId: string
+    status?: $Enums.CartStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -14626,6 +15294,8 @@ export namespace Prisma {
 
   export type CartUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    customerName?: StringFieldUpdateOperationsInput | string
+    status?: EnumCartStatusFieldUpdateOperationsInput | $Enums.CartStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14633,7 +15303,77 @@ export namespace Prisma {
 
   export type CartUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    customerName?: StringFieldUpdateOperationsInput | string
     cashierId?: StringFieldUpdateOperationsInput | string
+    status?: EnumCartStatusFieldUpdateOperationsInput | $Enums.CartStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CartItemCreateInput = {
+    id?: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    cart: CartCreateNestedOneWithoutCartItemsInput
+    product: ProductCreateNestedOneWithoutCartItemsInput
+  }
+
+  export type CartItemUncheckedCreateInput = {
+    id?: string
+    cartId: string
+    productId: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CartItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cart?: CartUpdateOneRequiredWithoutCartItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutCartItemsNestedInput
+  }
+
+  export type CartItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cartId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CartItemCreateManyInput = {
+    id?: string
+    cartId: string
+    productId: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CartItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CartItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cartId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14642,51 +15382,76 @@ export namespace Prisma {
   export type TransactionCreateInput = {
     id?: string
     paymentType: $Enums.PaymentType
-    paymentAmount: number
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
     paymentDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    transactionHistory?: TransactionHistoryCreateNestedManyWithoutTransactionInput
+    cart: CartCreateNestedOneWithoutTransactionInput
+    cashier: CashierCreateNestedOneWithoutTransactionInput
+    cashierBalanceHistory: CashierBalanceHistoryCreateNestedOneWithoutTransactionInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutTransactionInput
   }
 
   export type TransactionUncheckedCreateInput = {
     id?: string
+    cartId: string
+    cashierId: string
+    cashierBalanceHistoryId: string
     paymentType: $Enums.PaymentType
-    paymentAmount: number
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
     paymentDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    transactionHistory?: TransactionHistoryUncheckedCreateNestedManyWithoutTransactionInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutTransactionInput
   }
 
   export type TransactionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
-    paymentAmount?: FloatFieldUpdateOperationsInput | number
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    transactionHistory?: TransactionHistoryUpdateManyWithoutTransactionNestedInput
+    cart?: CartUpdateOneRequiredWithoutTransactionNestedInput
+    cashier?: CashierUpdateOneRequiredWithoutTransactionNestedInput
+    cashierBalanceHistory?: CashierBalanceHistoryUpdateOneRequiredWithoutTransactionNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutTransactionNestedInput
   }
 
   export type TransactionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    cartId?: StringFieldUpdateOperationsInput | string
+    cashierId?: StringFieldUpdateOperationsInput | string
+    cashierBalanceHistoryId?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
-    paymentAmount?: FloatFieldUpdateOperationsInput | number
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    transactionHistory?: TransactionHistoryUncheckedUpdateManyWithoutTransactionNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutTransactionNestedInput
   }
 
   export type TransactionCreateManyInput = {
     id?: string
+    cartId: string
+    cashierId: string
+    cashierBalanceHistoryId: string
     paymentType: $Enums.PaymentType
-    paymentAmount: number
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
     paymentDate: Date | string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14696,7 +15461,9 @@ export namespace Prisma {
   export type TransactionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
-    paymentAmount?: FloatFieldUpdateOperationsInput | number
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14705,57 +15472,99 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    cartId?: StringFieldUpdateOperationsInput | string
+    cashierId?: StringFieldUpdateOperationsInput | string
+    cashierBalanceHistoryId?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
-    paymentAmount?: FloatFieldUpdateOperationsInput | number
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type TransactionHistoryCreateInput = {
+  export type TransactionItemCreateInput = {
     id?: string
-    transaction: TransactionCreateNestedOneWithoutTransactionHistoryInput
+    quantity: number
+    unitPrice: number
+    subTotal: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    transaction: TransactionCreateNestedOneWithoutTransactionItemsInput
+    product: ProductCreateNestedOneWithoutTransactionItemsInput
   }
 
-  export type TransactionHistoryUncheckedCreateInput = {
-    id?: string
-    transactionId: string
-  }
-
-  export type TransactionHistoryUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    transaction?: TransactionUpdateOneRequiredWithoutTransactionHistoryNestedInput
-  }
-
-  export type TransactionHistoryUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    transactionId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type TransactionHistoryCreateManyInput = {
+  export type TransactionItemUncheckedCreateInput = {
     id?: string
     transactionId: string
+    productId: string
+    quantity: number
+    unitPrice: number
+    subTotal: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
-  export type TransactionHistoryUpdateManyMutationInput = {
+  export type TransactionItemUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: FloatFieldUpdateOperationsInput | number
+    subTotal?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transaction?: TransactionUpdateOneRequiredWithoutTransactionItemsNestedInput
+    product?: ProductUpdateOneRequiredWithoutTransactionItemsNestedInput
   }
 
-  export type TransactionHistoryUncheckedUpdateManyInput = {
+  export type TransactionItemUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     transactionId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: FloatFieldUpdateOperationsInput | number
+    subTotal?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type TransactionItemCreateManyInput = {
+    id?: string
+    transactionId: string
+    productId: string
+    quantity: number
+    unitPrice: number
+    subTotal: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type TransactionItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: FloatFieldUpdateOperationsInput | number
+    subTotal?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransactionItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    transactionId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: FloatFieldUpdateOperationsInput | number
+    subTotal?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -14771,97 +15580,6 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
-  }
-
-  export type DateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type SampleCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    code?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type SampleAvgOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type SampleMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    code?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type SampleMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    code?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type SampleSumOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -14891,6 +15609,17 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -14902,19 +15631,46 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type ShiftNullableScalarRelationFilter = {
-    is?: ShiftWhereInput | null
-    isNot?: ShiftWhereInput | null
+  export type EnumShiftSessionFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShiftSession | EnumShiftSessionFieldRefInput<$PrismaModel>
+    in?: $Enums.ShiftSession[] | ListEnumShiftSessionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShiftSession[] | ListEnumShiftSessionFieldRefInput<$PrismaModel>
+    not?: NestedEnumShiftSessionFilter<$PrismaModel> | $Enums.ShiftSession
   }
 
-  export type CartNullableScalarRelationFilter = {
-    is?: CartWhereInput | null
-    isNot?: CartWhereInput | null
+  export type CashierBalanceHistoryListRelationFilter = {
+    every?: CashierBalanceHistoryWhereInput
+    some?: CashierBalanceHistoryWhereInput
+    none?: CashierBalanceHistoryWhereInput
+  }
+
+  export type CartListRelationFilter = {
+    every?: CartWhereInput
+    some?: CartWhereInput
+    none?: CartWhereInput
+  }
+
+  export type TransactionListRelationFilter = {
+    every?: TransactionWhereInput
+    some?: TransactionWhereInput
+    none?: TransactionWhereInput
   }
 
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type CashierBalanceHistoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CartOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TransactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type CashierCountOrderByAggregateInput = {
@@ -14925,21 +15681,13 @@ export namespace Prisma {
     password?: SortOrder
     phoneNumber?: SortOrder
     gender?: SortOrder
-    dateOfBirth?: SortOrder
     isEmailVerified?: SortOrder
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
     avatarImgUrl?: SortOrder
     cldPublicId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
-    shiftId?: SortOrder
-  }
-
-  export type CashierAvgOrderByAggregateInput = {
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
+    shift?: SortOrder
   }
 
   export type CashierMaxOrderByAggregateInput = {
@@ -14950,16 +15698,13 @@ export namespace Prisma {
     password?: SortOrder
     phoneNumber?: SortOrder
     gender?: SortOrder
-    dateOfBirth?: SortOrder
     isEmailVerified?: SortOrder
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
     avatarImgUrl?: SortOrder
     cldPublicId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
-    shiftId?: SortOrder
+    shift?: SortOrder
   }
 
   export type CashierMinOrderByAggregateInput = {
@@ -14970,21 +15715,31 @@ export namespace Prisma {
     password?: SortOrder
     phoneNumber?: SortOrder
     gender?: SortOrder
-    dateOfBirth?: SortOrder
     isEmailVerified?: SortOrder
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
     avatarImgUrl?: SortOrder
     cldPublicId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
-    shiftId?: SortOrder
+    shift?: SortOrder
   }
 
-  export type CashierSumOrderByAggregateInput = {
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -15023,6 +15778,20 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -15037,6 +15806,16 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type EnumShiftSessionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShiftSession | EnumShiftSessionFieldRefInput<$PrismaModel>
+    in?: $Enums.ShiftSession[] | ListEnumShiftSessionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShiftSession[] | ListEnumShiftSessionFieldRefInput<$PrismaModel>
+    not?: NestedEnumShiftSessionWithAggregatesFilter<$PrismaModel> | $Enums.ShiftSession
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumShiftSessionFilter<$PrismaModel>
+    _max?: NestedEnumShiftSessionFilter<$PrismaModel>
+  }
+
   export type AdminCountOrderByAggregateInput = {
     id?: SortOrder
     firstName?: SortOrder
@@ -15045,18 +15824,11 @@ export namespace Prisma {
     password?: SortOrder
     phoneNumber?: SortOrder
     isEmailVerified?: SortOrder
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
     avatarImgUrl?: SortOrder
     cldPublicId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
-  }
-
-  export type AdminAvgOrderByAggregateInput = {
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
   }
 
   export type AdminMaxOrderByAggregateInput = {
@@ -15067,8 +15839,6 @@ export namespace Prisma {
     password?: SortOrder
     phoneNumber?: SortOrder
     isEmailVerified?: SortOrder
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
     avatarImgUrl?: SortOrder
     cldPublicId?: SortOrder
     createdAt?: SortOrder
@@ -15084,52 +15854,8 @@ export namespace Prisma {
     password?: SortOrder
     phoneNumber?: SortOrder
     isEmailVerified?: SortOrder
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
     avatarImgUrl?: SortOrder
     cldPublicId?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
-  }
-
-  export type AdminSumOrderByAggregateInput = {
-    passwordResetCount?: SortOrder
-    emailChangeCount?: SortOrder
-  }
-
-  export type CashierListRelationFilter = {
-    every?: CashierWhereInput
-    some?: CashierWhereInput
-    none?: CashierWhereInput
-  }
-
-  export type CashierOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ShiftCountOrderByAggregateInput = {
-    id?: SortOrder
-    startTime?: SortOrder
-    endTime?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
-  }
-
-  export type ShiftMaxOrderByAggregateInput = {
-    id?: SortOrder
-    startTime?: SortOrder
-    endTime?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    deletedAt?: SortOrder
-  }
-
-  export type ShiftMinOrderByAggregateInput = {
-    id?: SortOrder
-    startTime?: SortOrder
-    endTime?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -15146,6 +15872,111 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type CashierScalarRelationFilter = {
+    is?: CashierWhereInput
+    isNot?: CashierWhereInput
+  }
+
+  export type CashierBalanceHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    cashierId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    startingCash?: SortOrder
+    endingCash?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type CashierBalanceHistoryAvgOrderByAggregateInput = {
+    startingCash?: SortOrder
+    endingCash?: SortOrder
+  }
+
+  export type CashierBalanceHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    cashierId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    startingCash?: SortOrder
+    endingCash?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type CashierBalanceHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    cashierId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    startingCash?: SortOrder
+    endingCash?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type CashierBalanceHistorySumOrderByAggregateInput = {
+    startingCash?: SortOrder
+    endingCash?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type ProductStockListRelationFilter = {
     every?: ProductStockWhereInput
     some?: ProductStockWhereInput
@@ -15157,7 +15988,27 @@ export namespace Prisma {
     isNot?: ProductCategoryWhereInput
   }
 
+  export type CartItemListRelationFilter = {
+    every?: CartItemWhereInput
+    some?: CartItemWhereInput
+    none?: CartItemWhereInput
+  }
+
+  export type TransactionItemListRelationFilter = {
+    every?: TransactionItemWhereInput
+    some?: TransactionItemWhereInput
+    none?: TransactionItemWhereInput
+  }
+
   export type ProductStockOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CartItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TransactionItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -15207,20 +16058,20 @@ export namespace Prisma {
     price?: SortOrder
   }
 
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
     _count?: NestedIntFilter<$PrismaModel>
     _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type ProductListRelationFilter = {
@@ -15237,7 +16088,6 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
-    description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -15251,7 +16101,6 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
-    description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -15261,7 +16110,6 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
-    description?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -15308,14 +16156,23 @@ export namespace Prisma {
     stock?: SortOrder
   }
 
-  export type CashierScalarRelationFilter = {
-    is?: CashierWhereInput
-    isNot?: CashierWhereInput
+  export type EnumCartStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CartStatus | EnumCartStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CartStatus[] | ListEnumCartStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CartStatus[] | ListEnumCartStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCartStatusFilter<$PrismaModel> | $Enums.CartStatus
+  }
+
+  export type TransactionNullableScalarRelationFilter = {
+    is?: TransactionWhereInput | null
+    isNot?: TransactionWhereInput | null
   }
 
   export type CartCountOrderByAggregateInput = {
     id?: SortOrder
+    customerName?: SortOrder
     cashierId?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -15323,7 +16180,9 @@ export namespace Prisma {
 
   export type CartMaxOrderByAggregateInput = {
     id?: SortOrder
+    customerName?: SortOrder
     cashierId?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -15331,10 +16190,65 @@ export namespace Prisma {
 
   export type CartMinOrderByAggregateInput = {
     id?: SortOrder
+    customerName?: SortOrder
     cashierId?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+  }
+
+  export type EnumCartStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CartStatus | EnumCartStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CartStatus[] | ListEnumCartStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CartStatus[] | ListEnumCartStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCartStatusWithAggregatesFilter<$PrismaModel> | $Enums.CartStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCartStatusFilter<$PrismaModel>
+    _max?: NestedEnumCartStatusFilter<$PrismaModel>
+  }
+
+  export type CartScalarRelationFilter = {
+    is?: CartWhereInput
+    isNot?: CartWhereInput
+  }
+
+  export type CartItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    cartId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type CartItemAvgOrderByAggregateInput = {
+    quantity?: SortOrder
+  }
+
+  export type CartItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    cartId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type CartItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    cartId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type CartItemSumOrderByAggregateInput = {
+    quantity?: SortOrder
   }
 
   export type EnumPaymentTypeFilter<$PrismaModel = never> = {
@@ -15344,20 +16258,20 @@ export namespace Prisma {
     not?: NestedEnumPaymentTypeFilter<$PrismaModel> | $Enums.PaymentType
   }
 
-  export type TransactionHistoryListRelationFilter = {
-    every?: TransactionHistoryWhereInput
-    some?: TransactionHistoryWhereInput
-    none?: TransactionHistoryWhereInput
-  }
-
-  export type TransactionHistoryOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type CashierBalanceHistoryScalarRelationFilter = {
+    is?: CashierBalanceHistoryWhereInput
+    isNot?: CashierBalanceHistoryWhereInput
   }
 
   export type TransactionCountOrderByAggregateInput = {
     id?: SortOrder
+    cartId?: SortOrder
+    cashierId?: SortOrder
+    cashierBalanceHistoryId?: SortOrder
     paymentType?: SortOrder
-    paymentAmount?: SortOrder
+    debitCardNumber?: SortOrder
+    totalAmount?: SortOrder
+    changeAmount?: SortOrder
     paymentDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15365,13 +16279,19 @@ export namespace Prisma {
   }
 
   export type TransactionAvgOrderByAggregateInput = {
-    paymentAmount?: SortOrder
+    totalAmount?: SortOrder
+    changeAmount?: SortOrder
   }
 
   export type TransactionMaxOrderByAggregateInput = {
     id?: SortOrder
+    cartId?: SortOrder
+    cashierId?: SortOrder
+    cashierBalanceHistoryId?: SortOrder
     paymentType?: SortOrder
-    paymentAmount?: SortOrder
+    debitCardNumber?: SortOrder
+    totalAmount?: SortOrder
+    changeAmount?: SortOrder
     paymentDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15380,8 +16300,13 @@ export namespace Prisma {
 
   export type TransactionMinOrderByAggregateInput = {
     id?: SortOrder
+    cartId?: SortOrder
+    cashierId?: SortOrder
+    cashierBalanceHistoryId?: SortOrder
     paymentType?: SortOrder
-    paymentAmount?: SortOrder
+    debitCardNumber?: SortOrder
+    totalAmount?: SortOrder
+    changeAmount?: SortOrder
     paymentDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15389,7 +16314,8 @@ export namespace Prisma {
   }
 
   export type TransactionSumOrderByAggregateInput = {
-    paymentAmount?: SortOrder
+    totalAmount?: SortOrder
+    changeAmount?: SortOrder
   }
 
   export type EnumPaymentTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -15407,53 +16333,98 @@ export namespace Prisma {
     isNot?: TransactionWhereInput
   }
 
-  export type TransactionHistoryCountOrderByAggregateInput = {
+  export type TransactionItemCountOrderByAggregateInput = {
     id?: SortOrder
     transactionId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+    subTotal?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
-  export type TransactionHistoryMaxOrderByAggregateInput = {
-    id?: SortOrder
-    transactionId?: SortOrder
+  export type TransactionItemAvgOrderByAggregateInput = {
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+    subTotal?: SortOrder
   }
 
-  export type TransactionHistoryMinOrderByAggregateInput = {
+  export type TransactionItemMaxOrderByAggregateInput = {
     id?: SortOrder
     transactionId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+    subTotal?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type TransactionItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    transactionId?: SortOrder
+    productId?: SortOrder
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+    subTotal?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type TransactionItemSumOrderByAggregateInput = {
+    quantity?: SortOrder
+    unitPrice?: SortOrder
+    subTotal?: SortOrder
+  }
+
+  export type CashierBalanceHistoryCreateNestedManyWithoutCashierInput = {
+    create?: XOR<CashierBalanceHistoryCreateWithoutCashierInput, CashierBalanceHistoryUncheckedCreateWithoutCashierInput> | CashierBalanceHistoryCreateWithoutCashierInput[] | CashierBalanceHistoryUncheckedCreateWithoutCashierInput[]
+    connectOrCreate?: CashierBalanceHistoryCreateOrConnectWithoutCashierInput | CashierBalanceHistoryCreateOrConnectWithoutCashierInput[]
+    createMany?: CashierBalanceHistoryCreateManyCashierInputEnvelope
+    connect?: CashierBalanceHistoryWhereUniqueInput | CashierBalanceHistoryWhereUniqueInput[]
+  }
+
+  export type CartCreateNestedManyWithoutCashierInput = {
+    create?: XOR<CartCreateWithoutCashierInput, CartUncheckedCreateWithoutCashierInput> | CartCreateWithoutCashierInput[] | CartUncheckedCreateWithoutCashierInput[]
+    connectOrCreate?: CartCreateOrConnectWithoutCashierInput | CartCreateOrConnectWithoutCashierInput[]
+    createMany?: CartCreateManyCashierInputEnvelope
+    connect?: CartWhereUniqueInput | CartWhereUniqueInput[]
+  }
+
+  export type TransactionCreateNestedManyWithoutCashierInput = {
+    create?: XOR<TransactionCreateWithoutCashierInput, TransactionUncheckedCreateWithoutCashierInput> | TransactionCreateWithoutCashierInput[] | TransactionUncheckedCreateWithoutCashierInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutCashierInput | TransactionCreateOrConnectWithoutCashierInput[]
+    createMany?: TransactionCreateManyCashierInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type CashierBalanceHistoryUncheckedCreateNestedManyWithoutCashierInput = {
+    create?: XOR<CashierBalanceHistoryCreateWithoutCashierInput, CashierBalanceHistoryUncheckedCreateWithoutCashierInput> | CashierBalanceHistoryCreateWithoutCashierInput[] | CashierBalanceHistoryUncheckedCreateWithoutCashierInput[]
+    connectOrCreate?: CashierBalanceHistoryCreateOrConnectWithoutCashierInput | CashierBalanceHistoryCreateOrConnectWithoutCashierInput[]
+    createMany?: CashierBalanceHistoryCreateManyCashierInputEnvelope
+    connect?: CashierBalanceHistoryWhereUniqueInput | CashierBalanceHistoryWhereUniqueInput[]
+  }
+
+  export type CartUncheckedCreateNestedManyWithoutCashierInput = {
+    create?: XOR<CartCreateWithoutCashierInput, CartUncheckedCreateWithoutCashierInput> | CartCreateWithoutCashierInput[] | CartUncheckedCreateWithoutCashierInput[]
+    connectOrCreate?: CartCreateOrConnectWithoutCashierInput | CartCreateOrConnectWithoutCashierInput[]
+    createMany?: CartCreateManyCashierInputEnvelope
+    connect?: CartWhereUniqueInput | CartWhereUniqueInput[]
+  }
+
+  export type TransactionUncheckedCreateNestedManyWithoutCashierInput = {
+    create?: XOR<TransactionCreateWithoutCashierInput, TransactionUncheckedCreateWithoutCashierInput> | TransactionCreateWithoutCashierInput[] | TransactionUncheckedCreateWithoutCashierInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutCashierInput | TransactionCreateOrConnectWithoutCashierInput[]
+    createMany?: TransactionCreateManyCashierInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type ShiftCreateNestedOneWithoutCashierInput = {
-    create?: XOR<ShiftCreateWithoutCashierInput, ShiftUncheckedCreateWithoutCashierInput>
-    connectOrCreate?: ShiftCreateOrConnectWithoutCashierInput
-    connect?: ShiftWhereUniqueInput
-  }
-
-  export type CartCreateNestedOneWithoutCashierInput = {
-    create?: XOR<CartCreateWithoutCashierInput, CartUncheckedCreateWithoutCashierInput>
-    connectOrCreate?: CartCreateOrConnectWithoutCashierInput
-    connect?: CartWhereUniqueInput
-  }
-
-  export type CartUncheckedCreateNestedOneWithoutCashierInput = {
-    create?: XOR<CartCreateWithoutCashierInput, CartUncheckedCreateWithoutCashierInput>
-    connectOrCreate?: CartCreateOrConnectWithoutCashierInput
-    connect?: CartWhereUniqueInput
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -15468,80 +16439,172 @@ export namespace Prisma {
     set?: boolean
   }
 
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
   }
 
-  export type ShiftUpdateOneWithoutCashierNestedInput = {
-    create?: XOR<ShiftCreateWithoutCashierInput, ShiftUncheckedCreateWithoutCashierInput>
-    connectOrCreate?: ShiftCreateOrConnectWithoutCashierInput
-    upsert?: ShiftUpsertWithoutCashierInput
-    disconnect?: ShiftWhereInput | boolean
-    delete?: ShiftWhereInput | boolean
-    connect?: ShiftWhereUniqueInput
-    update?: XOR<XOR<ShiftUpdateToOneWithWhereWithoutCashierInput, ShiftUpdateWithoutCashierInput>, ShiftUncheckedUpdateWithoutCashierInput>
+  export type EnumShiftSessionFieldUpdateOperationsInput = {
+    set?: $Enums.ShiftSession
   }
 
-  export type CartUpdateOneWithoutCashierNestedInput = {
-    create?: XOR<CartCreateWithoutCashierInput, CartUncheckedCreateWithoutCashierInput>
-    connectOrCreate?: CartCreateOrConnectWithoutCashierInput
-    upsert?: CartUpsertWithoutCashierInput
-    disconnect?: CartWhereInput | boolean
-    delete?: CartWhereInput | boolean
-    connect?: CartWhereUniqueInput
-    update?: XOR<XOR<CartUpdateToOneWithWhereWithoutCashierInput, CartUpdateWithoutCashierInput>, CartUncheckedUpdateWithoutCashierInput>
+  export type CashierBalanceHistoryUpdateManyWithoutCashierNestedInput = {
+    create?: XOR<CashierBalanceHistoryCreateWithoutCashierInput, CashierBalanceHistoryUncheckedCreateWithoutCashierInput> | CashierBalanceHistoryCreateWithoutCashierInput[] | CashierBalanceHistoryUncheckedCreateWithoutCashierInput[]
+    connectOrCreate?: CashierBalanceHistoryCreateOrConnectWithoutCashierInput | CashierBalanceHistoryCreateOrConnectWithoutCashierInput[]
+    upsert?: CashierBalanceHistoryUpsertWithWhereUniqueWithoutCashierInput | CashierBalanceHistoryUpsertWithWhereUniqueWithoutCashierInput[]
+    createMany?: CashierBalanceHistoryCreateManyCashierInputEnvelope
+    set?: CashierBalanceHistoryWhereUniqueInput | CashierBalanceHistoryWhereUniqueInput[]
+    disconnect?: CashierBalanceHistoryWhereUniqueInput | CashierBalanceHistoryWhereUniqueInput[]
+    delete?: CashierBalanceHistoryWhereUniqueInput | CashierBalanceHistoryWhereUniqueInput[]
+    connect?: CashierBalanceHistoryWhereUniqueInput | CashierBalanceHistoryWhereUniqueInput[]
+    update?: CashierBalanceHistoryUpdateWithWhereUniqueWithoutCashierInput | CashierBalanceHistoryUpdateWithWhereUniqueWithoutCashierInput[]
+    updateMany?: CashierBalanceHistoryUpdateManyWithWhereWithoutCashierInput | CashierBalanceHistoryUpdateManyWithWhereWithoutCashierInput[]
+    deleteMany?: CashierBalanceHistoryScalarWhereInput | CashierBalanceHistoryScalarWhereInput[]
   }
 
-  export type CartUncheckedUpdateOneWithoutCashierNestedInput = {
-    create?: XOR<CartCreateWithoutCashierInput, CartUncheckedCreateWithoutCashierInput>
-    connectOrCreate?: CartCreateOrConnectWithoutCashierInput
-    upsert?: CartUpsertWithoutCashierInput
-    disconnect?: CartWhereInput | boolean
-    delete?: CartWhereInput | boolean
-    connect?: CartWhereUniqueInput
-    update?: XOR<XOR<CartUpdateToOneWithWhereWithoutCashierInput, CartUpdateWithoutCashierInput>, CartUncheckedUpdateWithoutCashierInput>
+  export type CartUpdateManyWithoutCashierNestedInput = {
+    create?: XOR<CartCreateWithoutCashierInput, CartUncheckedCreateWithoutCashierInput> | CartCreateWithoutCashierInput[] | CartUncheckedCreateWithoutCashierInput[]
+    connectOrCreate?: CartCreateOrConnectWithoutCashierInput | CartCreateOrConnectWithoutCashierInput[]
+    upsert?: CartUpsertWithWhereUniqueWithoutCashierInput | CartUpsertWithWhereUniqueWithoutCashierInput[]
+    createMany?: CartCreateManyCashierInputEnvelope
+    set?: CartWhereUniqueInput | CartWhereUniqueInput[]
+    disconnect?: CartWhereUniqueInput | CartWhereUniqueInput[]
+    delete?: CartWhereUniqueInput | CartWhereUniqueInput[]
+    connect?: CartWhereUniqueInput | CartWhereUniqueInput[]
+    update?: CartUpdateWithWhereUniqueWithoutCashierInput | CartUpdateWithWhereUniqueWithoutCashierInput[]
+    updateMany?: CartUpdateManyWithWhereWithoutCashierInput | CartUpdateManyWithWhereWithoutCashierInput[]
+    deleteMany?: CartScalarWhereInput | CartScalarWhereInput[]
   }
 
-  export type CashierCreateNestedManyWithoutShiftInput = {
-    create?: XOR<CashierCreateWithoutShiftInput, CashierUncheckedCreateWithoutShiftInput> | CashierCreateWithoutShiftInput[] | CashierUncheckedCreateWithoutShiftInput[]
-    connectOrCreate?: CashierCreateOrConnectWithoutShiftInput | CashierCreateOrConnectWithoutShiftInput[]
-    createMany?: CashierCreateManyShiftInputEnvelope
-    connect?: CashierWhereUniqueInput | CashierWhereUniqueInput[]
+  export type TransactionUpdateManyWithoutCashierNestedInput = {
+    create?: XOR<TransactionCreateWithoutCashierInput, TransactionUncheckedCreateWithoutCashierInput> | TransactionCreateWithoutCashierInput[] | TransactionUncheckedCreateWithoutCashierInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutCashierInput | TransactionCreateOrConnectWithoutCashierInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutCashierInput | TransactionUpsertWithWhereUniqueWithoutCashierInput[]
+    createMany?: TransactionCreateManyCashierInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutCashierInput | TransactionUpdateWithWhereUniqueWithoutCashierInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutCashierInput | TransactionUpdateManyWithWhereWithoutCashierInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
   }
 
-  export type CashierUncheckedCreateNestedManyWithoutShiftInput = {
-    create?: XOR<CashierCreateWithoutShiftInput, CashierUncheckedCreateWithoutShiftInput> | CashierCreateWithoutShiftInput[] | CashierUncheckedCreateWithoutShiftInput[]
-    connectOrCreate?: CashierCreateOrConnectWithoutShiftInput | CashierCreateOrConnectWithoutShiftInput[]
-    createMany?: CashierCreateManyShiftInputEnvelope
-    connect?: CashierWhereUniqueInput | CashierWhereUniqueInput[]
+  export type CashierBalanceHistoryUncheckedUpdateManyWithoutCashierNestedInput = {
+    create?: XOR<CashierBalanceHistoryCreateWithoutCashierInput, CashierBalanceHistoryUncheckedCreateWithoutCashierInput> | CashierBalanceHistoryCreateWithoutCashierInput[] | CashierBalanceHistoryUncheckedCreateWithoutCashierInput[]
+    connectOrCreate?: CashierBalanceHistoryCreateOrConnectWithoutCashierInput | CashierBalanceHistoryCreateOrConnectWithoutCashierInput[]
+    upsert?: CashierBalanceHistoryUpsertWithWhereUniqueWithoutCashierInput | CashierBalanceHistoryUpsertWithWhereUniqueWithoutCashierInput[]
+    createMany?: CashierBalanceHistoryCreateManyCashierInputEnvelope
+    set?: CashierBalanceHistoryWhereUniqueInput | CashierBalanceHistoryWhereUniqueInput[]
+    disconnect?: CashierBalanceHistoryWhereUniqueInput | CashierBalanceHistoryWhereUniqueInput[]
+    delete?: CashierBalanceHistoryWhereUniqueInput | CashierBalanceHistoryWhereUniqueInput[]
+    connect?: CashierBalanceHistoryWhereUniqueInput | CashierBalanceHistoryWhereUniqueInput[]
+    update?: CashierBalanceHistoryUpdateWithWhereUniqueWithoutCashierInput | CashierBalanceHistoryUpdateWithWhereUniqueWithoutCashierInput[]
+    updateMany?: CashierBalanceHistoryUpdateManyWithWhereWithoutCashierInput | CashierBalanceHistoryUpdateManyWithWhereWithoutCashierInput[]
+    deleteMany?: CashierBalanceHistoryScalarWhereInput | CashierBalanceHistoryScalarWhereInput[]
   }
 
-  export type CashierUpdateManyWithoutShiftNestedInput = {
-    create?: XOR<CashierCreateWithoutShiftInput, CashierUncheckedCreateWithoutShiftInput> | CashierCreateWithoutShiftInput[] | CashierUncheckedCreateWithoutShiftInput[]
-    connectOrCreate?: CashierCreateOrConnectWithoutShiftInput | CashierCreateOrConnectWithoutShiftInput[]
-    upsert?: CashierUpsertWithWhereUniqueWithoutShiftInput | CashierUpsertWithWhereUniqueWithoutShiftInput[]
-    createMany?: CashierCreateManyShiftInputEnvelope
-    set?: CashierWhereUniqueInput | CashierWhereUniqueInput[]
-    disconnect?: CashierWhereUniqueInput | CashierWhereUniqueInput[]
-    delete?: CashierWhereUniqueInput | CashierWhereUniqueInput[]
-    connect?: CashierWhereUniqueInput | CashierWhereUniqueInput[]
-    update?: CashierUpdateWithWhereUniqueWithoutShiftInput | CashierUpdateWithWhereUniqueWithoutShiftInput[]
-    updateMany?: CashierUpdateManyWithWhereWithoutShiftInput | CashierUpdateManyWithWhereWithoutShiftInput[]
-    deleteMany?: CashierScalarWhereInput | CashierScalarWhereInput[]
+  export type CartUncheckedUpdateManyWithoutCashierNestedInput = {
+    create?: XOR<CartCreateWithoutCashierInput, CartUncheckedCreateWithoutCashierInput> | CartCreateWithoutCashierInput[] | CartUncheckedCreateWithoutCashierInput[]
+    connectOrCreate?: CartCreateOrConnectWithoutCashierInput | CartCreateOrConnectWithoutCashierInput[]
+    upsert?: CartUpsertWithWhereUniqueWithoutCashierInput | CartUpsertWithWhereUniqueWithoutCashierInput[]
+    createMany?: CartCreateManyCashierInputEnvelope
+    set?: CartWhereUniqueInput | CartWhereUniqueInput[]
+    disconnect?: CartWhereUniqueInput | CartWhereUniqueInput[]
+    delete?: CartWhereUniqueInput | CartWhereUniqueInput[]
+    connect?: CartWhereUniqueInput | CartWhereUniqueInput[]
+    update?: CartUpdateWithWhereUniqueWithoutCashierInput | CartUpdateWithWhereUniqueWithoutCashierInput[]
+    updateMany?: CartUpdateManyWithWhereWithoutCashierInput | CartUpdateManyWithWhereWithoutCashierInput[]
+    deleteMany?: CartScalarWhereInput | CartScalarWhereInput[]
   }
 
-  export type CashierUncheckedUpdateManyWithoutShiftNestedInput = {
-    create?: XOR<CashierCreateWithoutShiftInput, CashierUncheckedCreateWithoutShiftInput> | CashierCreateWithoutShiftInput[] | CashierUncheckedCreateWithoutShiftInput[]
-    connectOrCreate?: CashierCreateOrConnectWithoutShiftInput | CashierCreateOrConnectWithoutShiftInput[]
-    upsert?: CashierUpsertWithWhereUniqueWithoutShiftInput | CashierUpsertWithWhereUniqueWithoutShiftInput[]
-    createMany?: CashierCreateManyShiftInputEnvelope
-    set?: CashierWhereUniqueInput | CashierWhereUniqueInput[]
-    disconnect?: CashierWhereUniqueInput | CashierWhereUniqueInput[]
-    delete?: CashierWhereUniqueInput | CashierWhereUniqueInput[]
-    connect?: CashierWhereUniqueInput | CashierWhereUniqueInput[]
-    update?: CashierUpdateWithWhereUniqueWithoutShiftInput | CashierUpdateWithWhereUniqueWithoutShiftInput[]
-    updateMany?: CashierUpdateManyWithWhereWithoutShiftInput | CashierUpdateManyWithWhereWithoutShiftInput[]
-    deleteMany?: CashierScalarWhereInput | CashierScalarWhereInput[]
+  export type TransactionUncheckedUpdateManyWithoutCashierNestedInput = {
+    create?: XOR<TransactionCreateWithoutCashierInput, TransactionUncheckedCreateWithoutCashierInput> | TransactionCreateWithoutCashierInput[] | TransactionUncheckedCreateWithoutCashierInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutCashierInput | TransactionCreateOrConnectWithoutCashierInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutCashierInput | TransactionUpsertWithWhereUniqueWithoutCashierInput[]
+    createMany?: TransactionCreateManyCashierInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutCashierInput | TransactionUpdateWithWhereUniqueWithoutCashierInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutCashierInput | TransactionUpdateManyWithWhereWithoutCashierInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type CashierCreateNestedOneWithoutCashierBalanceHistoryInput = {
+    create?: XOR<CashierCreateWithoutCashierBalanceHistoryInput, CashierUncheckedCreateWithoutCashierBalanceHistoryInput>
+    connectOrCreate?: CashierCreateOrConnectWithoutCashierBalanceHistoryInput
+    connect?: CashierWhereUniqueInput
+  }
+
+  export type TransactionCreateNestedManyWithoutCashierBalanceHistoryInput = {
+    create?: XOR<TransactionCreateWithoutCashierBalanceHistoryInput, TransactionUncheckedCreateWithoutCashierBalanceHistoryInput> | TransactionCreateWithoutCashierBalanceHistoryInput[] | TransactionUncheckedCreateWithoutCashierBalanceHistoryInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutCashierBalanceHistoryInput | TransactionCreateOrConnectWithoutCashierBalanceHistoryInput[]
+    createMany?: TransactionCreateManyCashierBalanceHistoryInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type TransactionUncheckedCreateNestedManyWithoutCashierBalanceHistoryInput = {
+    create?: XOR<TransactionCreateWithoutCashierBalanceHistoryInput, TransactionUncheckedCreateWithoutCashierBalanceHistoryInput> | TransactionCreateWithoutCashierBalanceHistoryInput[] | TransactionUncheckedCreateWithoutCashierBalanceHistoryInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutCashierBalanceHistoryInput | TransactionCreateOrConnectWithoutCashierBalanceHistoryInput[]
+    createMany?: TransactionCreateManyCashierBalanceHistoryInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type CashierUpdateOneRequiredWithoutCashierBalanceHistoryNestedInput = {
+    create?: XOR<CashierCreateWithoutCashierBalanceHistoryInput, CashierUncheckedCreateWithoutCashierBalanceHistoryInput>
+    connectOrCreate?: CashierCreateOrConnectWithoutCashierBalanceHistoryInput
+    upsert?: CashierUpsertWithoutCashierBalanceHistoryInput
+    connect?: CashierWhereUniqueInput
+    update?: XOR<XOR<CashierUpdateToOneWithWhereWithoutCashierBalanceHistoryInput, CashierUpdateWithoutCashierBalanceHistoryInput>, CashierUncheckedUpdateWithoutCashierBalanceHistoryInput>
+  }
+
+  export type TransactionUpdateManyWithoutCashierBalanceHistoryNestedInput = {
+    create?: XOR<TransactionCreateWithoutCashierBalanceHistoryInput, TransactionUncheckedCreateWithoutCashierBalanceHistoryInput> | TransactionCreateWithoutCashierBalanceHistoryInput[] | TransactionUncheckedCreateWithoutCashierBalanceHistoryInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutCashierBalanceHistoryInput | TransactionCreateOrConnectWithoutCashierBalanceHistoryInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutCashierBalanceHistoryInput | TransactionUpsertWithWhereUniqueWithoutCashierBalanceHistoryInput[]
+    createMany?: TransactionCreateManyCashierBalanceHistoryInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutCashierBalanceHistoryInput | TransactionUpdateWithWhereUniqueWithoutCashierBalanceHistoryInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutCashierBalanceHistoryInput | TransactionUpdateManyWithWhereWithoutCashierBalanceHistoryInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutCashierBalanceHistoryNestedInput = {
+    create?: XOR<TransactionCreateWithoutCashierBalanceHistoryInput, TransactionUncheckedCreateWithoutCashierBalanceHistoryInput> | TransactionCreateWithoutCashierBalanceHistoryInput[] | TransactionUncheckedCreateWithoutCashierBalanceHistoryInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutCashierBalanceHistoryInput | TransactionCreateOrConnectWithoutCashierBalanceHistoryInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutCashierBalanceHistoryInput | TransactionUpsertWithWhereUniqueWithoutCashierBalanceHistoryInput[]
+    createMany?: TransactionCreateManyCashierBalanceHistoryInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutCashierBalanceHistoryInput | TransactionUpdateWithWhereUniqueWithoutCashierBalanceHistoryInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutCashierBalanceHistoryInput | TransactionUpdateManyWithWhereWithoutCashierBalanceHistoryInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
   }
 
   export type ProductStockCreateNestedManyWithoutProductInput = {
@@ -15557,6 +16620,20 @@ export namespace Prisma {
     connect?: ProductCategoryWhereUniqueInput
   }
 
+  export type CartItemCreateNestedManyWithoutProductInput = {
+    create?: XOR<CartItemCreateWithoutProductInput, CartItemUncheckedCreateWithoutProductInput> | CartItemCreateWithoutProductInput[] | CartItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutProductInput | CartItemCreateOrConnectWithoutProductInput[]
+    createMany?: CartItemCreateManyProductInputEnvelope
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+  }
+
+  export type TransactionItemCreateNestedManyWithoutProductInput = {
+    create?: XOR<TransactionItemCreateWithoutProductInput, TransactionItemUncheckedCreateWithoutProductInput> | TransactionItemCreateWithoutProductInput[] | TransactionItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: TransactionItemCreateOrConnectWithoutProductInput | TransactionItemCreateOrConnectWithoutProductInput[]
+    createMany?: TransactionItemCreateManyProductInputEnvelope
+    connect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+  }
+
   export type ProductStockUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<ProductStockCreateWithoutProductInput, ProductStockUncheckedCreateWithoutProductInput> | ProductStockCreateWithoutProductInput[] | ProductStockUncheckedCreateWithoutProductInput[]
     connectOrCreate?: ProductStockCreateOrConnectWithoutProductInput | ProductStockCreateOrConnectWithoutProductInput[]
@@ -15564,12 +16641,18 @@ export namespace Prisma {
     connect?: ProductStockWhereUniqueInput | ProductStockWhereUniqueInput[]
   }
 
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type CartItemUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<CartItemCreateWithoutProductInput, CartItemUncheckedCreateWithoutProductInput> | CartItemCreateWithoutProductInput[] | CartItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutProductInput | CartItemCreateOrConnectWithoutProductInput[]
+    createMany?: CartItemCreateManyProductInputEnvelope
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+  }
+
+  export type TransactionItemUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<TransactionItemCreateWithoutProductInput, TransactionItemUncheckedCreateWithoutProductInput> | TransactionItemCreateWithoutProductInput[] | TransactionItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: TransactionItemCreateOrConnectWithoutProductInput | TransactionItemCreateOrConnectWithoutProductInput[]
+    createMany?: TransactionItemCreateManyProductInputEnvelope
+    connect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
   }
 
   export type ProductStockUpdateManyWithoutProductNestedInput = {
@@ -15594,6 +16677,42 @@ export namespace Prisma {
     update?: XOR<XOR<ProductCategoryUpdateToOneWithWhereWithoutProductInput, ProductCategoryUpdateWithoutProductInput>, ProductCategoryUncheckedUpdateWithoutProductInput>
   }
 
+  export type CartItemUpdateManyWithoutProductNestedInput = {
+    create?: XOR<CartItemCreateWithoutProductInput, CartItemUncheckedCreateWithoutProductInput> | CartItemCreateWithoutProductInput[] | CartItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutProductInput | CartItemCreateOrConnectWithoutProductInput[]
+    upsert?: CartItemUpsertWithWhereUniqueWithoutProductInput | CartItemUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: CartItemCreateManyProductInputEnvelope
+    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    update?: CartItemUpdateWithWhereUniqueWithoutProductInput | CartItemUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: CartItemUpdateManyWithWhereWithoutProductInput | CartItemUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
+  }
+
+  export type TransactionItemUpdateManyWithoutProductNestedInput = {
+    create?: XOR<TransactionItemCreateWithoutProductInput, TransactionItemUncheckedCreateWithoutProductInput> | TransactionItemCreateWithoutProductInput[] | TransactionItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: TransactionItemCreateOrConnectWithoutProductInput | TransactionItemCreateOrConnectWithoutProductInput[]
+    upsert?: TransactionItemUpsertWithWhereUniqueWithoutProductInput | TransactionItemUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: TransactionItemCreateManyProductInputEnvelope
+    set?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    disconnect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    delete?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    connect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    update?: TransactionItemUpdateWithWhereUniqueWithoutProductInput | TransactionItemUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: TransactionItemUpdateManyWithWhereWithoutProductInput | TransactionItemUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: TransactionItemScalarWhereInput | TransactionItemScalarWhereInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type ProductStockUncheckedUpdateManyWithoutProductNestedInput = {
     create?: XOR<ProductStockCreateWithoutProductInput, ProductStockUncheckedCreateWithoutProductInput> | ProductStockCreateWithoutProductInput[] | ProductStockUncheckedCreateWithoutProductInput[]
     connectOrCreate?: ProductStockCreateOrConnectWithoutProductInput | ProductStockCreateOrConnectWithoutProductInput[]
@@ -15606,6 +16725,34 @@ export namespace Prisma {
     update?: ProductStockUpdateWithWhereUniqueWithoutProductInput | ProductStockUpdateWithWhereUniqueWithoutProductInput[]
     updateMany?: ProductStockUpdateManyWithWhereWithoutProductInput | ProductStockUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: ProductStockScalarWhereInput | ProductStockScalarWhereInput[]
+  }
+
+  export type CartItemUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<CartItemCreateWithoutProductInput, CartItemUncheckedCreateWithoutProductInput> | CartItemCreateWithoutProductInput[] | CartItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutProductInput | CartItemCreateOrConnectWithoutProductInput[]
+    upsert?: CartItemUpsertWithWhereUniqueWithoutProductInput | CartItemUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: CartItemCreateManyProductInputEnvelope
+    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    update?: CartItemUpdateWithWhereUniqueWithoutProductInput | CartItemUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: CartItemUpdateManyWithWhereWithoutProductInput | CartItemUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
+  }
+
+  export type TransactionItemUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<TransactionItemCreateWithoutProductInput, TransactionItemUncheckedCreateWithoutProductInput> | TransactionItemCreateWithoutProductInput[] | TransactionItemUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: TransactionItemCreateOrConnectWithoutProductInput | TransactionItemCreateOrConnectWithoutProductInput[]
+    upsert?: TransactionItemUpsertWithWhereUniqueWithoutProductInput | TransactionItemUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: TransactionItemCreateManyProductInputEnvelope
+    set?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    disconnect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    delete?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    connect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    update?: TransactionItemUpdateWithWhereUniqueWithoutProductInput | TransactionItemUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: TransactionItemUpdateManyWithWhereWithoutProductInput | TransactionItemUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: TransactionItemScalarWhereInput | TransactionItemScalarWhereInput[]
   }
 
   export type ProductCreateNestedManyWithoutProductCategoryInput = {
@@ -15664,10 +16811,54 @@ export namespace Prisma {
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutProductStockInput, ProductUpdateWithoutProductStockInput>, ProductUncheckedUpdateWithoutProductStockInput>
   }
 
+  export type CartItemCreateNestedManyWithoutCartInput = {
+    create?: XOR<CartItemCreateWithoutCartInput, CartItemUncheckedCreateWithoutCartInput> | CartItemCreateWithoutCartInput[] | CartItemUncheckedCreateWithoutCartInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutCartInput | CartItemCreateOrConnectWithoutCartInput[]
+    createMany?: CartItemCreateManyCartInputEnvelope
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+  }
+
   export type CashierCreateNestedOneWithoutCartInput = {
     create?: XOR<CashierCreateWithoutCartInput, CashierUncheckedCreateWithoutCartInput>
     connectOrCreate?: CashierCreateOrConnectWithoutCartInput
     connect?: CashierWhereUniqueInput
+  }
+
+  export type TransactionCreateNestedOneWithoutCartInput = {
+    create?: XOR<TransactionCreateWithoutCartInput, TransactionUncheckedCreateWithoutCartInput>
+    connectOrCreate?: TransactionCreateOrConnectWithoutCartInput
+    connect?: TransactionWhereUniqueInput
+  }
+
+  export type CartItemUncheckedCreateNestedManyWithoutCartInput = {
+    create?: XOR<CartItemCreateWithoutCartInput, CartItemUncheckedCreateWithoutCartInput> | CartItemCreateWithoutCartInput[] | CartItemUncheckedCreateWithoutCartInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutCartInput | CartItemCreateOrConnectWithoutCartInput[]
+    createMany?: CartItemCreateManyCartInputEnvelope
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+  }
+
+  export type TransactionUncheckedCreateNestedOneWithoutCartInput = {
+    create?: XOR<TransactionCreateWithoutCartInput, TransactionUncheckedCreateWithoutCartInput>
+    connectOrCreate?: TransactionCreateOrConnectWithoutCartInput
+    connect?: TransactionWhereUniqueInput
+  }
+
+  export type EnumCartStatusFieldUpdateOperationsInput = {
+    set?: $Enums.CartStatus
+  }
+
+  export type CartItemUpdateManyWithoutCartNestedInput = {
+    create?: XOR<CartItemCreateWithoutCartInput, CartItemUncheckedCreateWithoutCartInput> | CartItemCreateWithoutCartInput[] | CartItemUncheckedCreateWithoutCartInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutCartInput | CartItemCreateOrConnectWithoutCartInput[]
+    upsert?: CartItemUpsertWithWhereUniqueWithoutCartInput | CartItemUpsertWithWhereUniqueWithoutCartInput[]
+    createMany?: CartItemCreateManyCartInputEnvelope
+    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    update?: CartItemUpdateWithWhereUniqueWithoutCartInput | CartItemUpdateWithWhereUniqueWithoutCartInput[]
+    updateMany?: CartItemUpdateManyWithWhereWithoutCartInput | CartItemUpdateManyWithWhereWithoutCartInput[]
+    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
   }
 
   export type CashierUpdateOneRequiredWithoutCartNestedInput = {
@@ -15678,75 +16869,182 @@ export namespace Prisma {
     update?: XOR<XOR<CashierUpdateToOneWithWhereWithoutCartInput, CashierUpdateWithoutCartInput>, CashierUncheckedUpdateWithoutCartInput>
   }
 
-  export type TransactionHistoryCreateNestedManyWithoutTransactionInput = {
-    create?: XOR<TransactionHistoryCreateWithoutTransactionInput, TransactionHistoryUncheckedCreateWithoutTransactionInput> | TransactionHistoryCreateWithoutTransactionInput[] | TransactionHistoryUncheckedCreateWithoutTransactionInput[]
-    connectOrCreate?: TransactionHistoryCreateOrConnectWithoutTransactionInput | TransactionHistoryCreateOrConnectWithoutTransactionInput[]
-    createMany?: TransactionHistoryCreateManyTransactionInputEnvelope
-    connect?: TransactionHistoryWhereUniqueInput | TransactionHistoryWhereUniqueInput[]
+  export type TransactionUpdateOneWithoutCartNestedInput = {
+    create?: XOR<TransactionCreateWithoutCartInput, TransactionUncheckedCreateWithoutCartInput>
+    connectOrCreate?: TransactionCreateOrConnectWithoutCartInput
+    upsert?: TransactionUpsertWithoutCartInput
+    disconnect?: TransactionWhereInput | boolean
+    delete?: TransactionWhereInput | boolean
+    connect?: TransactionWhereUniqueInput
+    update?: XOR<XOR<TransactionUpdateToOneWithWhereWithoutCartInput, TransactionUpdateWithoutCartInput>, TransactionUncheckedUpdateWithoutCartInput>
   }
 
-  export type TransactionHistoryUncheckedCreateNestedManyWithoutTransactionInput = {
-    create?: XOR<TransactionHistoryCreateWithoutTransactionInput, TransactionHistoryUncheckedCreateWithoutTransactionInput> | TransactionHistoryCreateWithoutTransactionInput[] | TransactionHistoryUncheckedCreateWithoutTransactionInput[]
-    connectOrCreate?: TransactionHistoryCreateOrConnectWithoutTransactionInput | TransactionHistoryCreateOrConnectWithoutTransactionInput[]
-    createMany?: TransactionHistoryCreateManyTransactionInputEnvelope
-    connect?: TransactionHistoryWhereUniqueInput | TransactionHistoryWhereUniqueInput[]
+  export type CartItemUncheckedUpdateManyWithoutCartNestedInput = {
+    create?: XOR<CartItemCreateWithoutCartInput, CartItemUncheckedCreateWithoutCartInput> | CartItemCreateWithoutCartInput[] | CartItemUncheckedCreateWithoutCartInput[]
+    connectOrCreate?: CartItemCreateOrConnectWithoutCartInput | CartItemCreateOrConnectWithoutCartInput[]
+    upsert?: CartItemUpsertWithWhereUniqueWithoutCartInput | CartItemUpsertWithWhereUniqueWithoutCartInput[]
+    createMany?: CartItemCreateManyCartInputEnvelope
+    set?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    disconnect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    delete?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
+    update?: CartItemUpdateWithWhereUniqueWithoutCartInput | CartItemUpdateWithWhereUniqueWithoutCartInput[]
+    updateMany?: CartItemUpdateManyWithWhereWithoutCartInput | CartItemUpdateManyWithWhereWithoutCartInput[]
+    deleteMany?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
+  }
+
+  export type TransactionUncheckedUpdateOneWithoutCartNestedInput = {
+    create?: XOR<TransactionCreateWithoutCartInput, TransactionUncheckedCreateWithoutCartInput>
+    connectOrCreate?: TransactionCreateOrConnectWithoutCartInput
+    upsert?: TransactionUpsertWithoutCartInput
+    disconnect?: TransactionWhereInput | boolean
+    delete?: TransactionWhereInput | boolean
+    connect?: TransactionWhereUniqueInput
+    update?: XOR<XOR<TransactionUpdateToOneWithWhereWithoutCartInput, TransactionUpdateWithoutCartInput>, TransactionUncheckedUpdateWithoutCartInput>
+  }
+
+  export type CartCreateNestedOneWithoutCartItemsInput = {
+    create?: XOR<CartCreateWithoutCartItemsInput, CartUncheckedCreateWithoutCartItemsInput>
+    connectOrCreate?: CartCreateOrConnectWithoutCartItemsInput
+    connect?: CartWhereUniqueInput
+  }
+
+  export type ProductCreateNestedOneWithoutCartItemsInput = {
+    create?: XOR<ProductCreateWithoutCartItemsInput, ProductUncheckedCreateWithoutCartItemsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutCartItemsInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type CartUpdateOneRequiredWithoutCartItemsNestedInput = {
+    create?: XOR<CartCreateWithoutCartItemsInput, CartUncheckedCreateWithoutCartItemsInput>
+    connectOrCreate?: CartCreateOrConnectWithoutCartItemsInput
+    upsert?: CartUpsertWithoutCartItemsInput
+    connect?: CartWhereUniqueInput
+    update?: XOR<XOR<CartUpdateToOneWithWhereWithoutCartItemsInput, CartUpdateWithoutCartItemsInput>, CartUncheckedUpdateWithoutCartItemsInput>
+  }
+
+  export type ProductUpdateOneRequiredWithoutCartItemsNestedInput = {
+    create?: XOR<ProductCreateWithoutCartItemsInput, ProductUncheckedCreateWithoutCartItemsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutCartItemsInput
+    upsert?: ProductUpsertWithoutCartItemsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutCartItemsInput, ProductUpdateWithoutCartItemsInput>, ProductUncheckedUpdateWithoutCartItemsInput>
+  }
+
+  export type CartCreateNestedOneWithoutTransactionInput = {
+    create?: XOR<CartCreateWithoutTransactionInput, CartUncheckedCreateWithoutTransactionInput>
+    connectOrCreate?: CartCreateOrConnectWithoutTransactionInput
+    connect?: CartWhereUniqueInput
+  }
+
+  export type CashierCreateNestedOneWithoutTransactionInput = {
+    create?: XOR<CashierCreateWithoutTransactionInput, CashierUncheckedCreateWithoutTransactionInput>
+    connectOrCreate?: CashierCreateOrConnectWithoutTransactionInput
+    connect?: CashierWhereUniqueInput
+  }
+
+  export type CashierBalanceHistoryCreateNestedOneWithoutTransactionInput = {
+    create?: XOR<CashierBalanceHistoryCreateWithoutTransactionInput, CashierBalanceHistoryUncheckedCreateWithoutTransactionInput>
+    connectOrCreate?: CashierBalanceHistoryCreateOrConnectWithoutTransactionInput
+    connect?: CashierBalanceHistoryWhereUniqueInput
+  }
+
+  export type TransactionItemCreateNestedManyWithoutTransactionInput = {
+    create?: XOR<TransactionItemCreateWithoutTransactionInput, TransactionItemUncheckedCreateWithoutTransactionInput> | TransactionItemCreateWithoutTransactionInput[] | TransactionItemUncheckedCreateWithoutTransactionInput[]
+    connectOrCreate?: TransactionItemCreateOrConnectWithoutTransactionInput | TransactionItemCreateOrConnectWithoutTransactionInput[]
+    createMany?: TransactionItemCreateManyTransactionInputEnvelope
+    connect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+  }
+
+  export type TransactionItemUncheckedCreateNestedManyWithoutTransactionInput = {
+    create?: XOR<TransactionItemCreateWithoutTransactionInput, TransactionItemUncheckedCreateWithoutTransactionInput> | TransactionItemCreateWithoutTransactionInput[] | TransactionItemUncheckedCreateWithoutTransactionInput[]
+    connectOrCreate?: TransactionItemCreateOrConnectWithoutTransactionInput | TransactionItemCreateOrConnectWithoutTransactionInput[]
+    createMany?: TransactionItemCreateManyTransactionInputEnvelope
+    connect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
   }
 
   export type EnumPaymentTypeFieldUpdateOperationsInput = {
     set?: $Enums.PaymentType
   }
 
-  export type TransactionHistoryUpdateManyWithoutTransactionNestedInput = {
-    create?: XOR<TransactionHistoryCreateWithoutTransactionInput, TransactionHistoryUncheckedCreateWithoutTransactionInput> | TransactionHistoryCreateWithoutTransactionInput[] | TransactionHistoryUncheckedCreateWithoutTransactionInput[]
-    connectOrCreate?: TransactionHistoryCreateOrConnectWithoutTransactionInput | TransactionHistoryCreateOrConnectWithoutTransactionInput[]
-    upsert?: TransactionHistoryUpsertWithWhereUniqueWithoutTransactionInput | TransactionHistoryUpsertWithWhereUniqueWithoutTransactionInput[]
-    createMany?: TransactionHistoryCreateManyTransactionInputEnvelope
-    set?: TransactionHistoryWhereUniqueInput | TransactionHistoryWhereUniqueInput[]
-    disconnect?: TransactionHistoryWhereUniqueInput | TransactionHistoryWhereUniqueInput[]
-    delete?: TransactionHistoryWhereUniqueInput | TransactionHistoryWhereUniqueInput[]
-    connect?: TransactionHistoryWhereUniqueInput | TransactionHistoryWhereUniqueInput[]
-    update?: TransactionHistoryUpdateWithWhereUniqueWithoutTransactionInput | TransactionHistoryUpdateWithWhereUniqueWithoutTransactionInput[]
-    updateMany?: TransactionHistoryUpdateManyWithWhereWithoutTransactionInput | TransactionHistoryUpdateManyWithWhereWithoutTransactionInput[]
-    deleteMany?: TransactionHistoryScalarWhereInput | TransactionHistoryScalarWhereInput[]
+  export type CartUpdateOneRequiredWithoutTransactionNestedInput = {
+    create?: XOR<CartCreateWithoutTransactionInput, CartUncheckedCreateWithoutTransactionInput>
+    connectOrCreate?: CartCreateOrConnectWithoutTransactionInput
+    upsert?: CartUpsertWithoutTransactionInput
+    connect?: CartWhereUniqueInput
+    update?: XOR<XOR<CartUpdateToOneWithWhereWithoutTransactionInput, CartUpdateWithoutTransactionInput>, CartUncheckedUpdateWithoutTransactionInput>
   }
 
-  export type TransactionHistoryUncheckedUpdateManyWithoutTransactionNestedInput = {
-    create?: XOR<TransactionHistoryCreateWithoutTransactionInput, TransactionHistoryUncheckedCreateWithoutTransactionInput> | TransactionHistoryCreateWithoutTransactionInput[] | TransactionHistoryUncheckedCreateWithoutTransactionInput[]
-    connectOrCreate?: TransactionHistoryCreateOrConnectWithoutTransactionInput | TransactionHistoryCreateOrConnectWithoutTransactionInput[]
-    upsert?: TransactionHistoryUpsertWithWhereUniqueWithoutTransactionInput | TransactionHistoryUpsertWithWhereUniqueWithoutTransactionInput[]
-    createMany?: TransactionHistoryCreateManyTransactionInputEnvelope
-    set?: TransactionHistoryWhereUniqueInput | TransactionHistoryWhereUniqueInput[]
-    disconnect?: TransactionHistoryWhereUniqueInput | TransactionHistoryWhereUniqueInput[]
-    delete?: TransactionHistoryWhereUniqueInput | TransactionHistoryWhereUniqueInput[]
-    connect?: TransactionHistoryWhereUniqueInput | TransactionHistoryWhereUniqueInput[]
-    update?: TransactionHistoryUpdateWithWhereUniqueWithoutTransactionInput | TransactionHistoryUpdateWithWhereUniqueWithoutTransactionInput[]
-    updateMany?: TransactionHistoryUpdateManyWithWhereWithoutTransactionInput | TransactionHistoryUpdateManyWithWhereWithoutTransactionInput[]
-    deleteMany?: TransactionHistoryScalarWhereInput | TransactionHistoryScalarWhereInput[]
+  export type CashierUpdateOneRequiredWithoutTransactionNestedInput = {
+    create?: XOR<CashierCreateWithoutTransactionInput, CashierUncheckedCreateWithoutTransactionInput>
+    connectOrCreate?: CashierCreateOrConnectWithoutTransactionInput
+    upsert?: CashierUpsertWithoutTransactionInput
+    connect?: CashierWhereUniqueInput
+    update?: XOR<XOR<CashierUpdateToOneWithWhereWithoutTransactionInput, CashierUpdateWithoutTransactionInput>, CashierUncheckedUpdateWithoutTransactionInput>
   }
 
-  export type TransactionCreateNestedOneWithoutTransactionHistoryInput = {
-    create?: XOR<TransactionCreateWithoutTransactionHistoryInput, TransactionUncheckedCreateWithoutTransactionHistoryInput>
-    connectOrCreate?: TransactionCreateOrConnectWithoutTransactionHistoryInput
+  export type CashierBalanceHistoryUpdateOneRequiredWithoutTransactionNestedInput = {
+    create?: XOR<CashierBalanceHistoryCreateWithoutTransactionInput, CashierBalanceHistoryUncheckedCreateWithoutTransactionInput>
+    connectOrCreate?: CashierBalanceHistoryCreateOrConnectWithoutTransactionInput
+    upsert?: CashierBalanceHistoryUpsertWithoutTransactionInput
+    connect?: CashierBalanceHistoryWhereUniqueInput
+    update?: XOR<XOR<CashierBalanceHistoryUpdateToOneWithWhereWithoutTransactionInput, CashierBalanceHistoryUpdateWithoutTransactionInput>, CashierBalanceHistoryUncheckedUpdateWithoutTransactionInput>
+  }
+
+  export type TransactionItemUpdateManyWithoutTransactionNestedInput = {
+    create?: XOR<TransactionItemCreateWithoutTransactionInput, TransactionItemUncheckedCreateWithoutTransactionInput> | TransactionItemCreateWithoutTransactionInput[] | TransactionItemUncheckedCreateWithoutTransactionInput[]
+    connectOrCreate?: TransactionItemCreateOrConnectWithoutTransactionInput | TransactionItemCreateOrConnectWithoutTransactionInput[]
+    upsert?: TransactionItemUpsertWithWhereUniqueWithoutTransactionInput | TransactionItemUpsertWithWhereUniqueWithoutTransactionInput[]
+    createMany?: TransactionItemCreateManyTransactionInputEnvelope
+    set?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    disconnect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    delete?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    connect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    update?: TransactionItemUpdateWithWhereUniqueWithoutTransactionInput | TransactionItemUpdateWithWhereUniqueWithoutTransactionInput[]
+    updateMany?: TransactionItemUpdateManyWithWhereWithoutTransactionInput | TransactionItemUpdateManyWithWhereWithoutTransactionInput[]
+    deleteMany?: TransactionItemScalarWhereInput | TransactionItemScalarWhereInput[]
+  }
+
+  export type TransactionItemUncheckedUpdateManyWithoutTransactionNestedInput = {
+    create?: XOR<TransactionItemCreateWithoutTransactionInput, TransactionItemUncheckedCreateWithoutTransactionInput> | TransactionItemCreateWithoutTransactionInput[] | TransactionItemUncheckedCreateWithoutTransactionInput[]
+    connectOrCreate?: TransactionItemCreateOrConnectWithoutTransactionInput | TransactionItemCreateOrConnectWithoutTransactionInput[]
+    upsert?: TransactionItemUpsertWithWhereUniqueWithoutTransactionInput | TransactionItemUpsertWithWhereUniqueWithoutTransactionInput[]
+    createMany?: TransactionItemCreateManyTransactionInputEnvelope
+    set?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    disconnect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    delete?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    connect?: TransactionItemWhereUniqueInput | TransactionItemWhereUniqueInput[]
+    update?: TransactionItemUpdateWithWhereUniqueWithoutTransactionInput | TransactionItemUpdateWithWhereUniqueWithoutTransactionInput[]
+    updateMany?: TransactionItemUpdateManyWithWhereWithoutTransactionInput | TransactionItemUpdateManyWithWhereWithoutTransactionInput[]
+    deleteMany?: TransactionItemScalarWhereInput | TransactionItemScalarWhereInput[]
+  }
+
+  export type TransactionCreateNestedOneWithoutTransactionItemsInput = {
+    create?: XOR<TransactionCreateWithoutTransactionItemsInput, TransactionUncheckedCreateWithoutTransactionItemsInput>
+    connectOrCreate?: TransactionCreateOrConnectWithoutTransactionItemsInput
     connect?: TransactionWhereUniqueInput
   }
 
-  export type TransactionUpdateOneRequiredWithoutTransactionHistoryNestedInput = {
-    create?: XOR<TransactionCreateWithoutTransactionHistoryInput, TransactionUncheckedCreateWithoutTransactionHistoryInput>
-    connectOrCreate?: TransactionCreateOrConnectWithoutTransactionHistoryInput
-    upsert?: TransactionUpsertWithoutTransactionHistoryInput
-    connect?: TransactionWhereUniqueInput
-    update?: XOR<XOR<TransactionUpdateToOneWithWhereWithoutTransactionHistoryInput, TransactionUpdateWithoutTransactionHistoryInput>, TransactionUncheckedUpdateWithoutTransactionHistoryInput>
+  export type ProductCreateNestedOneWithoutTransactionItemsInput = {
+    create?: XOR<ProductCreateWithoutTransactionItemsInput, ProductUncheckedCreateWithoutTransactionItemsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutTransactionItemsInput
+    connect?: ProductWhereUniqueInput
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type TransactionUpdateOneRequiredWithoutTransactionItemsNestedInput = {
+    create?: XOR<TransactionCreateWithoutTransactionItemsInput, TransactionUncheckedCreateWithoutTransactionItemsInput>
+    connectOrCreate?: TransactionCreateOrConnectWithoutTransactionItemsInput
+    upsert?: TransactionUpsertWithoutTransactionItemsInput
+    connect?: TransactionWhereUniqueInput
+    update?: XOR<XOR<TransactionUpdateToOneWithWhereWithoutTransactionItemsInput, TransactionUpdateWithoutTransactionItemsInput>, TransactionUncheckedUpdateWithoutTransactionItemsInput>
+  }
+
+  export type ProductUpdateOneRequiredWithoutTransactionItemsNestedInput = {
+    create?: XOR<ProductCreateWithoutTransactionItemsInput, ProductUncheckedCreateWithoutTransactionItemsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutTransactionItemsInput
+    upsert?: ProductUpsertWithoutTransactionItemsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutTransactionItemsInput, ProductUpdateWithoutTransactionItemsInput>, ProductUncheckedUpdateWithoutTransactionItemsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -15761,75 +17059,6 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringFilter<$PrismaModel> | string
-  }
-
-  export type NestedDateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
@@ -15858,6 +17087,17 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -15867,6 +17107,41 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumShiftSessionFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShiftSession | EnumShiftSessionFieldRefInput<$PrismaModel>
+    in?: $Enums.ShiftSession[] | ListEnumShiftSessionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShiftSession[] | ListEnumShiftSessionFieldRefInput<$PrismaModel>
+    not?: NestedEnumShiftSessionFilter<$PrismaModel> | $Enums.ShiftSession
+  }
+
+  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -15915,6 +17190,20 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -15927,6 +17216,38 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumShiftSessionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ShiftSession | EnumShiftSessionFieldRefInput<$PrismaModel>
+    in?: $Enums.ShiftSession[] | ListEnumShiftSessionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ShiftSession[] | ListEnumShiftSessionFieldRefInput<$PrismaModel>
+    not?: NestedEnumShiftSessionWithAggregatesFilter<$PrismaModel> | $Enums.ShiftSession
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumShiftSessionFilter<$PrismaModel>
+    _max?: NestedEnumShiftSessionFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -15943,6 +17264,55 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCartStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CartStatus | EnumCartStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CartStatus[] | ListEnumCartStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CartStatus[] | ListEnumCartStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCartStatusFilter<$PrismaModel> | $Enums.CartStatus
+  }
+
+  export type NestedEnumCartStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CartStatus | EnumCartStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CartStatus[] | ListEnumCartStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CartStatus[] | ListEnumCartStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCartStatusWithAggregatesFilter<$PrismaModel> | $Enums.CartStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCartStatusFilter<$PrismaModel>
+    _max?: NestedEnumCartStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumPaymentTypeFilter<$PrismaModel = never> = {
@@ -15962,41 +17332,60 @@ export namespace Prisma {
     _max?: NestedEnumPaymentTypeFilter<$PrismaModel>
   }
 
-  export type ShiftCreateWithoutCashierInput = {
+  export type CashierBalanceHistoryCreateWithoutCashierInput = {
     id?: string
     startTime: Date | string
     endTime?: Date | string | null
+    startingCash: number
+    endingCash?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    transaction?: TransactionCreateNestedManyWithoutCashierBalanceHistoryInput
   }
 
-  export type ShiftUncheckedCreateWithoutCashierInput = {
+  export type CashierBalanceHistoryUncheckedCreateWithoutCashierInput = {
     id?: string
     startTime: Date | string
     endTime?: Date | string | null
+    startingCash: number
+    endingCash?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    transaction?: TransactionUncheckedCreateNestedManyWithoutCashierBalanceHistoryInput
   }
 
-  export type ShiftCreateOrConnectWithoutCashierInput = {
-    where: ShiftWhereUniqueInput
-    create: XOR<ShiftCreateWithoutCashierInput, ShiftUncheckedCreateWithoutCashierInput>
+  export type CashierBalanceHistoryCreateOrConnectWithoutCashierInput = {
+    where: CashierBalanceHistoryWhereUniqueInput
+    create: XOR<CashierBalanceHistoryCreateWithoutCashierInput, CashierBalanceHistoryUncheckedCreateWithoutCashierInput>
+  }
+
+  export type CashierBalanceHistoryCreateManyCashierInputEnvelope = {
+    data: CashierBalanceHistoryCreateManyCashierInput | CashierBalanceHistoryCreateManyCashierInput[]
+    skipDuplicates?: boolean
   }
 
   export type CartCreateWithoutCashierInput = {
     id?: string
+    customerName: string
+    status?: $Enums.CartStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    cartItems?: CartItemCreateNestedManyWithoutCartInput
+    transaction?: TransactionCreateNestedOneWithoutCartInput
   }
 
   export type CartUncheckedCreateWithoutCashierInput = {
     id?: string
+    customerName: string
+    status?: $Enums.CartStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutCartInput
+    transaction?: TransactionUncheckedCreateNestedOneWithoutCartInput
   }
 
   export type CartCreateOrConnectWithoutCashierInput = {
@@ -16004,147 +17393,291 @@ export namespace Prisma {
     create: XOR<CartCreateWithoutCashierInput, CartUncheckedCreateWithoutCashierInput>
   }
 
-  export type ShiftUpsertWithoutCashierInput = {
-    update: XOR<ShiftUpdateWithoutCashierInput, ShiftUncheckedUpdateWithoutCashierInput>
-    create: XOR<ShiftCreateWithoutCashierInput, ShiftUncheckedCreateWithoutCashierInput>
-    where?: ShiftWhereInput
-  }
-
-  export type ShiftUpdateToOneWithWhereWithoutCashierInput = {
-    where?: ShiftWhereInput
-    data: XOR<ShiftUpdateWithoutCashierInput, ShiftUncheckedUpdateWithoutCashierInput>
-  }
-
-  export type ShiftUpdateWithoutCashierInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type ShiftUncheckedUpdateWithoutCashierInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type CartUpsertWithoutCashierInput = {
-    update: XOR<CartUpdateWithoutCashierInput, CartUncheckedUpdateWithoutCashierInput>
-    create: XOR<CartCreateWithoutCashierInput, CartUncheckedCreateWithoutCashierInput>
-    where?: CartWhereInput
-  }
-
-  export type CartUpdateToOneWithWhereWithoutCashierInput = {
-    where?: CartWhereInput
-    data: XOR<CartUpdateWithoutCashierInput, CartUncheckedUpdateWithoutCashierInput>
-  }
-
-  export type CartUpdateWithoutCashierInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type CartUncheckedUpdateWithoutCashierInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type CashierCreateWithoutShiftInput = {
-    id?: string
-    firstName: string
-    lastName?: string | null
-    email: string
-    password: string
-    phoneNumber?: string | null
-    gender?: $Enums.Gender | null
-    dateOfBirth?: string | null
-    isEmailVerified?: boolean
-    passwordResetCount?: number
-    emailChangeCount?: number
-    avatarImgUrl?: string | null
-    cldPublicId?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    cart?: CartCreateNestedOneWithoutCashierInput
-  }
-
-  export type CashierUncheckedCreateWithoutShiftInput = {
-    id?: string
-    firstName: string
-    lastName?: string | null
-    email: string
-    password: string
-    phoneNumber?: string | null
-    gender?: $Enums.Gender | null
-    dateOfBirth?: string | null
-    isEmailVerified?: boolean
-    passwordResetCount?: number
-    emailChangeCount?: number
-    avatarImgUrl?: string | null
-    cldPublicId?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    cart?: CartUncheckedCreateNestedOneWithoutCashierInput
-  }
-
-  export type CashierCreateOrConnectWithoutShiftInput = {
-    where: CashierWhereUniqueInput
-    create: XOR<CashierCreateWithoutShiftInput, CashierUncheckedCreateWithoutShiftInput>
-  }
-
-  export type CashierCreateManyShiftInputEnvelope = {
-    data: CashierCreateManyShiftInput | CashierCreateManyShiftInput[]
+  export type CartCreateManyCashierInputEnvelope = {
+    data: CartCreateManyCashierInput | CartCreateManyCashierInput[]
     skipDuplicates?: boolean
   }
 
-  export type CashierUpsertWithWhereUniqueWithoutShiftInput = {
+  export type TransactionCreateWithoutCashierInput = {
+    id?: string
+    paymentType: $Enums.PaymentType
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
+    paymentDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    cart: CartCreateNestedOneWithoutTransactionInput
+    cashierBalanceHistory: CashierBalanceHistoryCreateNestedOneWithoutTransactionInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutTransactionInput
+  }
+
+  export type TransactionUncheckedCreateWithoutCashierInput = {
+    id?: string
+    cartId: string
+    cashierBalanceHistoryId: string
+    paymentType: $Enums.PaymentType
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
+    paymentDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutTransactionInput
+  }
+
+  export type TransactionCreateOrConnectWithoutCashierInput = {
+    where: TransactionWhereUniqueInput
+    create: XOR<TransactionCreateWithoutCashierInput, TransactionUncheckedCreateWithoutCashierInput>
+  }
+
+  export type TransactionCreateManyCashierInputEnvelope = {
+    data: TransactionCreateManyCashierInput | TransactionCreateManyCashierInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CashierBalanceHistoryUpsertWithWhereUniqueWithoutCashierInput = {
+    where: CashierBalanceHistoryWhereUniqueInput
+    update: XOR<CashierBalanceHistoryUpdateWithoutCashierInput, CashierBalanceHistoryUncheckedUpdateWithoutCashierInput>
+    create: XOR<CashierBalanceHistoryCreateWithoutCashierInput, CashierBalanceHistoryUncheckedCreateWithoutCashierInput>
+  }
+
+  export type CashierBalanceHistoryUpdateWithWhereUniqueWithoutCashierInput = {
+    where: CashierBalanceHistoryWhereUniqueInput
+    data: XOR<CashierBalanceHistoryUpdateWithoutCashierInput, CashierBalanceHistoryUncheckedUpdateWithoutCashierInput>
+  }
+
+  export type CashierBalanceHistoryUpdateManyWithWhereWithoutCashierInput = {
+    where: CashierBalanceHistoryScalarWhereInput
+    data: XOR<CashierBalanceHistoryUpdateManyMutationInput, CashierBalanceHistoryUncheckedUpdateManyWithoutCashierInput>
+  }
+
+  export type CashierBalanceHistoryScalarWhereInput = {
+    AND?: CashierBalanceHistoryScalarWhereInput | CashierBalanceHistoryScalarWhereInput[]
+    OR?: CashierBalanceHistoryScalarWhereInput[]
+    NOT?: CashierBalanceHistoryScalarWhereInput | CashierBalanceHistoryScalarWhereInput[]
+    id?: StringFilter<"CashierBalanceHistory"> | string
+    cashierId?: StringFilter<"CashierBalanceHistory"> | string
+    startTime?: DateTimeFilter<"CashierBalanceHistory"> | Date | string
+    endTime?: DateTimeNullableFilter<"CashierBalanceHistory"> | Date | string | null
+    startingCash?: FloatFilter<"CashierBalanceHistory"> | number
+    endingCash?: FloatNullableFilter<"CashierBalanceHistory"> | number | null
+    createdAt?: DateTimeFilter<"CashierBalanceHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"CashierBalanceHistory"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"CashierBalanceHistory"> | Date | string | null
+  }
+
+  export type CartUpsertWithWhereUniqueWithoutCashierInput = {
+    where: CartWhereUniqueInput
+    update: XOR<CartUpdateWithoutCashierInput, CartUncheckedUpdateWithoutCashierInput>
+    create: XOR<CartCreateWithoutCashierInput, CartUncheckedCreateWithoutCashierInput>
+  }
+
+  export type CartUpdateWithWhereUniqueWithoutCashierInput = {
+    where: CartWhereUniqueInput
+    data: XOR<CartUpdateWithoutCashierInput, CartUncheckedUpdateWithoutCashierInput>
+  }
+
+  export type CartUpdateManyWithWhereWithoutCashierInput = {
+    where: CartScalarWhereInput
+    data: XOR<CartUpdateManyMutationInput, CartUncheckedUpdateManyWithoutCashierInput>
+  }
+
+  export type CartScalarWhereInput = {
+    AND?: CartScalarWhereInput | CartScalarWhereInput[]
+    OR?: CartScalarWhereInput[]
+    NOT?: CartScalarWhereInput | CartScalarWhereInput[]
+    id?: StringFilter<"Cart"> | string
+    customerName?: StringFilter<"Cart"> | string
+    cashierId?: StringFilter<"Cart"> | string
+    status?: EnumCartStatusFilter<"Cart"> | $Enums.CartStatus
+    createdAt?: DateTimeFilter<"Cart"> | Date | string
+    updatedAt?: DateTimeFilter<"Cart"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Cart"> | Date | string | null
+  }
+
+  export type TransactionUpsertWithWhereUniqueWithoutCashierInput = {
+    where: TransactionWhereUniqueInput
+    update: XOR<TransactionUpdateWithoutCashierInput, TransactionUncheckedUpdateWithoutCashierInput>
+    create: XOR<TransactionCreateWithoutCashierInput, TransactionUncheckedCreateWithoutCashierInput>
+  }
+
+  export type TransactionUpdateWithWhereUniqueWithoutCashierInput = {
+    where: TransactionWhereUniqueInput
+    data: XOR<TransactionUpdateWithoutCashierInput, TransactionUncheckedUpdateWithoutCashierInput>
+  }
+
+  export type TransactionUpdateManyWithWhereWithoutCashierInput = {
+    where: TransactionScalarWhereInput
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutCashierInput>
+  }
+
+  export type TransactionScalarWhereInput = {
+    AND?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+    OR?: TransactionScalarWhereInput[]
+    NOT?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+    id?: StringFilter<"Transaction"> | string
+    cartId?: StringFilter<"Transaction"> | string
+    cashierId?: StringFilter<"Transaction"> | string
+    cashierBalanceHistoryId?: StringFilter<"Transaction"> | string
+    paymentType?: EnumPaymentTypeFilter<"Transaction"> | $Enums.PaymentType
+    debitCardNumber?: StringNullableFilter<"Transaction"> | string | null
+    totalAmount?: FloatFilter<"Transaction"> | number
+    changeAmount?: FloatNullableFilter<"Transaction"> | number | null
+    paymentDate?: DateTimeFilter<"Transaction"> | Date | string
+    createdAt?: DateTimeFilter<"Transaction"> | Date | string
+    updatedAt?: DateTimeFilter<"Transaction"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Transaction"> | Date | string | null
+  }
+
+  export type CashierCreateWithoutCashierBalanceHistoryInput = {
+    id?: string
+    firstName: string
+    lastName?: string | null
+    email: string
+    password: string
+    phoneNumber?: string | null
+    gender?: $Enums.Gender | null
+    isEmailVerified?: boolean
+    avatarImgUrl?: string | null
+    cldPublicId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    shift: $Enums.ShiftSession
+    cart?: CartCreateNestedManyWithoutCashierInput
+    transaction?: TransactionCreateNestedManyWithoutCashierInput
+  }
+
+  export type CashierUncheckedCreateWithoutCashierBalanceHistoryInput = {
+    id?: string
+    firstName: string
+    lastName?: string | null
+    email: string
+    password: string
+    phoneNumber?: string | null
+    gender?: $Enums.Gender | null
+    isEmailVerified?: boolean
+    avatarImgUrl?: string | null
+    cldPublicId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    shift: $Enums.ShiftSession
+    cart?: CartUncheckedCreateNestedManyWithoutCashierInput
+    transaction?: TransactionUncheckedCreateNestedManyWithoutCashierInput
+  }
+
+  export type CashierCreateOrConnectWithoutCashierBalanceHistoryInput = {
     where: CashierWhereUniqueInput
-    update: XOR<CashierUpdateWithoutShiftInput, CashierUncheckedUpdateWithoutShiftInput>
-    create: XOR<CashierCreateWithoutShiftInput, CashierUncheckedCreateWithoutShiftInput>
+    create: XOR<CashierCreateWithoutCashierBalanceHistoryInput, CashierUncheckedCreateWithoutCashierBalanceHistoryInput>
   }
 
-  export type CashierUpdateWithWhereUniqueWithoutShiftInput = {
-    where: CashierWhereUniqueInput
-    data: XOR<CashierUpdateWithoutShiftInput, CashierUncheckedUpdateWithoutShiftInput>
+  export type TransactionCreateWithoutCashierBalanceHistoryInput = {
+    id?: string
+    paymentType: $Enums.PaymentType
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
+    paymentDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    cart: CartCreateNestedOneWithoutTransactionInput
+    cashier: CashierCreateNestedOneWithoutTransactionInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutTransactionInput
   }
 
-  export type CashierUpdateManyWithWhereWithoutShiftInput = {
-    where: CashierScalarWhereInput
-    data: XOR<CashierUpdateManyMutationInput, CashierUncheckedUpdateManyWithoutShiftInput>
+  export type TransactionUncheckedCreateWithoutCashierBalanceHistoryInput = {
+    id?: string
+    cartId: string
+    cashierId: string
+    paymentType: $Enums.PaymentType
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
+    paymentDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutTransactionInput
   }
 
-  export type CashierScalarWhereInput = {
-    AND?: CashierScalarWhereInput | CashierScalarWhereInput[]
-    OR?: CashierScalarWhereInput[]
-    NOT?: CashierScalarWhereInput | CashierScalarWhereInput[]
-    id?: StringFilter<"Cashier"> | string
-    firstName?: StringFilter<"Cashier"> | string
-    lastName?: StringNullableFilter<"Cashier"> | string | null
-    email?: StringFilter<"Cashier"> | string
-    password?: StringFilter<"Cashier"> | string
-    phoneNumber?: StringNullableFilter<"Cashier"> | string | null
-    gender?: EnumGenderNullableFilter<"Cashier"> | $Enums.Gender | null
-    dateOfBirth?: StringNullableFilter<"Cashier"> | string | null
-    isEmailVerified?: BoolFilter<"Cashier"> | boolean
-    passwordResetCount?: IntFilter<"Cashier"> | number
-    emailChangeCount?: IntFilter<"Cashier"> | number
-    avatarImgUrl?: StringNullableFilter<"Cashier"> | string | null
-    cldPublicId?: StringNullableFilter<"Cashier"> | string | null
-    createdAt?: DateTimeFilter<"Cashier"> | Date | string
-    updatedAt?: DateTimeFilter<"Cashier"> | Date | string
-    deletedAt?: DateTimeNullableFilter<"Cashier"> | Date | string | null
-    shiftId?: StringNullableFilter<"Cashier"> | string | null
+  export type TransactionCreateOrConnectWithoutCashierBalanceHistoryInput = {
+    where: TransactionWhereUniqueInput
+    create: XOR<TransactionCreateWithoutCashierBalanceHistoryInput, TransactionUncheckedCreateWithoutCashierBalanceHistoryInput>
+  }
+
+  export type TransactionCreateManyCashierBalanceHistoryInputEnvelope = {
+    data: TransactionCreateManyCashierBalanceHistoryInput | TransactionCreateManyCashierBalanceHistoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CashierUpsertWithoutCashierBalanceHistoryInput = {
+    update: XOR<CashierUpdateWithoutCashierBalanceHistoryInput, CashierUncheckedUpdateWithoutCashierBalanceHistoryInput>
+    create: XOR<CashierCreateWithoutCashierBalanceHistoryInput, CashierUncheckedCreateWithoutCashierBalanceHistoryInput>
+    where?: CashierWhereInput
+  }
+
+  export type CashierUpdateToOneWithWhereWithoutCashierBalanceHistoryInput = {
+    where?: CashierWhereInput
+    data: XOR<CashierUpdateWithoutCashierBalanceHistoryInput, CashierUncheckedUpdateWithoutCashierBalanceHistoryInput>
+  }
+
+  export type CashierUpdateWithoutCashierBalanceHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shift?: EnumShiftSessionFieldUpdateOperationsInput | $Enums.ShiftSession
+    cart?: CartUpdateManyWithoutCashierNestedInput
+    transaction?: TransactionUpdateManyWithoutCashierNestedInput
+  }
+
+  export type CashierUncheckedUpdateWithoutCashierBalanceHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    shift?: EnumShiftSessionFieldUpdateOperationsInput | $Enums.ShiftSession
+    cart?: CartUncheckedUpdateManyWithoutCashierNestedInput
+    transaction?: TransactionUncheckedUpdateManyWithoutCashierNestedInput
+  }
+
+  export type TransactionUpsertWithWhereUniqueWithoutCashierBalanceHistoryInput = {
+    where: TransactionWhereUniqueInput
+    update: XOR<TransactionUpdateWithoutCashierBalanceHistoryInput, TransactionUncheckedUpdateWithoutCashierBalanceHistoryInput>
+    create: XOR<TransactionCreateWithoutCashierBalanceHistoryInput, TransactionUncheckedCreateWithoutCashierBalanceHistoryInput>
+  }
+
+  export type TransactionUpdateWithWhereUniqueWithoutCashierBalanceHistoryInput = {
+    where: TransactionWhereUniqueInput
+    data: XOR<TransactionUpdateWithoutCashierBalanceHistoryInput, TransactionUncheckedUpdateWithoutCashierBalanceHistoryInput>
+  }
+
+  export type TransactionUpdateManyWithWhereWithoutCashierBalanceHistoryInput = {
+    where: TransactionScalarWhereInput
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutCashierBalanceHistoryInput>
   }
 
   export type ProductStockCreateWithoutProductInput = {
@@ -16174,7 +17707,6 @@ export namespace Prisma {
   export type ProductCategoryCreateWithoutProductInput = {
     name: string
     slug: string
-    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -16184,7 +17716,6 @@ export namespace Prisma {
     id?: number
     name: string
     slug: string
-    description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -16193,6 +17724,66 @@ export namespace Prisma {
   export type ProductCategoryCreateOrConnectWithoutProductInput = {
     where: ProductCategoryWhereUniqueInput
     create: XOR<ProductCategoryCreateWithoutProductInput, ProductCategoryUncheckedCreateWithoutProductInput>
+  }
+
+  export type CartItemCreateWithoutProductInput = {
+    id?: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    cart: CartCreateNestedOneWithoutCartItemsInput
+  }
+
+  export type CartItemUncheckedCreateWithoutProductInput = {
+    id?: string
+    cartId: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CartItemCreateOrConnectWithoutProductInput = {
+    where: CartItemWhereUniqueInput
+    create: XOR<CartItemCreateWithoutProductInput, CartItemUncheckedCreateWithoutProductInput>
+  }
+
+  export type CartItemCreateManyProductInputEnvelope = {
+    data: CartItemCreateManyProductInput | CartItemCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TransactionItemCreateWithoutProductInput = {
+    id?: string
+    quantity: number
+    unitPrice: number
+    subTotal: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    transaction: TransactionCreateNestedOneWithoutTransactionItemsInput
+  }
+
+  export type TransactionItemUncheckedCreateWithoutProductInput = {
+    id?: string
+    transactionId: string
+    quantity: number
+    unitPrice: number
+    subTotal: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type TransactionItemCreateOrConnectWithoutProductInput = {
+    where: TransactionItemWhereUniqueInput
+    create: XOR<TransactionItemCreateWithoutProductInput, TransactionItemUncheckedCreateWithoutProductInput>
+  }
+
+  export type TransactionItemCreateManyProductInputEnvelope = {
+    data: TransactionItemCreateManyProductInput | TransactionItemCreateManyProductInput[]
+    skipDuplicates?: boolean
   }
 
   export type ProductStockUpsertWithWhereUniqueWithoutProductInput = {
@@ -16236,7 +17827,6 @@ export namespace Prisma {
   export type ProductCategoryUpdateWithoutProductInput = {
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16246,10 +17836,69 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CartItemUpsertWithWhereUniqueWithoutProductInput = {
+    where: CartItemWhereUniqueInput
+    update: XOR<CartItemUpdateWithoutProductInput, CartItemUncheckedUpdateWithoutProductInput>
+    create: XOR<CartItemCreateWithoutProductInput, CartItemUncheckedCreateWithoutProductInput>
+  }
+
+  export type CartItemUpdateWithWhereUniqueWithoutProductInput = {
+    where: CartItemWhereUniqueInput
+    data: XOR<CartItemUpdateWithoutProductInput, CartItemUncheckedUpdateWithoutProductInput>
+  }
+
+  export type CartItemUpdateManyWithWhereWithoutProductInput = {
+    where: CartItemScalarWhereInput
+    data: XOR<CartItemUpdateManyMutationInput, CartItemUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type CartItemScalarWhereInput = {
+    AND?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
+    OR?: CartItemScalarWhereInput[]
+    NOT?: CartItemScalarWhereInput | CartItemScalarWhereInput[]
+    id?: StringFilter<"CartItem"> | string
+    cartId?: StringFilter<"CartItem"> | string
+    productId?: StringFilter<"CartItem"> | string
+    quantity?: IntFilter<"CartItem"> | number
+    createdAt?: DateTimeFilter<"CartItem"> | Date | string
+    updatedAt?: DateTimeFilter<"CartItem"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"CartItem"> | Date | string | null
+  }
+
+  export type TransactionItemUpsertWithWhereUniqueWithoutProductInput = {
+    where: TransactionItemWhereUniqueInput
+    update: XOR<TransactionItemUpdateWithoutProductInput, TransactionItemUncheckedUpdateWithoutProductInput>
+    create: XOR<TransactionItemCreateWithoutProductInput, TransactionItemUncheckedCreateWithoutProductInput>
+  }
+
+  export type TransactionItemUpdateWithWhereUniqueWithoutProductInput = {
+    where: TransactionItemWhereUniqueInput
+    data: XOR<TransactionItemUpdateWithoutProductInput, TransactionItemUncheckedUpdateWithoutProductInput>
+  }
+
+  export type TransactionItemUpdateManyWithWhereWithoutProductInput = {
+    where: TransactionItemScalarWhereInput
+    data: XOR<TransactionItemUpdateManyMutationInput, TransactionItemUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type TransactionItemScalarWhereInput = {
+    AND?: TransactionItemScalarWhereInput | TransactionItemScalarWhereInput[]
+    OR?: TransactionItemScalarWhereInput[]
+    NOT?: TransactionItemScalarWhereInput | TransactionItemScalarWhereInput[]
+    id?: StringFilter<"TransactionItem"> | string
+    transactionId?: StringFilter<"TransactionItem"> | string
+    productId?: StringFilter<"TransactionItem"> | string
+    quantity?: IntFilter<"TransactionItem"> | number
+    unitPrice?: FloatFilter<"TransactionItem"> | number
+    subTotal?: FloatFilter<"TransactionItem"> | number
+    createdAt?: DateTimeFilter<"TransactionItem"> | Date | string
+    updatedAt?: DateTimeFilter<"TransactionItem"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"TransactionItem"> | Date | string | null
   }
 
   export type ProductCreateWithoutProductCategoryInput = {
@@ -16262,6 +17911,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     productStock?: ProductStockCreateNestedManyWithoutProductInput
+    cartItems?: CartItemCreateNestedManyWithoutProductInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutProductCategoryInput = {
@@ -16274,6 +17925,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     productStock?: ProductStockUncheckedCreateNestedManyWithoutProductInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutProductCategoryInput = {
@@ -16327,6 +17980,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     productCategory: ProductCategoryCreateNestedOneWithoutProductInput
+    cartItems?: CartItemCreateNestedManyWithoutProductInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutProductStockInput = {
@@ -16339,6 +17994,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutProductStockInput = {
@@ -16367,6 +18024,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     productCategory?: ProductCategoryUpdateOneRequiredWithoutProductNestedInput
+    cartItems?: CartItemUpdateManyWithoutProductNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutProductStockInput = {
@@ -16379,6 +18038,36 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type CartItemCreateWithoutCartInput = {
+    id?: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    product: ProductCreateNestedOneWithoutCartItemsInput
+  }
+
+  export type CartItemUncheckedCreateWithoutCartInput = {
+    id?: string
+    productId: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CartItemCreateOrConnectWithoutCartInput = {
+    where: CartItemWhereUniqueInput
+    create: XOR<CartItemCreateWithoutCartInput, CartItemUncheckedCreateWithoutCartInput>
+  }
+
+  export type CartItemCreateManyCartInputEnvelope = {
+    data: CartItemCreateManyCartInput | CartItemCreateManyCartInput[]
+    skipDuplicates?: boolean
   }
 
   export type CashierCreateWithoutCartInput = {
@@ -16389,16 +18078,15 @@ export namespace Prisma {
     password: string
     phoneNumber?: string | null
     gender?: $Enums.Gender | null
-    dateOfBirth?: string | null
     isEmailVerified?: boolean
-    passwordResetCount?: number
-    emailChangeCount?: number
     avatarImgUrl?: string | null
     cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    shift?: ShiftCreateNestedOneWithoutCashierInput
+    shift: $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryCreateNestedManyWithoutCashierInput
+    transaction?: TransactionCreateNestedManyWithoutCashierInput
   }
 
   export type CashierUncheckedCreateWithoutCartInput = {
@@ -16409,21 +18097,71 @@ export namespace Prisma {
     password: string
     phoneNumber?: string | null
     gender?: $Enums.Gender | null
-    dateOfBirth?: string | null
     isEmailVerified?: boolean
-    passwordResetCount?: number
-    emailChangeCount?: number
     avatarImgUrl?: string | null
     cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    shiftId?: string | null
+    shift: $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryUncheckedCreateNestedManyWithoutCashierInput
+    transaction?: TransactionUncheckedCreateNestedManyWithoutCashierInput
   }
 
   export type CashierCreateOrConnectWithoutCartInput = {
     where: CashierWhereUniqueInput
     create: XOR<CashierCreateWithoutCartInput, CashierUncheckedCreateWithoutCartInput>
+  }
+
+  export type TransactionCreateWithoutCartInput = {
+    id?: string
+    paymentType: $Enums.PaymentType
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
+    paymentDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    cashier: CashierCreateNestedOneWithoutTransactionInput
+    cashierBalanceHistory: CashierBalanceHistoryCreateNestedOneWithoutTransactionInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutTransactionInput
+  }
+
+  export type TransactionUncheckedCreateWithoutCartInput = {
+    id?: string
+    cashierId: string
+    cashierBalanceHistoryId: string
+    paymentType: $Enums.PaymentType
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
+    paymentDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutTransactionInput
+  }
+
+  export type TransactionCreateOrConnectWithoutCartInput = {
+    where: TransactionWhereUniqueInput
+    create: XOR<TransactionCreateWithoutCartInput, TransactionUncheckedCreateWithoutCartInput>
+  }
+
+  export type CartItemUpsertWithWhereUniqueWithoutCartInput = {
+    where: CartItemWhereUniqueInput
+    update: XOR<CartItemUpdateWithoutCartInput, CartItemUncheckedUpdateWithoutCartInput>
+    create: XOR<CartItemCreateWithoutCartInput, CartItemUncheckedCreateWithoutCartInput>
+  }
+
+  export type CartItemUpdateWithWhereUniqueWithoutCartInput = {
+    where: CartItemWhereUniqueInput
+    data: XOR<CartItemUpdateWithoutCartInput, CartItemUncheckedUpdateWithoutCartInput>
+  }
+
+  export type CartItemUpdateManyWithWhereWithoutCartInput = {
+    where: CartItemScalarWhereInput
+    data: XOR<CartItemUpdateManyMutationInput, CartItemUncheckedUpdateManyWithoutCartInput>
   }
 
   export type CashierUpsertWithoutCartInput = {
@@ -16445,16 +18183,15 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
     avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
     cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shift?: ShiftUpdateOneWithoutCashierNestedInput
+    shift?: EnumShiftSessionFieldUpdateOperationsInput | $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryUpdateManyWithoutCashierNestedInput
+    transaction?: TransactionUpdateManyWithoutCashierNestedInput
   }
 
   export type CashierUncheckedUpdateWithoutCartInput = {
@@ -16465,117 +18202,218 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
     avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
     cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    shiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    shift?: EnumShiftSessionFieldUpdateOperationsInput | $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryUncheckedUpdateManyWithoutCashierNestedInput
+    transaction?: TransactionUncheckedUpdateManyWithoutCashierNestedInput
   }
 
-  export type TransactionHistoryCreateWithoutTransactionInput = {
-    id?: string
-  }
-
-  export type TransactionHistoryUncheckedCreateWithoutTransactionInput = {
-    id?: string
-  }
-
-  export type TransactionHistoryCreateOrConnectWithoutTransactionInput = {
-    where: TransactionHistoryWhereUniqueInput
-    create: XOR<TransactionHistoryCreateWithoutTransactionInput, TransactionHistoryUncheckedCreateWithoutTransactionInput>
-  }
-
-  export type TransactionHistoryCreateManyTransactionInputEnvelope = {
-    data: TransactionHistoryCreateManyTransactionInput | TransactionHistoryCreateManyTransactionInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TransactionHistoryUpsertWithWhereUniqueWithoutTransactionInput = {
-    where: TransactionHistoryWhereUniqueInput
-    update: XOR<TransactionHistoryUpdateWithoutTransactionInput, TransactionHistoryUncheckedUpdateWithoutTransactionInput>
-    create: XOR<TransactionHistoryCreateWithoutTransactionInput, TransactionHistoryUncheckedCreateWithoutTransactionInput>
-  }
-
-  export type TransactionHistoryUpdateWithWhereUniqueWithoutTransactionInput = {
-    where: TransactionHistoryWhereUniqueInput
-    data: XOR<TransactionHistoryUpdateWithoutTransactionInput, TransactionHistoryUncheckedUpdateWithoutTransactionInput>
-  }
-
-  export type TransactionHistoryUpdateManyWithWhereWithoutTransactionInput = {
-    where: TransactionHistoryScalarWhereInput
-    data: XOR<TransactionHistoryUpdateManyMutationInput, TransactionHistoryUncheckedUpdateManyWithoutTransactionInput>
-  }
-
-  export type TransactionHistoryScalarWhereInput = {
-    AND?: TransactionHistoryScalarWhereInput | TransactionHistoryScalarWhereInput[]
-    OR?: TransactionHistoryScalarWhereInput[]
-    NOT?: TransactionHistoryScalarWhereInput | TransactionHistoryScalarWhereInput[]
-    id?: StringFilter<"TransactionHistory"> | string
-    transactionId?: StringFilter<"TransactionHistory"> | string
-  }
-
-  export type TransactionCreateWithoutTransactionHistoryInput = {
-    id?: string
-    paymentType: $Enums.PaymentType
-    paymentAmount: number
-    paymentDate: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type TransactionUncheckedCreateWithoutTransactionHistoryInput = {
-    id?: string
-    paymentType: $Enums.PaymentType
-    paymentAmount: number
-    paymentDate: Date | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type TransactionCreateOrConnectWithoutTransactionHistoryInput = {
-    where: TransactionWhereUniqueInput
-    create: XOR<TransactionCreateWithoutTransactionHistoryInput, TransactionUncheckedCreateWithoutTransactionHistoryInput>
-  }
-
-  export type TransactionUpsertWithoutTransactionHistoryInput = {
-    update: XOR<TransactionUpdateWithoutTransactionHistoryInput, TransactionUncheckedUpdateWithoutTransactionHistoryInput>
-    create: XOR<TransactionCreateWithoutTransactionHistoryInput, TransactionUncheckedCreateWithoutTransactionHistoryInput>
+  export type TransactionUpsertWithoutCartInput = {
+    update: XOR<TransactionUpdateWithoutCartInput, TransactionUncheckedUpdateWithoutCartInput>
+    create: XOR<TransactionCreateWithoutCartInput, TransactionUncheckedCreateWithoutCartInput>
     where?: TransactionWhereInput
   }
 
-  export type TransactionUpdateToOneWithWhereWithoutTransactionHistoryInput = {
+  export type TransactionUpdateToOneWithWhereWithoutCartInput = {
     where?: TransactionWhereInput
-    data: XOR<TransactionUpdateWithoutTransactionHistoryInput, TransactionUncheckedUpdateWithoutTransactionHistoryInput>
+    data: XOR<TransactionUpdateWithoutCartInput, TransactionUncheckedUpdateWithoutCartInput>
   }
 
-  export type TransactionUpdateWithoutTransactionHistoryInput = {
+  export type TransactionUpdateWithoutCartInput = {
     id?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
-    paymentAmount?: FloatFieldUpdateOperationsInput | number
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cashier?: CashierUpdateOneRequiredWithoutTransactionNestedInput
+    cashierBalanceHistory?: CashierBalanceHistoryUpdateOneRequiredWithoutTransactionNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutTransactionNestedInput
   }
 
-  export type TransactionUncheckedUpdateWithoutTransactionHistoryInput = {
+  export type TransactionUncheckedUpdateWithoutCartInput = {
     id?: StringFieldUpdateOperationsInput | string
+    cashierId?: StringFieldUpdateOperationsInput | string
+    cashierBalanceHistoryId?: StringFieldUpdateOperationsInput | string
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
-    paymentAmount?: FloatFieldUpdateOperationsInput | number
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
     paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutTransactionNestedInput
   }
 
-  export type CashierCreateManyShiftInput = {
+  export type CartCreateWithoutCartItemsInput = {
+    id?: string
+    customerName: string
+    status?: $Enums.CartStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    cashier: CashierCreateNestedOneWithoutCartInput
+    transaction?: TransactionCreateNestedOneWithoutCartInput
+  }
+
+  export type CartUncheckedCreateWithoutCartItemsInput = {
+    id?: string
+    customerName: string
+    cashierId: string
+    status?: $Enums.CartStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    transaction?: TransactionUncheckedCreateNestedOneWithoutCartInput
+  }
+
+  export type CartCreateOrConnectWithoutCartItemsInput = {
+    where: CartWhereUniqueInput
+    create: XOR<CartCreateWithoutCartItemsInput, CartUncheckedCreateWithoutCartItemsInput>
+  }
+
+  export type ProductCreateWithoutCartItemsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    price: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    productStock?: ProductStockCreateNestedManyWithoutProductInput
+    productCategory: ProductCategoryCreateNestedOneWithoutProductInput
+    transactionItems?: TransactionItemCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutCartItemsInput = {
+    id?: string
+    productCategoryId: number
+    name: string
+    slug: string
+    description?: string | null
+    price: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    productStock?: ProductStockUncheckedCreateNestedManyWithoutProductInput
+    transactionItems?: TransactionItemUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutCartItemsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutCartItemsInput, ProductUncheckedCreateWithoutCartItemsInput>
+  }
+
+  export type CartUpsertWithoutCartItemsInput = {
+    update: XOR<CartUpdateWithoutCartItemsInput, CartUncheckedUpdateWithoutCartItemsInput>
+    create: XOR<CartCreateWithoutCartItemsInput, CartUncheckedCreateWithoutCartItemsInput>
+    where?: CartWhereInput
+  }
+
+  export type CartUpdateToOneWithWhereWithoutCartItemsInput = {
+    where?: CartWhereInput
+    data: XOR<CartUpdateWithoutCartItemsInput, CartUncheckedUpdateWithoutCartItemsInput>
+  }
+
+  export type CartUpdateWithoutCartItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerName?: StringFieldUpdateOperationsInput | string
+    status?: EnumCartStatusFieldUpdateOperationsInput | $Enums.CartStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cashier?: CashierUpdateOneRequiredWithoutCartNestedInput
+    transaction?: TransactionUpdateOneWithoutCartNestedInput
+  }
+
+  export type CartUncheckedUpdateWithoutCartItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerName?: StringFieldUpdateOperationsInput | string
+    cashierId?: StringFieldUpdateOperationsInput | string
+    status?: EnumCartStatusFieldUpdateOperationsInput | $Enums.CartStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transaction?: TransactionUncheckedUpdateOneWithoutCartNestedInput
+  }
+
+  export type ProductUpsertWithoutCartItemsInput = {
+    update: XOR<ProductUpdateWithoutCartItemsInput, ProductUncheckedUpdateWithoutCartItemsInput>
+    create: XOR<ProductCreateWithoutCartItemsInput, ProductUncheckedCreateWithoutCartItemsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutCartItemsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutCartItemsInput, ProductUncheckedUpdateWithoutCartItemsInput>
+  }
+
+  export type ProductUpdateWithoutCartItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    productStock?: ProductStockUpdateManyWithoutProductNestedInput
+    productCategory?: ProductCategoryUpdateOneRequiredWithoutProductNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutCartItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productCategoryId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    productStock?: ProductStockUncheckedUpdateManyWithoutProductNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type CartCreateWithoutTransactionInput = {
+    id?: string
+    customerName: string
+    status?: $Enums.CartStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    cartItems?: CartItemCreateNestedManyWithoutCartInput
+    cashier: CashierCreateNestedOneWithoutCartInput
+  }
+
+  export type CartUncheckedCreateWithoutTransactionInput = {
+    id?: string
+    customerName: string
+    cashierId: string
+    status?: $Enums.CartStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutCartInput
+  }
+
+  export type CartCreateOrConnectWithoutTransactionInput = {
+    where: CartWhereUniqueInput
+    create: XOR<CartCreateWithoutTransactionInput, CartUncheckedCreateWithoutTransactionInput>
+  }
+
+  export type CashierCreateWithoutTransactionInput = {
     id?: string
     firstName: string
     lastName?: string | null
@@ -16583,18 +18421,147 @@ export namespace Prisma {
     password: string
     phoneNumber?: string | null
     gender?: $Enums.Gender | null
-    dateOfBirth?: string | null
     isEmailVerified?: boolean
-    passwordResetCount?: number
-    emailChangeCount?: number
     avatarImgUrl?: string | null
     cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    shift: $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryCreateNestedManyWithoutCashierInput
+    cart?: CartCreateNestedManyWithoutCashierInput
   }
 
-  export type CashierUpdateWithoutShiftInput = {
+  export type CashierUncheckedCreateWithoutTransactionInput = {
+    id?: string
+    firstName: string
+    lastName?: string | null
+    email: string
+    password: string
+    phoneNumber?: string | null
+    gender?: $Enums.Gender | null
+    isEmailVerified?: boolean
+    avatarImgUrl?: string | null
+    cldPublicId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    shift: $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryUncheckedCreateNestedManyWithoutCashierInput
+    cart?: CartUncheckedCreateNestedManyWithoutCashierInput
+  }
+
+  export type CashierCreateOrConnectWithoutTransactionInput = {
+    where: CashierWhereUniqueInput
+    create: XOR<CashierCreateWithoutTransactionInput, CashierUncheckedCreateWithoutTransactionInput>
+  }
+
+  export type CashierBalanceHistoryCreateWithoutTransactionInput = {
+    id?: string
+    startTime: Date | string
+    endTime?: Date | string | null
+    startingCash: number
+    endingCash?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    cashier: CashierCreateNestedOneWithoutCashierBalanceHistoryInput
+  }
+
+  export type CashierBalanceHistoryUncheckedCreateWithoutTransactionInput = {
+    id?: string
+    cashierId: string
+    startTime: Date | string
+    endTime?: Date | string | null
+    startingCash: number
+    endingCash?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CashierBalanceHistoryCreateOrConnectWithoutTransactionInput = {
+    where: CashierBalanceHistoryWhereUniqueInput
+    create: XOR<CashierBalanceHistoryCreateWithoutTransactionInput, CashierBalanceHistoryUncheckedCreateWithoutTransactionInput>
+  }
+
+  export type TransactionItemCreateWithoutTransactionInput = {
+    id?: string
+    quantity: number
+    unitPrice: number
+    subTotal: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    product: ProductCreateNestedOneWithoutTransactionItemsInput
+  }
+
+  export type TransactionItemUncheckedCreateWithoutTransactionInput = {
+    id?: string
+    productId: string
+    quantity: number
+    unitPrice: number
+    subTotal: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type TransactionItemCreateOrConnectWithoutTransactionInput = {
+    where: TransactionItemWhereUniqueInput
+    create: XOR<TransactionItemCreateWithoutTransactionInput, TransactionItemUncheckedCreateWithoutTransactionInput>
+  }
+
+  export type TransactionItemCreateManyTransactionInputEnvelope = {
+    data: TransactionItemCreateManyTransactionInput | TransactionItemCreateManyTransactionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CartUpsertWithoutTransactionInput = {
+    update: XOR<CartUpdateWithoutTransactionInput, CartUncheckedUpdateWithoutTransactionInput>
+    create: XOR<CartCreateWithoutTransactionInput, CartUncheckedCreateWithoutTransactionInput>
+    where?: CartWhereInput
+  }
+
+  export type CartUpdateToOneWithWhereWithoutTransactionInput = {
+    where?: CartWhereInput
+    data: XOR<CartUpdateWithoutTransactionInput, CartUncheckedUpdateWithoutTransactionInput>
+  }
+
+  export type CartUpdateWithoutTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerName?: StringFieldUpdateOperationsInput | string
+    status?: EnumCartStatusFieldUpdateOperationsInput | $Enums.CartStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartItems?: CartItemUpdateManyWithoutCartNestedInput
+    cashier?: CashierUpdateOneRequiredWithoutCartNestedInput
+  }
+
+  export type CartUncheckedUpdateWithoutTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerName?: StringFieldUpdateOperationsInput | string
+    cashierId?: StringFieldUpdateOperationsInput | string
+    status?: EnumCartStatusFieldUpdateOperationsInput | $Enums.CartStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartItems?: CartItemUncheckedUpdateManyWithoutCartNestedInput
+  }
+
+  export type CashierUpsertWithoutTransactionInput = {
+    update: XOR<CashierUpdateWithoutTransactionInput, CashierUncheckedUpdateWithoutTransactionInput>
+    create: XOR<CashierCreateWithoutTransactionInput, CashierUncheckedCreateWithoutTransactionInput>
+    where?: CashierWhereInput
+  }
+
+  export type CashierUpdateToOneWithWhereWithoutTransactionInput = {
+    where?: CashierWhereInput
+    data: XOR<CashierUpdateWithoutTransactionInput, CashierUncheckedUpdateWithoutTransactionInput>
+  }
+
+  export type CashierUpdateWithoutTransactionInput = {
     id?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16602,19 +18569,18 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
     avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
     cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cart?: CartUpdateOneWithoutCashierNestedInput
+    shift?: EnumShiftSessionFieldUpdateOperationsInput | $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryUpdateManyWithoutCashierNestedInput
+    cart?: CartUpdateManyWithoutCashierNestedInput
   }
 
-  export type CashierUncheckedUpdateWithoutShiftInput = {
+  export type CashierUncheckedUpdateWithoutTransactionInput = {
     id?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16622,32 +18588,413 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
     avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
     cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cart?: CartUncheckedUpdateOneWithoutCashierNestedInput
+    shift?: EnumShiftSessionFieldUpdateOperationsInput | $Enums.ShiftSession
+    cashierBalanceHistory?: CashierBalanceHistoryUncheckedUpdateManyWithoutCashierNestedInput
+    cart?: CartUncheckedUpdateManyWithoutCashierNestedInput
   }
 
-  export type CashierUncheckedUpdateManyWithoutShiftInput = {
+  export type CashierBalanceHistoryUpsertWithoutTransactionInput = {
+    update: XOR<CashierBalanceHistoryUpdateWithoutTransactionInput, CashierBalanceHistoryUncheckedUpdateWithoutTransactionInput>
+    create: XOR<CashierBalanceHistoryCreateWithoutTransactionInput, CashierBalanceHistoryUncheckedCreateWithoutTransactionInput>
+    where?: CashierBalanceHistoryWhereInput
+  }
+
+  export type CashierBalanceHistoryUpdateToOneWithWhereWithoutTransactionInput = {
+    where?: CashierBalanceHistoryWhereInput
+    data: XOR<CashierBalanceHistoryUpdateWithoutTransactionInput, CashierBalanceHistoryUncheckedUpdateWithoutTransactionInput>
+  }
+
+  export type CashierBalanceHistoryUpdateWithoutTransactionInput = {
     id?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    gender?: NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
-    dateOfBirth?: NullableStringFieldUpdateOperationsInput | string | null
-    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    passwordResetCount?: IntFieldUpdateOperationsInput | number
-    emailChangeCount?: IntFieldUpdateOperationsInput | number
-    avatarImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startingCash?: FloatFieldUpdateOperationsInput | number
+    endingCash?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cashier?: CashierUpdateOneRequiredWithoutCashierBalanceHistoryNestedInput
+  }
+
+  export type CashierBalanceHistoryUncheckedUpdateWithoutTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cashierId?: StringFieldUpdateOperationsInput | string
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startingCash?: FloatFieldUpdateOperationsInput | number
+    endingCash?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransactionItemUpsertWithWhereUniqueWithoutTransactionInput = {
+    where: TransactionItemWhereUniqueInput
+    update: XOR<TransactionItemUpdateWithoutTransactionInput, TransactionItemUncheckedUpdateWithoutTransactionInput>
+    create: XOR<TransactionItemCreateWithoutTransactionInput, TransactionItemUncheckedCreateWithoutTransactionInput>
+  }
+
+  export type TransactionItemUpdateWithWhereUniqueWithoutTransactionInput = {
+    where: TransactionItemWhereUniqueInput
+    data: XOR<TransactionItemUpdateWithoutTransactionInput, TransactionItemUncheckedUpdateWithoutTransactionInput>
+  }
+
+  export type TransactionItemUpdateManyWithWhereWithoutTransactionInput = {
+    where: TransactionItemScalarWhereInput
+    data: XOR<TransactionItemUpdateManyMutationInput, TransactionItemUncheckedUpdateManyWithoutTransactionInput>
+  }
+
+  export type TransactionCreateWithoutTransactionItemsInput = {
+    id?: string
+    paymentType: $Enums.PaymentType
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
+    paymentDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    cart: CartCreateNestedOneWithoutTransactionInput
+    cashier: CashierCreateNestedOneWithoutTransactionInput
+    cashierBalanceHistory: CashierBalanceHistoryCreateNestedOneWithoutTransactionInput
+  }
+
+  export type TransactionUncheckedCreateWithoutTransactionItemsInput = {
+    id?: string
+    cartId: string
+    cashierId: string
+    cashierBalanceHistoryId: string
+    paymentType: $Enums.PaymentType
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
+    paymentDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type TransactionCreateOrConnectWithoutTransactionItemsInput = {
+    where: TransactionWhereUniqueInput
+    create: XOR<TransactionCreateWithoutTransactionItemsInput, TransactionUncheckedCreateWithoutTransactionItemsInput>
+  }
+
+  export type ProductCreateWithoutTransactionItemsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    price: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    productStock?: ProductStockCreateNestedManyWithoutProductInput
+    productCategory: ProductCategoryCreateNestedOneWithoutProductInput
+    cartItems?: CartItemCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutTransactionItemsInput = {
+    id?: string
+    productCategoryId: number
+    name: string
+    slug: string
+    description?: string | null
+    price: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    productStock?: ProductStockUncheckedCreateNestedManyWithoutProductInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutTransactionItemsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutTransactionItemsInput, ProductUncheckedCreateWithoutTransactionItemsInput>
+  }
+
+  export type TransactionUpsertWithoutTransactionItemsInput = {
+    update: XOR<TransactionUpdateWithoutTransactionItemsInput, TransactionUncheckedUpdateWithoutTransactionItemsInput>
+    create: XOR<TransactionCreateWithoutTransactionItemsInput, TransactionUncheckedCreateWithoutTransactionItemsInput>
+    where?: TransactionWhereInput
+  }
+
+  export type TransactionUpdateToOneWithWhereWithoutTransactionItemsInput = {
+    where?: TransactionWhereInput
+    data: XOR<TransactionUpdateWithoutTransactionItemsInput, TransactionUncheckedUpdateWithoutTransactionItemsInput>
+  }
+
+  export type TransactionUpdateWithoutTransactionItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cart?: CartUpdateOneRequiredWithoutTransactionNestedInput
+    cashier?: CashierUpdateOneRequiredWithoutTransactionNestedInput
+    cashierBalanceHistory?: CashierBalanceHistoryUpdateOneRequiredWithoutTransactionNestedInput
+  }
+
+  export type TransactionUncheckedUpdateWithoutTransactionItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cartId?: StringFieldUpdateOperationsInput | string
+    cashierId?: StringFieldUpdateOperationsInput | string
+    cashierBalanceHistoryId?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ProductUpsertWithoutTransactionItemsInput = {
+    update: XOR<ProductUpdateWithoutTransactionItemsInput, ProductUncheckedUpdateWithoutTransactionItemsInput>
+    create: XOR<ProductCreateWithoutTransactionItemsInput, ProductUncheckedCreateWithoutTransactionItemsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutTransactionItemsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutTransactionItemsInput, ProductUncheckedUpdateWithoutTransactionItemsInput>
+  }
+
+  export type ProductUpdateWithoutTransactionItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    productStock?: ProductStockUpdateManyWithoutProductNestedInput
+    productCategory?: ProductCategoryUpdateOneRequiredWithoutProductNestedInput
+    cartItems?: CartItemUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutTransactionItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productCategoryId?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    productStock?: ProductStockUncheckedUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type CashierBalanceHistoryCreateManyCashierInput = {
+    id?: string
+    startTime: Date | string
+    endTime?: Date | string | null
+    startingCash: number
+    endingCash?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CartCreateManyCashierInput = {
+    id?: string
+    customerName: string
+    status?: $Enums.CartStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type TransactionCreateManyCashierInput = {
+    id?: string
+    cartId: string
+    cashierBalanceHistoryId: string
+    paymentType: $Enums.PaymentType
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
+    paymentDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CashierBalanceHistoryUpdateWithoutCashierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startingCash?: FloatFieldUpdateOperationsInput | number
+    endingCash?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transaction?: TransactionUpdateManyWithoutCashierBalanceHistoryNestedInput
+  }
+
+  export type CashierBalanceHistoryUncheckedUpdateWithoutCashierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startingCash?: FloatFieldUpdateOperationsInput | number
+    endingCash?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transaction?: TransactionUncheckedUpdateManyWithoutCashierBalanceHistoryNestedInput
+  }
+
+  export type CashierBalanceHistoryUncheckedUpdateManyWithoutCashierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startingCash?: FloatFieldUpdateOperationsInput | number
+    endingCash?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CartUpdateWithoutCashierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerName?: StringFieldUpdateOperationsInput | string
+    status?: EnumCartStatusFieldUpdateOperationsInput | $Enums.CartStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartItems?: CartItemUpdateManyWithoutCartNestedInput
+    transaction?: TransactionUpdateOneWithoutCartNestedInput
+  }
+
+  export type CartUncheckedUpdateWithoutCashierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerName?: StringFieldUpdateOperationsInput | string
+    status?: EnumCartStatusFieldUpdateOperationsInput | $Enums.CartStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cartItems?: CartItemUncheckedUpdateManyWithoutCartNestedInput
+    transaction?: TransactionUncheckedUpdateOneWithoutCartNestedInput
+  }
+
+  export type CartUncheckedUpdateManyWithoutCashierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerName?: StringFieldUpdateOperationsInput | string
+    status?: EnumCartStatusFieldUpdateOperationsInput | $Enums.CartStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransactionUpdateWithoutCashierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cart?: CartUpdateOneRequiredWithoutTransactionNestedInput
+    cashierBalanceHistory?: CashierBalanceHistoryUpdateOneRequiredWithoutTransactionNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutTransactionNestedInput
+  }
+
+  export type TransactionUncheckedUpdateWithoutCashierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cartId?: StringFieldUpdateOperationsInput | string
+    cashierBalanceHistoryId?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutTransactionNestedInput
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutCashierInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cartId?: StringFieldUpdateOperationsInput | string
+    cashierBalanceHistoryId?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransactionCreateManyCashierBalanceHistoryInput = {
+    id?: string
+    cartId: string
+    cashierId: string
+    paymentType: $Enums.PaymentType
+    debitCardNumber?: string | null
+    totalAmount: number
+    changeAmount?: number | null
+    paymentDate: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type TransactionUpdateWithoutCashierBalanceHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cart?: CartUpdateOneRequiredWithoutTransactionNestedInput
+    cashier?: CashierUpdateOneRequiredWithoutTransactionNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutTransactionNestedInput
+  }
+
+  export type TransactionUncheckedUpdateWithoutCashierBalanceHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cartId?: StringFieldUpdateOperationsInput | string
+    cashierId?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutTransactionNestedInput
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutCashierBalanceHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cartId?: StringFieldUpdateOperationsInput | string
+    cashierId?: StringFieldUpdateOperationsInput | string
+    paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
+    debitCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    changeAmount?: NullableFloatFieldUpdateOperationsInput | number | null
+    paymentDate?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16655,6 +19002,26 @@ export namespace Prisma {
 
   export type ProductStockCreateManyProductInput = {
     stock: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type CartItemCreateManyProductInput = {
+    id?: string
+    cartId: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type TransactionItemCreateManyProductInput = {
+    id?: string
+    transactionId: string
+    quantity: number
+    unitPrice: number
+    subTotal: number
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -16681,6 +19048,66 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type CartItemUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cart?: CartUpdateOneRequiredWithoutCartItemsNestedInput
+  }
+
+  export type CartItemUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cartId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type CartItemUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cartId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransactionItemUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: FloatFieldUpdateOperationsInput | number
+    subTotal?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transaction?: TransactionUpdateOneRequiredWithoutTransactionItemsNestedInput
+  }
+
+  export type TransactionItemUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    transactionId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: FloatFieldUpdateOperationsInput | number
+    subTotal?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransactionItemUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    transactionId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: FloatFieldUpdateOperationsInput | number
+    subTotal?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type ProductCreateManyProductCategoryInput = {
     id?: string
     name: string
@@ -16702,6 +19129,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     productStock?: ProductStockUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUpdateManyWithoutProductNestedInput
+    transactionItems?: TransactionItemUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutProductCategoryInput = {
@@ -16714,6 +19143,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     productStock?: ProductStockUncheckedUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
+    transactionItems?: TransactionItemUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutProductCategoryInput = {
@@ -16727,20 +19158,84 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type TransactionHistoryCreateManyTransactionInput = {
+  export type CartItemCreateManyCartInput = {
     id?: string
+    productId: string
+    quantity: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
-  export type TransactionHistoryUpdateWithoutTransactionInput = {
+  export type CartItemUpdateWithoutCartInput = {
     id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    product?: ProductUpdateOneRequiredWithoutCartItemsNestedInput
   }
 
-  export type TransactionHistoryUncheckedUpdateWithoutTransactionInput = {
+  export type CartItemUncheckedUpdateWithoutCartInput = {
     id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type TransactionHistoryUncheckedUpdateManyWithoutTransactionInput = {
+  export type CartItemUncheckedUpdateManyWithoutCartInput = {
     id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransactionItemCreateManyTransactionInput = {
+    id?: string
+    productId: string
+    quantity: number
+    unitPrice: number
+    subTotal: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type TransactionItemUpdateWithoutTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: FloatFieldUpdateOperationsInput | number
+    subTotal?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    product?: ProductUpdateOneRequiredWithoutTransactionItemsNestedInput
+  }
+
+  export type TransactionItemUncheckedUpdateWithoutTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: FloatFieldUpdateOperationsInput | number
+    subTotal?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransactionItemUncheckedUpdateManyWithoutTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPrice?: FloatFieldUpdateOperationsInput | number
+    subTotal?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

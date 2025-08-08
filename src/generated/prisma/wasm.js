@@ -120,14 +120,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.SampleScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  code: 'code',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.CashierScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
@@ -136,16 +128,13 @@ exports.Prisma.CashierScalarFieldEnum = {
   password: 'password',
   phoneNumber: 'phoneNumber',
   gender: 'gender',
-  dateOfBirth: 'dateOfBirth',
   isEmailVerified: 'isEmailVerified',
-  passwordResetCount: 'passwordResetCount',
-  emailChangeCount: 'emailChangeCount',
   avatarImgUrl: 'avatarImgUrl',
   cldPublicId: 'cldPublicId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
-  shiftId: 'shiftId'
+  shift: 'shift'
 };
 
 exports.Prisma.AdminScalarFieldEnum = {
@@ -156,8 +145,6 @@ exports.Prisma.AdminScalarFieldEnum = {
   password: 'password',
   phoneNumber: 'phoneNumber',
   isEmailVerified: 'isEmailVerified',
-  passwordResetCount: 'passwordResetCount',
-  emailChangeCount: 'emailChangeCount',
   avatarImgUrl: 'avatarImgUrl',
   cldPublicId: 'cldPublicId',
   createdAt: 'createdAt',
@@ -165,10 +152,13 @@ exports.Prisma.AdminScalarFieldEnum = {
   deletedAt: 'deletedAt'
 };
 
-exports.Prisma.ShiftScalarFieldEnum = {
+exports.Prisma.CashierBalanceHistoryScalarFieldEnum = {
   id: 'id',
+  cashierId: 'cashierId',
   startTime: 'startTime',
   endTime: 'endTime',
+  startingCash: 'startingCash',
+  endingCash: 'endingCash',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -190,7 +180,6 @@ exports.Prisma.ProductCategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
   slug: 'slug',
-  description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -206,7 +195,19 @@ exports.Prisma.ProductStockScalarFieldEnum = {
 
 exports.Prisma.CartScalarFieldEnum = {
   id: 'id',
+  customerName: 'customerName',
   cashierId: 'cashierId',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.CartItemScalarFieldEnum = {
+  id: 'id',
+  cartId: 'cartId',
+  productId: 'productId',
+  quantity: 'quantity',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -214,17 +215,29 @@ exports.Prisma.CartScalarFieldEnum = {
 
 exports.Prisma.TransactionScalarFieldEnum = {
   id: 'id',
+  cartId: 'cartId',
+  cashierId: 'cashierId',
+  cashierBalanceHistoryId: 'cashierBalanceHistoryId',
   paymentType: 'paymentType',
-  paymentAmount: 'paymentAmount',
+  debitCardNumber: 'debitCardNumber',
+  totalAmount: 'totalAmount',
+  changeAmount: 'changeAmount',
   paymentDate: 'paymentDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
 };
 
-exports.Prisma.TransactionHistoryScalarFieldEnum = {
+exports.Prisma.TransactionItemScalarFieldEnum = {
   id: 'id',
-  transactionId: 'transactionId'
+  transactionId: 'transactionId',
+  productId: 'productId',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  subTotal: 'subTotal',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -246,22 +259,33 @@ exports.Gender = exports.$Enums.Gender = {
   Female: 'Female'
 };
 
+exports.ShiftSession = exports.$Enums.ShiftSession = {
+  SHIFT1: 'SHIFT1',
+  SHIFT2: 'SHIFT2'
+};
+
+exports.CartStatus = exports.$Enums.CartStatus = {
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.PaymentType = exports.$Enums.PaymentType = {
   CASH: 'CASH',
   DEBIT: 'DEBIT'
 };
 
 exports.Prisma.ModelName = {
-  Sample: 'Sample',
   Cashier: 'Cashier',
   Admin: 'Admin',
-  Shift: 'Shift',
+  CashierBalanceHistory: 'CashierBalanceHistory',
   Product: 'Product',
   ProductCategory: 'ProductCategory',
   ProductStock: 'ProductStock',
   Cart: 'Cart',
+  CartItem: 'CartItem',
   Transaction: 'Transaction',
-  TransactionHistory: 'TransactionHistory'
+  TransactionItem: 'TransactionItem'
 };
 
 /**
