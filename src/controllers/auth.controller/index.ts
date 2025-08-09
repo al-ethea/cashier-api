@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { Prisma } from "@prisma/client";
 import { prisma } from "../../prisma";
 import { comparePassword } from "../../utils/comparePassword";
 import { AppError } from "../../utils/app.error";
