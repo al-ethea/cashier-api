@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { PrismaClient, ShiftSession } = require("../src/generated/prisma");
+const { PrismaClient } = require("../src/generated/prisma");
 const prisma = new PrismaClient();
 
 const cashiers = [
