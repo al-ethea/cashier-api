@@ -94,7 +94,6 @@ model Product {
   updatedAt         DateTime @updatedAt
   deletedAt         DateTime?
 
-  productStock      ProductStock[]
   productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
   cartItems         CartItem[]
   transactionItems  TransactionItem[]
@@ -111,19 +110,6 @@ model ProductCategory{
   product Product[]
 
   @@map("product_categories")
-}
-
-model ProductStock {
-  productId         String
-  @@id ([productId])
-  product          Product @relation(fields: [productId], references: [id])
-  stock             Int      
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  deletedAt         DateTime?
-  // stockHistory      ProductStockHistory[]
-  
-  @@map("product_stocks")
 }
 
 model Cart {

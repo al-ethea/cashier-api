@@ -185,14 +185,6 @@ exports.Prisma.ProductCategoryScalarFieldEnum = {
   deletedAt: 'deletedAt'
 };
 
-exports.Prisma.ProductStockScalarFieldEnum = {
-  productId: 'productId',
-  stock: 'stock',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
-};
-
 exports.Prisma.CartScalarFieldEnum = {
   id: 'id',
   customerName: 'customerName',
@@ -281,7 +273,6 @@ exports.Prisma.ModelName = {
   CashierBalanceHistory: 'CashierBalanceHistory',
   Product: 'Product',
   ProductCategory: 'ProductCategory',
-  ProductStock: 'ProductStock',
   Cart: 'Cart',
   CartItem: 'CartItem',
   Transaction: 'Transaction',
