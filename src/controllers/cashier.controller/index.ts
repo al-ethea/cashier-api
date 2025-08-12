@@ -99,3 +99,52 @@ export const clockOut = async (
     next(error);
   }
 };
+
+export const displayShift = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { cashierId } = req.body.payload;
+    if (!cashierId) {
+      throw new AppError("Unauthorized: cashier not found in token", 401);
+    }
+
+    // Find cashier
+    const cashier = await prisma.cashier.findUnique({
+      where: { id: cashierId },
+      select: { shift: true, firstName: true, lastName: true },
+    });
+
+    if (!cashier) {
+      throw new AppError("Cashier not found", 404);
+    }
+
+    // Map shift enum to time range
+    const shiftTimes: Record<string, { start: string; end: string }> = {
+      SHIFT1: { start: "08:00", end: "12:00" },
+      SHIFT2: { start: "13:00", end: "17:00" },
+    };
+
+    const currentShift = cashier.shift;
+    const shiftTime = shiftTimes[currentShift];
+
+    if (!shiftTime) {
+      throw new AppError("Shift time not defined", 400);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Shift time retrieved successfully",
+      data: {
+        cashierName: `${cashier.firstName} ${cashier.lastName ?? ""}`.trim(),
+        shift: currentShift,
+        startTime: shiftTime.start,
+        endTime: shiftTime.end,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};

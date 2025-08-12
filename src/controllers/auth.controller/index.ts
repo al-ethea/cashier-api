@@ -22,7 +22,7 @@ export const cashierLogin = async (
     }
 
     // Compare passwords
-    const isPasswordMatch = await comparePassword(cashier.password, password);
+    const isPasswordMatch = await comparePassword(password, cashier.password);
 
     if (!isPasswordMatch) {
       throw new AppError("Invalid password", 401);
