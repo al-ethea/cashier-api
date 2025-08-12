@@ -5412,6 +5412,8 @@ export namespace Prisma {
     slug: string | null
     description: string | null
     price: number | null
+    productImgUrl: string | null
+    cldPublicId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -5424,6 +5426,8 @@ export namespace Prisma {
     slug: string | null
     description: string | null
     price: number | null
+    productImgUrl: string | null
+    cldPublicId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -5436,6 +5440,8 @@ export namespace Prisma {
     slug: number
     description: number
     price: number
+    productImgUrl: number
+    cldPublicId: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -5460,6 +5466,8 @@ export namespace Prisma {
     slug?: true
     description?: true
     price?: true
+    productImgUrl?: true
+    cldPublicId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -5472,6 +5480,8 @@ export namespace Prisma {
     slug?: true
     description?: true
     price?: true
+    productImgUrl?: true
+    cldPublicId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -5484,6 +5494,8 @@ export namespace Prisma {
     slug?: true
     description?: true
     price?: true
+    productImgUrl?: true
+    cldPublicId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -5583,6 +5595,8 @@ export namespace Prisma {
     slug: string
     description: string | null
     price: number
+    productImgUrl: string | null
+    cldPublicId: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -5614,6 +5628,8 @@ export namespace Prisma {
     slug?: boolean
     description?: boolean
     price?: boolean
+    productImgUrl?: boolean
+    cldPublicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -5630,6 +5646,8 @@ export namespace Prisma {
     slug?: boolean
     description?: boolean
     price?: boolean
+    productImgUrl?: boolean
+    cldPublicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -5643,6 +5661,8 @@ export namespace Prisma {
     slug?: boolean
     description?: boolean
     price?: boolean
+    productImgUrl?: boolean
+    cldPublicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -5656,12 +5676,14 @@ export namespace Prisma {
     slug?: boolean
     description?: boolean
     price?: boolean
+    productImgUrl?: boolean
+    cldPublicId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productCategoryId" | "name" | "slug" | "description" | "price" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productCategoryId" | "name" | "slug" | "description" | "price" | "productImgUrl" | "cldPublicId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     productCategory?: boolean | ProductCategoryDefaultArgs<ExtArgs>
     cartItems?: boolean | Product$cartItemsArgs<ExtArgs>
@@ -5689,6 +5711,8 @@ export namespace Prisma {
       slug: string
       description: string | null
       price: number
+      productImgUrl: string | null
+      cldPublicId: string | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -6124,6 +6148,8 @@ export namespace Prisma {
     readonly slug: FieldRef<"Product", 'String'>
     readonly description: FieldRef<"Product", 'String'>
     readonly price: FieldRef<"Product", 'Float'>
+    readonly productImgUrl: FieldRef<"Product", 'String'>
+    readonly cldPublicId: FieldRef<"Product", 'String'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
     readonly deletedAt: FieldRef<"Product", 'DateTime'>
@@ -12436,6 +12462,8 @@ export namespace Prisma {
     slug: 'slug',
     description: 'description',
     price: 'price',
+    productImgUrl: 'productImgUrl',
+    cldPublicId: 'cldPublicId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -12949,6 +12977,8 @@ export namespace Prisma {
     slug?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     price?: FloatFilter<"Product"> | number
+    productImgUrl?: StringNullableFilter<"Product"> | string | null
+    cldPublicId?: StringNullableFilter<"Product"> | string | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
@@ -12964,6 +12994,8 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrderInput | SortOrder
     price?: SortOrder
+    productImgUrl?: SortOrderInput | SortOrder
+    cldPublicId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -12982,6 +13014,8 @@ export namespace Prisma {
     name?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     price?: FloatFilter<"Product"> | number
+    productImgUrl?: StringNullableFilter<"Product"> | string | null
+    cldPublicId?: StringNullableFilter<"Product"> | string | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
@@ -12997,6 +13031,8 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrderInput | SortOrder
     price?: SortOrder
+    productImgUrl?: SortOrderInput | SortOrder
+    cldPublicId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -13017,6 +13053,8 @@ export namespace Prisma {
     slug?: StringWithAggregatesFilter<"Product"> | string
     description?: StringNullableWithAggregatesFilter<"Product"> | string | null
     price?: FloatWithAggregatesFilter<"Product"> | number
+    productImgUrl?: StringNullableWithAggregatesFilter<"Product"> | string | null
+    cldPublicId?: StringNullableWithAggregatesFilter<"Product"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Product"> | Date | string | null
@@ -13735,6 +13773,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     price: number
+    productImgUrl?: string | null
+    cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -13750,6 +13790,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     price: number
+    productImgUrl?: string | null
+    cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -13763,6 +13805,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
+    productImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -13778,6 +13822,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
+    productImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -13792,6 +13838,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     price: number
+    productImgUrl?: string | null
+    cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -13803,6 +13851,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
+    productImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -13815,6 +13865,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
+    productImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14659,6 +14711,8 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrder
     price?: SortOrder
+    productImgUrl?: SortOrder
+    cldPublicId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -14676,6 +14730,8 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrder
     price?: SortOrder
+    productImgUrl?: SortOrder
+    cldPublicId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -14688,6 +14744,8 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrder
     price?: SortOrder
+    productImgUrl?: SortOrder
+    cldPublicId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -16408,6 +16466,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     price: number
+    productImgUrl?: string | null
+    cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -16421,6 +16481,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     price: number
+    productImgUrl?: string | null
+    cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -16464,6 +16526,8 @@ export namespace Prisma {
     slug?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     price?: FloatFilter<"Product"> | number
+    productImgUrl?: StringNullableFilter<"Product"> | string | null
+    cldPublicId?: StringNullableFilter<"Product"> | string | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Product"> | Date | string | null
@@ -16714,6 +16778,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     price: number
+    productImgUrl?: string | null
+    cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -16728,6 +16794,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     price: number
+    productImgUrl?: string | null
+    cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -16789,6 +16857,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
+    productImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16803,6 +16873,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
+    productImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17114,6 +17186,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     price: number
+    productImgUrl?: string | null
+    cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -17128,6 +17202,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     price: number
+    productImgUrl?: string | null
+    cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -17197,6 +17273,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
+    productImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17211,6 +17289,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
+    productImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17505,6 +17585,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     price: number
+    productImgUrl?: string | null
+    cldPublicId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -17516,6 +17598,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
+    productImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17529,6 +17613,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
+    productImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17542,6 +17628,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     price?: FloatFieldUpdateOperationsInput | number
+    productImgUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    cldPublicId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

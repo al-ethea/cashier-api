@@ -89,6 +89,8 @@ model Product {
   slug              String   @unique
   description       String?
   price             Float
+  productImgUrl String?
+  cldPublicId String?
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
