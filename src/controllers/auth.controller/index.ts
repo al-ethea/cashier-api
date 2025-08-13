@@ -28,31 +28,31 @@ export const cashierLogin = async (
       throw new AppError("Invalid password", 401);
     }
 
-    // Get current hour in 24h format
-    const now = new Date();
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
+    // // Get current hour in 24h format
+    // const now = new Date();
+    // const currentHour = now.getHours();
+    // const currentMinute = now.getMinutes();
 
-    // Check shift time
-    let inShift = false;
+    // // Check shift time
+    // let inShift = false;
 
-    if (cashier.shift === "SHIFT1") {
-      // 8:00 - 12:00
-      inShift =
-        (currentHour > 8 && currentHour < 12) ||
-        (currentHour === 8 && currentMinute >= 0) ||
-        (currentHour === 12 && currentMinute === 0);
-    } else if (cashier.shift === "SHIFT2") {
-      // 13:00 - 17:00
-      inShift =
-        (currentHour > 13 && currentHour < 17) ||
-        (currentHour === 13 && currentMinute >= 0) ||
-        (currentHour === 17 && currentMinute === 0);
-    }
+    // if (cashier.shift === "SHIFT1") {
+    //   // 8:00 - 12:00
+    //   inShift =
+    //     (currentHour > 8 && currentHour < 12) ||
+    //     (currentHour === 8 && currentMinute >= 0) ||
+    //     (currentHour === 12 && currentMinute === 0);
+    // } else if (cashier.shift === "SHIFT2") {
+    //   // 13:00 - 17:00
+    //   inShift =
+    //     (currentHour > 13 && currentHour < 17) ||
+    //     (currentHour === 13 && currentMinute >= 0) ||
+    //     (currentHour === 17 && currentMinute === 0);
+    // }
 
-    if (!inShift) {
-      throw new AppError("You are not in your shift hours", 403);
-    }
+    // if (!inShift) {
+    //   throw new AppError("You are not in your shift hours", 403);
+    // }
 
     // Sign token
     const token = jwtSign({
