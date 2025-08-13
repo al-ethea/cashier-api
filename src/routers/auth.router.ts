@@ -4,6 +4,6 @@ import { JwtVerify } from "../middlewares/jwt.verify";
 
 const authRouter = Router();
 authRouter.get("/session-login", JwtVerify.verifyToken, sessionLoginUser);
-authRouter.post("/cashier/login", cashierLogin);
+authRouter.post("/cashier-login", cashierLogin);
 
 export default authRouter;
