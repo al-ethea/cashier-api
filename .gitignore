@@ -1,6 +1,12 @@
 node_modules
 dist
 .env**
+<<<<<<< ours
+src/generated
+
+#patches
+*.patch
+=======
 src/generated
 
 #patches

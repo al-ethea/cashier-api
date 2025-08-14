@@ -6,7 +6,7 @@ export class JwtVerify {
   static verifyToken(req: Request, res: Response, next: NextFunction) {
     try {
       const token = req.headers.authorization?.split(" ")[1];
-      console.log(req.headers.authorization);
+      // console.log(token);
       if (!token || token === "null") {
         throw new AppError("Bearer token is invalid or missing", 401);
       }
