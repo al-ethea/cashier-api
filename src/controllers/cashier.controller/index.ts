@@ -32,11 +32,35 @@ export const clockIn = async (
       throw new AppError("Cashier is already clocked in", 400);
     }
 
-    // 3. Create a new shift record
+    // 3. Check if current time is within their shift hours
+    const now = new Date();
+    const currentHour = now.getHours(); // 0-23
+
+    let shiftStart: number;
+    let shiftEnd: number;
+
+    if (cashier.shift === "SHIFT1") {
+      shiftStart = 8;
+      shiftEnd = 12;
+    } else if (cashier.shift === "SHIFT2") {
+      shiftStart = 13;
+      shiftEnd = 17;
+    } else {
+      throw new AppError("Invalid shift assigned to cashier", 400);
+    }
+
+    if (currentHour < shiftStart || currentHour >= shiftEnd) {
+      // throw new AppError(
+      //   `You can only clock in between ${shiftStart}:00 and ${shiftEnd}:00 for your shift`,
+      //   400
+      // );
+    }
+
+    // 4. Create a new shift record
     const newShift = await prisma.cashierBalanceHistory.create({
       data: {
         cashierId,
-        startTime: new Date(),
+        startTime: now,
         startingCash: startingCash ?? 0,
       },
     });
@@ -80,16 +104,48 @@ export const clockOut = async (
       throw new AppError("No active shift found for this cashier", 400);
     }
 
-    // 3. Update shift with end time & ending cash
+    // 3. Validate ending cash is not less than starting cash
+    if (endingCash != null && endingCash < activeShift.startingCash) {
+      throw new AppError(
+        `Ending cash (${endingCash}) cannot be less than starting cash (${activeShift.startingCash})`,
+        400
+      );
+    }
+
+    // 4. Validate current time is within cashier's shift
+    const now = new Date();
+    const currentHour = now.getHours();
+
+    let shiftStart: number;
+    let shiftEnd: number;
+
+    if (cashier.shift === "SHIFT1") {
+      shiftStart = 8;
+      shiftEnd = 12;
+    } else if (cashier.shift === "SHIFT2") {
+      shiftStart = 13;
+      shiftEnd = 17;
+    } else {
+      throw new AppError("Invalid shift assigned to cashier", 400);
+    }
+
+    if (currentHour < shiftStart || currentHour >= shiftEnd) {
+      // throw new AppError(
+      //   `You can only clock out between ${shiftStart}:00 and ${shiftEnd}:00 for your shift`,
+      //   400
+      // );
+    }
+
+    // 4. Update shift with end time & ending cash
     const updatedShift = await prisma.cashierBalanceHistory.update({
       where: { id: activeShift.id },
       data: {
-        endTime: new Date(),
+        endTime: now,
         endingCash: endingCash ?? 0,
       },
     });
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       message: "Clock out successful",
       data: updatedShift,
