@@ -190,6 +190,28 @@ export const displayShift = async (
       throw new AppError("Shift time not defined", 400);
     }
 
+    // Find latest balance history for today
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+
+    const latestHistory = await prisma.cashierBalanceHistory.findFirst({
+      where: {
+        cashierId,
+        startTime: {
+          gte: todayStart,
+          lte: todayEnd,
+        },
+      },
+      orderBy: {
+        startTime: "desc",
+      },
+    });
+
+    const clockOutDone = Boolean(latestHistory?.endTime);
+
     res.status(200).json({
       success: true,
       message: "Shift time retrieved successfully",
@@ -198,6 +220,7 @@ export const displayShift = async (
         shift: currentShift,
         startTime: shiftTime.start,
         endTime: shiftTime.end,
+        clockOutDone,
       },
     });
   } catch (error) {
