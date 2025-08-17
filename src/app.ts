@@ -11,7 +11,7 @@ import { PORT } from "./config";
 // import { SampleRouter } from "./routers/sample.router";
 import { AppError } from "./utils/app.error";
 import authRouter from "./routers/auth.router";
-import cashierRouter from "./routers/cashier.router";
+import shiftRouter from "./routers/shift.router";
 import cloudinaryRouter from "./routers/cloudinary.router";
 import productRouter from "./routers/product.router";
 
@@ -90,10 +90,10 @@ export default class App {
     });
 
     // this.app.use("/api/samples", sampleRouter.getRouter());
-    this.app.use('/api/cloudinary',cloudinaryRouter)
+    this.app.use("/api/cloudinary", cloudinaryRouter);
     this.app.use("/api/auth", authRouter);
-    this.app.use("/api/cashier", cashierRouter);
-    this.app.use('/api/products', productRouter)
+    this.app.use("/api/shift", shiftRouter);
+    this.app.use("/api/products", productRouter);
   }
 
   public start(): void {
