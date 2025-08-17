@@ -73,6 +73,7 @@ export const addToCart = async (
       where: { id: cart.id },
       include: {
         cartItems: {
+          where: { deletedAt: null },
           include: { product: true },
         },
       },
@@ -102,6 +103,7 @@ export const getCashierCart = async (
       },
       include: {
         cartItems: {
+          where: { deletedAt: null },
           include: {
             product: {
               select: {
@@ -134,6 +136,49 @@ export const getCashierCart = async (
       },
     });
   } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteCartItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { cashierId } = req.body.payload;
+    const cartItemId = req.params.cartItemId;
+
+    if (!cashierId) throw new AppError("Cashier not authenticated", 401);
+
+    // 1. Check if cart item exists
+    const cartItem = await prisma.cartItem.findUnique({
+      where: { id: cartItemId },
+      include: { cart: true, product: { select: { name: true } } },
+    });
+
+    if (!cartItem || cartItem.deletedAt)
+      throw new AppError("Cart item not found.", 400);
+
+    if (cartItem.cart.status !== "ACTIVE")
+      throw new AppError("Cannot delete item from a non-active cart", 400);
+
+    // 2. soft delete the cart item
+    const updatedCartItem = await prisma.cartItem.update({
+      where: { id: cartItemId },
+      data: { deletedAt: new Date() },
+    });
+
+    res.status(200).json({
+      message: "Cart item deleted successfully",
+      item: {
+        itemId: updatedCartItem.id,
+        itemName: cartItem.product.name,
+        deletedAt: updatedCartItem.deletedAt,
+      },
+    });
+  } catch (error) {
+    console.error(error);
     next(error);
   }
 };
