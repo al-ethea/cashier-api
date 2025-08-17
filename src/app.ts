@@ -14,6 +14,7 @@ import authRouter from "./routers/auth.router";
 import shiftRouter from "./routers/shift.router";
 import cloudinaryRouter from "./routers/cloudinary.router";
 import productRouter from "./routers/product.router";
+import cartRouter from "./routers/cart.router";
 
 export default class App {
   private app: Express;
@@ -94,6 +95,7 @@ export default class App {
     this.app.use("/api/auth", authRouter);
     this.app.use("/api/shift", shiftRouter);
     this.app.use("/api/products", productRouter);
+    this.app.use("/api/cart", cartRouter);
   }
 
   public start(): void {

@@ -116,7 +116,7 @@ model ProductCategory{
 
 model Cart {
   id                String   @id @default(cuid())
-customerName		    String
+  customerName		    String
   cashierId         String  
   cartItems         CartItem[]
   status            CartStatus    @default(ACTIVE)
