@@ -17,19 +17,26 @@ const cashiers = [
   //   password: "pass321",
   //   shift: "SHIFT1",
   // },
+  // {
+  //   firstName: "Michael",
+  //   lastName: "Brown",
+  //   email: "michael@example.com",
+  //   password: "pass123", // will be hashed
+  //   shift: "SHIFT1",
+  // },
+  // {
+  //   firstName: "Emily",
+  //   lastName: "Johnson",
+  //   email: "emily@example.com",
+  //   password: "pass123", // will be hashed
+  //   shift: "SHIFT2",
+  // },
   {
-    firstName: "Michael",
-    lastName: "Brown",
-    email: "michael@example.com",
+    firstName: "David",
+    lastName: "Wilson",
+    email: "david@example.com",
     password: "pass123", // will be hashed
     shift: "SHIFT1",
-  },
-  {
-    firstName: "Emily",
-    lastName: "Johnson",
-    email: "emily@example.com",
-    password: "pass123", // will be hashed
-    shift: "SHIFT2",
   },
 ];
 
