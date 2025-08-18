@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { JwtVerify } from "../middlewares/jwt.verify";
-import { confirmCartTransaction } from "../controllers/transaction.controller";
+import {
+  confirmCartTransaction,
+  getTransactionHistory,
+} from "../controllers/transaction.controller";
 
 const transactionRouter = Router();
 
@@ -9,5 +12,9 @@ transactionRouter.post(
   JwtVerify.verifyToken,
   confirmCartTransaction
 );
-
+transactionRouter.get(
+  "/get-history",
+  JwtVerify.verifyToken,
+  getTransactionHistory
+);
 export default transactionRouter;

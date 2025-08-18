@@ -127,3 +127,60 @@ export const confirmCartTransaction = async (
     next(error);
   }
 };
+
+export const getTransactionHistory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { cashierId } = req.body.payload;
+    // 1. Fetch all transactions for this cashier
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        cashierId,
+        deletedAt: null,
+      },
+      orderBy: {
+        paymentDate: "desc",
+      },
+      include: {
+        transactionItems: {
+          where: { deletedAt: null },
+          include: {
+            product: {
+              select: {
+                name: true,
+                price: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    // 2. Transform into cleaner response
+    const history = transactions.map((tx) => ({
+      transactionId: tx.id,
+      cartId: tx.cartId,
+      paymentType: tx.paymentType,
+      debitCardNumber: tx.debitCardNumber,
+      totalAmount: tx.totalAmount,
+      changeAmount: tx.changeAmount,
+      paymentDate: tx.paymentDate,
+      items: tx.transactionItems.map((item) => ({
+        productName: item.product.name,
+        unitPrice: item.unitPrice,
+        quantity: item.quantity,
+        subTotal: item.subTotal,
+      })),
+    }));
+
+    res.status(200).json({
+      message: "Transaction history fetched successfully",
+      history,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
