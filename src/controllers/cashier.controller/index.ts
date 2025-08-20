@@ -168,7 +168,7 @@ export async function updateCashierById(
 
     // 3. Nothing to update case
     if (Object.keys(updateData).length === 0) {
-      return res.status(200).json({
+      res.status(200).json({
         success: true,
         message: "Nothing to update",
         updatedCashier: existingCashier,
@@ -181,7 +181,7 @@ export async function updateCashierById(
       data: updateData,
     });
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       message: "Cashier updated successfully",
       updatedCashier,
