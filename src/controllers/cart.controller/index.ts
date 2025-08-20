@@ -182,3 +182,72 @@ export const deleteCartItem = async (
     next(error);
   }
 };
+
+export const updateCartItemQuantity = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { cashierId } = req.body.payload;
+    // const cartItemId = req.params.cartItemId;
+    // const productId = req.params.productId;
+    const { cartItemId, productId } = req.params;
+    let { quantity } = req.body;
+    quantity = parseInt(quantity);
+
+    if (isNaN(quantity)) {
+      throw new AppError("Quantity must be a valid number", 400);
+    }
+    if (quantity < 0) {
+      throw new AppError("Quantity cannot be negative", 400);
+    }
+
+    // 1. Find the cartItem and ensure it's in the cashier's ACTIVE cart
+    const cartItem = await prisma.cartItem.findFirst({
+      where: {
+        id: cartItemId,
+        productId,
+        cart: {
+          cashierId,
+          status: "ACTIVE",
+          deletedAt: null,
+        },
+        deletedAt: null,
+      },
+      include: { product: true },
+    });
+
+    if (!cartItem) {
+      throw new AppError("Cart item not found", 404);
+    }
+
+    // 2. If quantity is 0, remove the item (optional, depending on your logic)
+    // if (quantity === 0) {
+    //   await prisma.cartItem.delete({
+    //     where: { id: cartItem.id },
+    //   });
+
+    //   return res.status(200).json({
+    //     success: true,
+    //     message: "Cart item removed",
+    //     removedItemId: cartItem.id,
+    //   });
+    // }
+
+    // 3. Update quantity
+    const updatedCartItem = await prisma.cartItem.update({
+      where: { id: cartItem.id },
+      data: { quantity },
+      include: { product: true },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Cart item quantity updated",
+      cartItem: updatedCartItem,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

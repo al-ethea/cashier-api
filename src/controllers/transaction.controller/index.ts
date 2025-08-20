@@ -9,6 +9,7 @@ export const confirmCartTransaction = async (
 ) => {
   try {
     const { cashierId } = req.body.payload;
+    // req.params?
     const { cartId, paymentType, debitCardNumber, changeAmount } = req.body;
 
     if (!cashierId) throw new AppError("Cashier not authenticated", 401);

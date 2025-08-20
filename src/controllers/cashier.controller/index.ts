@@ -123,45 +123,65 @@ export async function updateCashierById(
       cldPublicId,
     } = req.body;
 
-    // Check if email already exists (excluding current cashier)
-    if (email) {
+    // 1. Find existing cashier
+    const existingCashier = await prisma.cashier.findFirst({
+      where: { id, deletedAt: null },
+    });
+    if (!existingCashier) {
+      throw new AppError("Cashier not found", 404);
+    }
+
+    // 2. Build update data only if value changed
+    const updateData: any = {};
+
+    if (firstName && firstName !== existingCashier.firstName)
+      updateData.firstName = firstName;
+    if (lastName && lastName !== existingCashier.lastName)
+      updateData.lastName = lastName;
+
+    if (email && email !== existingCashier.email) {
       const existingEmail = await prisma.cashier.findFirst({
-        where: {
-          email,
-          NOT: { id },
-        },
+        where: { email, NOT: { id } },
       });
-      if (existingEmail) {
-        throw new AppError("Email already exists", 400);
-      }
+      if (existingEmail) throw new AppError("Email already exists", 400);
+      updateData.email = email;
     }
 
-    // Check if phone number already exists (excluding current cashier)
-    if (phoneNumber) {
-      const existingPhoneNumber = await prisma.cashier.findFirst({
-        where: {
-          phoneNumber,
-          NOT: { id },
-        },
+    if (phoneNumber && phoneNumber !== existingCashier.phoneNumber) {
+      const existingPhone = await prisma.cashier.findFirst({
+        where: { phoneNumber, NOT: { id } },
       });
-      if (existingPhoneNumber) {
-        throw new AppError("Phone number already exists", 400);
-      }
+      if (existingPhone) throw new AppError("Phone number already exists", 400);
+      updateData.phoneNumber = phoneNumber;
     }
 
-    if (password) {
-      const hashedPassword = await hashPassword(password);
-      req.body.password = hashedPassword;
+    if (gender && gender !== existingCashier.gender) updateData.gender = gender;
+    if (shift && shift !== existingCashier.shift) updateData.shift = shift;
+    if (avatarImgUrl && avatarImgUrl !== existingCashier.avatarImgUrl)
+      updateData.avatarImgUrl = avatarImgUrl;
+    if (cldPublicId && cldPublicId !== existingCashier.cldPublicId)
+      updateData.cldPublicId = cldPublicId;
+
+    if (password && password !== "") {
+      updateData.password = await hashPassword(password);
     }
 
+    // 3. Nothing to update case
+    if (Object.keys(updateData).length === 0) {
+      return res.status(200).json({
+        success: true,
+        message: "Nothing to update",
+        updatedCashier: existingCashier,
+      });
+    }
+
+    // 4. Update cashier
     const updatedCashier = await prisma.cashier.update({
       where: { id },
-      data: {
-        ...req.body,
-      },
+      data: updateData,
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Cashier updated successfully",
       updatedCashier,
