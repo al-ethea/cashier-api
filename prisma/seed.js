@@ -31,12 +31,29 @@ const cashiers = [
   //   password: "pass123", // will be hashed
   //   shift: "SHIFT2",
   // },
+  // {
+  //   firstName: "David",
+  //   lastName: "Wilson",
+  //   email: "david@example.com",
+  //   password: "pass123", // will be hashed
+  //   shift: "SHIFT1",
+  // },
+];
+
+const admins = [
   {
-    firstName: "David",
-    lastName: "Wilson",
-    email: "david@example.com",
-    password: "pass123", // will be hashed
-    shift: "SHIFT1",
+    firstName: "Bob",
+    lastName: "Taylor",
+    email: "bob@example.com",
+    password: "admin123", // will be hashed
+    phoneNumber: "081234567891",
+  },
+  {
+    firstName: "Charlie",
+    lastName: "Davis",
+    email: "charlie@example.com",
+    password: "admin123", // will be hashed
+    phoneNumber: "081234567892",
   },
 ];
 
@@ -46,9 +63,20 @@ const hashPassword = async (password) => {
 };
 
 async function main() {
-  for (const item of cashiers) {
+  // for (const item of cashiers) {
+  //   const hashed = await hashPassword(item.password);
+  //   await prisma.cashier.create({
+  //     data: {
+  //       ...item,
+  //       password: hashed,
+  //     },
+  //   });
+  // }
+
+  // Seed admins
+  for (const item of admins) {
     const hashed = await hashPassword(item.password);
-    await prisma.cashier.create({
+    await prisma.admin.create({
       data: {
         ...item,
         password: hashed,
