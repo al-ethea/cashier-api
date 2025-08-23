@@ -98,7 +98,7 @@ export default class App {
     this.app.use("/api/shift", shiftRouter);
     this.app.use("/api/products", productRouter);
     this.app.use("/api/cart", cartRouter);
-    this.app.use("/api/transaction", transactionRouter);
+    this.app.use("/api/transactions", transactionRouter);
     this.app.use("/api/cashier", cashierRouter);
   }
 

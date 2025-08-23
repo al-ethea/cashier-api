@@ -10,7 +10,9 @@ export const confirmCartTransaction = async (
   try {
     const { cashierId } = req.body.payload;
     // req.params?
-    const { cartId, paymentType, debitCardNumber, changeAmount } = req.body;
+    const { cartId } = req.params;
+
+    const { paymentType, debitCardNumber, changeAmount } = req.body;
 
     if (!cashierId) throw new AppError("Cashier not authenticated", 401);
 
@@ -136,6 +138,7 @@ export const getTransactionHistory = async (
 ) => {
   try {
     const { cashierId } = req.body.payload;
+
     // 1. Fetch all transactions for this cashier
     const transactions = await prisma.transaction.findMany({
       where: {
@@ -145,18 +148,14 @@ export const getTransactionHistory = async (
       orderBy: {
         paymentDate: "desc",
       },
-      include: {
-        transactionItems: {
-          where: { deletedAt: null },
-          include: {
-            product: {
-              select: {
-                name: true,
-                price: true,
-              },
-            },
-          },
-        },
+      select: {
+        id: true,
+        cartId: true,
+        paymentType: true,
+        debitCardNumber: true,
+        totalAmount: true,
+        changeAmount: true,
+        paymentDate: true,
       },
     });
 
@@ -169,17 +168,54 @@ export const getTransactionHistory = async (
       totalAmount: tx.totalAmount,
       changeAmount: tx.changeAmount,
       paymentDate: tx.paymentDate,
-      items: tx.transactionItems.map((item) => ({
-        productName: item.product.name,
-        unitPrice: item.unitPrice,
-        quantity: item.quantity,
-        subTotal: item.subTotal,
-      })),
     }));
 
     res.status(200).json({
       message: "Transaction history fetched successfully",
       history,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getTransactionDetails = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { cashierId } = req.body.payload;
+    const { transactionId } = req.params;
+
+    const transaction = await prisma.transaction.findUnique({
+      where: { id: transactionId, cashierId, deletedAt: null },
+      include: {
+        transactionItems: {
+          where: { deletedAt: null },
+          include: {
+            product: { select: { name: true, price: true } },
+          },
+        },
+      },
+    });
+
+    if (!transaction) throw new AppError("Transaction not found", 404);
+
+    res.status(200).json({
+      transactionId: transaction.id,
+      cartId: transaction.cartId,
+      paymentType: transaction.paymentType,
+      debitCardNumber: transaction.debitCardNumber,
+      totalAmount: transaction.totalAmount,
+      changeAmount: transaction.changeAmount,
+      paymentDate: transaction.paymentDate,
+      items: transaction.transactionItems.map((item) => ({
+        productName: item.product.name,
+        unitPrice: item.unitPrice,
+        quantity: item.quantity,
+        subTotal: item.subTotal,
+      })),
     });
   } catch (error) {
     next(error);
