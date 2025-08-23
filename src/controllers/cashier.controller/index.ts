@@ -1,36 +1,21 @@
-import { NextFunction, Request, Response } from "express";
-import { prisma } from "../../prisma";
-import { AppError } from "../../utils/app.error";
-import { hashPassword } from "../../utils/hashPassword";
-import { comparePassword } from "../../utils/comparePassword";
+import { NextFunction, Request, Response } from 'express';
+import { prisma } from '../../prisma';
+import { AppError } from '../../utils/app.error';
+import { hashPassword } from '../../utils/hashPassword';
 
-export async function addCashier(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function addCashier(req: Request, res: Response, next: NextFunction) {
   try {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      phoneNumber,
-      gender,
-      shift,
-      avatarImgUrl,
-      cldPublicId,
-    } = req.body;
+    const { firstName, lastName, email, password, phoneNumber, gender, shift, avatarImgUrl, cldPublicId } = req.body;
 
     if (!firstName || !lastName || !email || !password || !shift) {
-      throw new AppError("Missing required fields", 400);
+      throw new AppError('Missing required fields', 400);
     }
 
     const existingEmail = await prisma.cashier.findUnique({
       where: { email },
     });
     if (existingEmail) {
-      throw new AppError("Email already exists", 400);
+      throw new AppError('Email already exists', 400);
     }
 
     if (phoneNumber) {
@@ -38,7 +23,7 @@ export async function addCashier(
         where: { phoneNumber },
       });
       if (existingPhoneNumber) {
-        throw new AppError("Phone number already exists", 400);
+        throw new AppError('Phone number already exists', 400);
       }
     }
 
@@ -50,7 +35,7 @@ export async function addCashier(
 
     res.status(200).json({
       success: true,
-      message: "Cashier created successfully",
+      message: 'Cashier created successfully',
       cashier,
     });
   } catch (error) {
@@ -58,31 +43,49 @@ export async function addCashier(
   }
 }
 
-export async function getAllCashiers(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function getAllCashiers(req: Request, res: Response, next: NextFunction) {
   try {
+    const { page, limit, search_firstName_lastName } = req.query;
+
+    const pageNumber = page ? parseInt(page as string) : 1;
+    const pageLimit = limit ? parseInt(limit as string) : 10;
+
+    const whereClause: any = {
+      deletedAt: null,
+    };
+
+    if (search_firstName_lastName) {
+      whereClause.OR = [
+        { firstName: { contains: String(search_firstName_lastName), mode: 'insensitive' } },
+        { lastName: { contains: String(search_firstName_lastName), mode: 'insensitive' } },
+      ];
+    }
+
+    const totalItems = await prisma.cashier.count({
+      where: whereClause,
+    });
+
     const cashiers = await prisma.cashier.findMany({
-      where: { deletedAt: null },
+      where: whereClause,
+      take: pageLimit,
+      skip: (pageNumber - 1) * pageLimit,
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     res.status(200).json({
       success: true,
-      message: "Cashiers fetched successfully",
+      message: 'Cashiers fetched successfully',
       cashiers,
+      totalItems,
     });
   } catch (error) {
     next(error);
   }
 }
 
-export async function getCashierById(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function getCashierById(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
 
@@ -91,12 +94,12 @@ export async function getCashierById(
     });
 
     if (!cashier) {
-      throw new AppError("Cashier not found", 404);
+      throw new AppError('Cashier not found', 404);
     }
 
     res.status(200).json({
       success: true,
-      message: "Cashier fetched successfully",
+      message: 'Cashier fetched successfully',
       cashier,
     });
   } catch (error) {
@@ -104,11 +107,7 @@ export async function getCashierById(
   }
 }
 
-export async function updateCashierById(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function updateCashierById(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
     const {
@@ -183,7 +182,7 @@ export async function updateCashierById(
 
     res.status(200).json({
       success: true,
-      message: "Cashier updated successfully",
+      message: 'Cashier updated successfully',
       updatedCashier,
     });
   } catch (error) {
@@ -191,11 +190,7 @@ export async function updateCashierById(
   }
 }
 
-export async function deleteCashierById(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export async function deleteCashierById(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
     const { password } = req.body || {};
@@ -204,7 +199,7 @@ export async function deleteCashierById(
       where: { id, deletedAt: null },
     });
     if (!existingCashier) {
-      throw new AppError("Cashier not found", 404);
+      throw new AppError('Cashier not found', 404);
     }
 
     // Check Admin Password to Confirm
@@ -222,7 +217,7 @@ export async function deleteCashierById(
 
     res.status(200).json({
       success: true,
-      message: "Cashier deleted successfully",
+      message: 'Cashier deleted successfully',
     });
   } catch (error) {
     next(error);

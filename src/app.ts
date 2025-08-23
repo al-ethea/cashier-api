@@ -17,6 +17,7 @@ import productRouter from "./routers/product.router";
 import cartRouter from "./routers/cart.router";
 import transactionRouter from "./routers/transaction.router";
 import cashierRouter from "./routers/cashier.router";
+import reportRouter from "./routers/report.router";
 
 export default class App {
   private app: Express;
@@ -100,6 +101,7 @@ export default class App {
     this.app.use("/api/cart", cartRouter);
     this.app.use("/api/transaction", transactionRouter);
     this.app.use("/api/cashier", cashierRouter);
+    this.app.use('/api/reports', reportRouter)
   }
 
   public start(): void {
