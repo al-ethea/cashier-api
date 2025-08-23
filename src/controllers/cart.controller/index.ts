@@ -122,6 +122,8 @@ export const getCashierCart = async (
 
     // 2. Transform response to only keep name, quantity, price
     const items = cart.cartItems.map((item) => ({
+      cartItemId: item.id,
+      productId: item.productId, // useful for update qty
       productName: item.product.name,
       quantity: item.quantity,
       price: item.product.price,
@@ -151,31 +153,110 @@ export const deleteCartItem = async (
 
     if (!cashierId) throw new AppError("Cashier not authenticated", 401);
 
-    // 1. Check if cart item exists
-    const cartItem = await prisma.cartItem.findUnique({
-      where: { id: cartItemId },
-      include: { cart: true, product: { select: { name: true } } },
+    // find cart
+    // const cart = await prisma.cart.findFirst({
+    //   where: { cashierId, status: "ACTIVE", deletedAt: null },
+    // });
+
+    // if (!cart) {
+    //   throw new AppError("Cart not found.", 404);
+    // }
+
+    // Check if the cart item exists and belongs to this cart
+    // const cartItem = await prisma.cartItem.findUnique({
+    //   where: { id: cartItemId },
+    // });
+
+    // const cartItem = await prisma.cartItem.findFirst({
+    //   where: {
+    //     id: cartItemId,
+    //     deletedAt: null,
+    //     cart: {
+    //       cashierId,
+    //       status: "ACTIVE",
+    //       deletedAt: null,
+    //     },
+    //   },
+    //   include: { cart: true, product: { select: { name: true } } },
+    // });
+
+    // if (!cartItem || cartItem.deletedAt)
+    //   throw new AppError("Cart item not found.", 400);
+
+    // // if (cartItem.cart.status !== "ACTIVE")
+    // //   throw new AppError("Cannot delete item from a non-active cart", 400);
+
+    // const updatedCartItem = await prisma.cartItem.update({
+    //   where: { id: cartItemId },
+    //   data: { deletedAt: new Date() },
+    // });
+
+    // 1. Find the cart first
+    const cart = await prisma.cart.findFirst({
+      where: { cashierId, status: "ACTIVE", deletedAt: null },
+      include: {
+        cartItems: {
+          where: { deletedAt: null },
+          select: {
+            id: true,
+            productId: true,
+            quantity: true,
+
+            product: { select: { name: true, price: true } },
+          },
+        },
+      },
     });
 
-    if (!cartItem || cartItem.deletedAt)
-      throw new AppError("Cart item not found.", 400);
+    if (!cart) throw new AppError("Active cart not found", 404);
 
-    if (cartItem.cart.status !== "ACTIVE")
-      throw new AppError("Cannot delete item from a non-active cart", 400);
+    // 2. Check if the item exists in this cart
+    const item = cart.cartItems.find((i) => i.id === cartItemId);
+    if (!item) throw new AppError("Cart item not found", 400);
 
-    // 2. soft delete the cart item
-    const updatedCartItem = await prisma.cartItem.update({
+    // 3. Soft delete the item
+    await prisma.cartItem.update({
       where: { id: cartItemId },
       data: { deletedAt: new Date() },
     });
 
+    // 4. Re-fetch cart after deletion
+    const updatedCart = await prisma.cart.findFirst({
+      where: { id: cart.id },
+      include: {
+        cartItems: {
+          where: { deletedAt: null },
+          select: {
+            id: true,
+            productId: true,
+            quantity: true,
+
+            product: { select: { name: true, price: true } },
+          },
+        },
+      },
+    });
+
     res.status(200).json({
       message: "Cart item deleted successfully",
-      item: {
-        itemId: updatedCartItem.id,
-        itemName: cartItem.product.name,
-        deletedAt: updatedCartItem.deletedAt,
-      },
+      // item: {
+      //   itemId: updatedCartItem.id,
+      //   itemName: cartItem.product.name,
+      //   deletedAt: updatedCartItem.deletedAt,
+      // },
+      cart: updatedCart
+        ? {
+            cartId: updatedCart.id,
+            customerName: updatedCart.customerName,
+            items: updatedCart.cartItems.map((item) => ({
+              id: item.id,
+              productId: item.productId,
+              quantity: item.quantity,
+              price: item.product.price,
+              productName: item.product.name, // <- manual mapping
+            })),
+          }
+        : null,
     });
   } catch (error) {
     console.error(error);

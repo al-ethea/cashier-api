@@ -158,7 +158,7 @@ export const sessionLoginAdmin = async (
     const { payload } = req.body;
     const token = req.headers.authorization?.split(" ")[1];
 
-    const admin = await prisma.cashier.findFirst({
+    const admin = await prisma.admin.findFirst({
       where: { id: payload.adminId },
     });
 
@@ -195,8 +195,7 @@ export const login = async (
         password,
         findCashier.password
       );
-      if (!isPasswordMatch)
-        throw { isExpose: true, status: 401, message: "Invalid password" };
+      if (!isPasswordMatch) throw new AppError("Invalid password", 401);
 
       // ✅ Shift validation for cashier
       const now = new Date();
@@ -230,7 +229,7 @@ export const login = async (
         data: {
           token,
           role: "cashier",
-          id: findCashier.id,
+          cashierId: findCashier.id,
           email: findCashier.email,
           shift: findCashier.shift,
         },
@@ -240,8 +239,7 @@ export const login = async (
         password,
         findAdmin.password
       );
-      if (!isPasswordMatch)
-        throw { isExpose: true, status: 401, message: "Invalid password" };
+      if (!isPasswordMatch) throw new AppError("Invalid password", 401);
 
       const token = jwtSignAdmin({
         adminId: findAdmin.id,
@@ -254,7 +252,7 @@ export const login = async (
         data: {
           token,
           role: "admin",
-          id: findAdmin.id,
+          adminId: findAdmin.id,
           email: findAdmin.email,
         },
       });
