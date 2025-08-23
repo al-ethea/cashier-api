@@ -274,14 +274,20 @@ export const updateCartItemQuantity = async (
     // const cartItemId = req.params.cartItemId;
     // const productId = req.params.productId;
     const { cartItemId, productId } = req.params;
-    let { quantity } = req.body;
-    quantity = parseInt(quantity);
+    const { action } = req.body; // "increase" | "decrease"
 
-    if (isNaN(quantity)) {
-      throw new AppError("Quantity must be a valid number", 400);
-    }
-    if (quantity < 0) {
-      throw new AppError("Quantity cannot be negative", 400);
+    // let { quantity } = req.body;
+    // quantity = parseInt(quantity);
+
+    // if (isNaN(quantity)) {
+    //   throw new AppError("Quantity must be a valid number", 400);
+    // }
+    // if (quantity < 0) {
+    //   throw new AppError("Quantity cannot be negative", 400);
+    // }
+
+    if (!["increase", "decrease"].includes(action)) {
+      throw new AppError("Invalid action. Use 'increase' or 'decrease'", 400);
     }
 
     // 1. Find the cartItem and ensure it's in the cashier's ACTIVE cart
@@ -317,9 +323,34 @@ export const updateCartItemQuantity = async (
     // }
 
     // 3. Update quantity
+    // const updatedCartItem = await prisma.cartItem.update({
+    //   where: { id: cartItem.id },
+    //   data: { quantity },
+    //   include: { product: true },
+    // });
+
+    let newQuantity = cartItem.quantity;
+
+    if (action === "increase") {
+      newQuantity++;
+    } else if (action === "decrease") {
+      newQuantity = Math.max(0, newQuantity - 1); // prevent negative
+    }
+
+    // If new quantity is 0, you might want to auto-remove the item
+    if (newQuantity === 0) {
+      await prisma.cartItem.delete({ where: { id: cartItem.id } });
+      res.status(200).json({
+        success: true,
+        message: "Cart item removed",
+        removedItemId: cartItem.id,
+      });
+    }
+
+    // 3. Save new quantity
     const updatedCartItem = await prisma.cartItem.update({
       where: { id: cartItem.id },
-      data: { quantity },
+      data: { quantity: newQuantity },
       include: { product: true },
     });
 
