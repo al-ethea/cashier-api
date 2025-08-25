@@ -61,7 +61,8 @@ export const clockIn = async (
       data: {
         cashierId,
         startTime: now,
-        startingCash: startingCash ?? 0,
+        startingCash: 0,
+        totalRevenue: 0,
       },
     });
 
@@ -91,6 +92,9 @@ export const clockOut = async (
     if (!cashier) {
       throw new AppError("Cashier not found", 404);
     }
+    if (endingCash === undefined || endingCash === null) {
+      throw new AppError("Ending cash is required", 400);
+    }
 
     // 2. Find active shift
     const activeShift = await prisma.cashierBalanceHistory.findFirst({
@@ -104,10 +108,10 @@ export const clockOut = async (
       throw new AppError("No active shift found for this cashier", 400);
     }
 
-    // 3. Validate ending cash is not less than starting cash
-    if (endingCash != null && endingCash < activeShift.startingCash) {
+    // Validate endingCash must equal totalRevenue
+    if (endingCash !== activeShift.totalRevenue) {
       throw new AppError(
-        `Ending cash (${endingCash}) cannot be less than starting cash (${activeShift.startingCash})`,
+        `Ending cash (${endingCash}) must equal total revenue (${activeShift.totalRevenue})`,
         400
       );
     }
@@ -141,7 +145,7 @@ export const clockOut = async (
       where: { id: activeShift.id },
       data: {
         endTime: now,
-        endingCash: endingCash ?? 0,
+        endingCash,
       },
     });
 
@@ -204,13 +208,12 @@ export const displayShift = async (
           gte: todayStart,
           lte: todayEnd,
         },
+        endTime: null,
       },
       orderBy: {
         startTime: "desc",
       },
     });
-
-    const clockOutDone = Boolean(latestHistory?.endTime);
 
     res.status(200).json({
       success: true,
@@ -220,7 +223,7 @@ export const displayShift = async (
         shift: currentShift,
         startTime: shiftTime.start,
         endTime: shiftTime.end,
-        clockOutDone,
+        totalRevenue: latestHistory?.totalRevenue ?? 0,
       },
     });
   } catch (error) {
