@@ -215,7 +215,7 @@ export const login = async (
           (hour === 17 && minute === 0);
       }
 
-      // if (!inShift) throw new AppError("You are not in your shift hours", 403);
+      if (!inShift) throw new AppError("You are not in your shift hours", 403);
 
       const token = jwtSign({
         cashierId: findCashier.id,

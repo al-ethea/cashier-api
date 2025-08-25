@@ -50,10 +50,10 @@ export const clockIn = async (
     }
 
     if (currentHour < shiftStart || currentHour >= shiftEnd) {
-      // throw new AppError(
-      //   `You can only clock in between ${shiftStart}:00 and ${shiftEnd}:00 for your shift`,
-      //   400
-      // );
+      throw new AppError(
+        `You can only clock in between ${shiftStart}:00 and ${shiftEnd}:00 for your shift`,
+        400
+      );
     }
 
     // 4. Create a new shift record
@@ -134,10 +134,10 @@ export const clockOut = async (
     }
 
     if (currentHour < shiftStart || currentHour >= shiftEnd) {
-      // throw new AppError(
-      //   `You can only clock out between ${shiftStart}:00 and ${shiftEnd}:00 for your shift`,
-      //   400
-      // );
+      throw new AppError(
+        `You can only clock out between ${shiftStart}:00 and ${shiftEnd}:00 for your shift`,
+        400
+      );
     }
 
     // 4. Update shift with end time & ending cash
