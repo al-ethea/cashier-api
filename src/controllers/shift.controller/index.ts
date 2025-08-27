@@ -32,7 +32,20 @@ export const clockIn = async (
       throw new AppError("Cashier is already clocked in", 400);
     }
 
-    // 3. Check if current time is within their shift hours
+    // 3. Get the last completed shift (most recent one with endTime not null)
+    const lastShift = await prisma.cashierBalanceHistory.findFirst({
+      where: { endTime: { not: null } },
+      orderBy: { endTime: "desc" },
+    });
+
+    if (lastShift && startingCash !== lastShift.endingCash) {
+      throw new AppError(
+        `Starting cash (${startingCash}) must equal previous shift's ending cash (${lastShift.endingCash})`,
+        400
+      );
+    }
+
+    // 4. Check if current time is within their shift hours
     const now = new Date();
     const currentHour = now.getHours(); // 0-23
 
@@ -56,12 +69,12 @@ export const clockIn = async (
       );
     }
 
-    // 4. Create a new shift record
+    // 5. Create a new shift record
     const newShift = await prisma.cashierBalanceHistory.create({
       data: {
         cashierId,
         startTime: now,
-        startingCash: 0,
+        startingCash,
         totalRevenue: 0,
       },
     });
@@ -108,10 +121,11 @@ export const clockOut = async (
       throw new AppError("No active shift found for this cashier", 400);
     }
 
-    // Validate endingCash must equal totalRevenue
-    if (endingCash !== activeShift.totalRevenue) {
+    const expectedEndingCash =
+      activeShift.startingCash + activeShift.totalRevenue;
+    if (endingCash !== expectedEndingCash) {
       throw new AppError(
-        `Ending cash (${endingCash}) must equal total revenue (${activeShift.totalRevenue})`,
+        `Ending cash (${endingCash}) must equal starting cash + total revenue (${expectedEndingCash})`,
         400
       );
     }
@@ -194,7 +208,6 @@ export const displayShift = async (
       throw new AppError("Shift time not defined", 400);
     }
 
-    // Find latest balance history for today
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
 
@@ -215,6 +228,18 @@ export const displayShift = async (
       },
     });
 
+    // Get the last completed shift in the entire system
+    const lastCompletedShift = await prisma.cashierBalanceHistory.findFirst({
+      where: {
+        endTime: { not: null }, // only completed shifts
+      },
+      orderBy: {
+        endTime: "desc", // latest completed shift
+      },
+    });
+
+    console.log("Last completed shift:", lastCompletedShift);
+
     res.status(200).json({
       success: true,
       message: "Shift time retrieved successfully",
@@ -224,6 +249,7 @@ export const displayShift = async (
         startTime: shiftTime.start,
         endTime: shiftTime.end,
         totalRevenue: latestHistory?.totalRevenue ?? 0,
+        lastEndingCash: lastCompletedShift?.endingCash ?? null,
       },
     });
   } catch (error) {
